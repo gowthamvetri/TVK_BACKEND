@@ -39,8 +39,8 @@ const sendRegistrationOTP = asyncHandler(async (req: Request<unknown, unknown, I
  * POST /auth/register/verify-otp
  */
 const verifyOTPAndRegister = asyncHandler(async (req: Request<unknown, unknown, IRegisterDTO>, res: Response) => {
-  const { phone, otp, name, pin, ward, role } = req.body;
-  const result = await authService.verifyOTPAndRegister({ phone, otp, name, pin, ward, role });
+  const { phone, otp, pin, ward, role } = req.body;
+  const result = await authService.verifyOTPAndRegister({ phone, otp, pin, ward, role });
   return ApiResponse.created(res, { data: result, message: 'Registration successful' });
 });
 

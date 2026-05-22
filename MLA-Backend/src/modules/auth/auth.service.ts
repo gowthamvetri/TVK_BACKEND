@@ -83,7 +83,6 @@ const sendRegistrationOTP = async (phone: string) => {
 export interface IRegisterDTO {
   phone: string;
   otp: string;
-  name: string;
   pin: string;
   ward?: number;
   role?: string;
@@ -92,7 +91,7 @@ export interface IRegisterDTO {
 /**
  * Step 2: Verify OTP and register user
  */
-const verifyOTPAndRegister = async ({ phone, otp, name, pin, ward }: IRegisterDTO) => {
+const verifyOTPAndRegister = async ({ phone, otp, pin, ward }: IRegisterDTO) => {
   const otpRecord = await authRepository.findValidOTP(phone, otp, 'registration');
 
   if (!otpRecord) {
@@ -107,7 +106,6 @@ const verifyOTPAndRegister = async ({ phone, otp, name, pin, ward }: IRegisterDT
 
   const user = await userRepository.create({
     phone,
-    name,
     pin,
     ward,
     role: preRegisteredRole || ROLES.CITIZEN,

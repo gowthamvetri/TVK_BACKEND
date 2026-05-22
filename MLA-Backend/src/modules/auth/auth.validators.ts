@@ -31,10 +31,7 @@ const authValidators = {
       .isLength({ min: 6, max: 6 })
       .isNumeric()
       .withMessage('OTP must be a 6-digit number'),
-    body('name')
-      .trim()
-      .isLength({ min: 2, max: 100 })
-      .withMessage('Name must be between 2 and 100 characters'),
+
     body('pin')
       .trim()
       .matches(/^\d{4,6}$/)

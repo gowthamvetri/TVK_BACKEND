@@ -7,7 +7,6 @@ import { NotFoundError, BadRequestError } from '../../shared/utils/errors';
 import { buildPaginationQuery } from '../../shared/utils/helpers';
 
 export interface IProfileUpdate {
-  name?: string;
   pin?: string;
   role?: string;
   phone?: string;
@@ -58,7 +57,6 @@ const listUsers = async (query: IUserFilterQuery, filters: Record<string, unknow
   if (query.isActive !== undefined) filter.isActive = query.isActive === 'true';
   if (query.search) {
     filter.$or = [
-      { name: { $regex: query.search, $options: 'i' } },
       { phone: { $regex: query.search, $options: 'i' } },
     ];
   }

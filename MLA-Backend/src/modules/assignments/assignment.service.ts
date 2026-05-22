@@ -22,7 +22,6 @@ import logger from '../../shared/logger';
 
 export interface IOfficer {
   _id: mongoose.Types.ObjectId;
-  name: string;
   [key: string]: unknown;
 }
 
@@ -52,7 +51,7 @@ const autoAssign = async (complaintId: string, category: string, ward: number) =
         .map((user) => {
           const officerId = resolveOfficerId(user);
           if (!officerId) return null;
-          return { _id: officerId, name: user.name } as IOfficer;
+          return { _id: officerId } as IOfficer;
         })
         .filter((officer): officer is IOfficer => officer !== null);
     }
@@ -64,7 +63,7 @@ const autoAssign = async (complaintId: string, category: string, ward: number) =
         .map((user) => {
           const officerId = resolveOfficerId(user);
           if (!officerId) return null;
-          return { _id: officerId, name: user.name } as IOfficer;
+          return { _id: officerId } as IOfficer;
         })
         .filter((officer): officer is IOfficer => officer !== null);
     }
@@ -102,7 +101,7 @@ const autoAssign = async (complaintId: string, category: string, ward: number) =
       toStatus: COMPLAINT_STATUS.ASSIGNED,
       changedBy: selectedOfficer._id, // System-assigned
       changedByRole: 'system',
-      notes: `Auto-assigned to ${selectedOfficer.name}`,
+      notes: `Auto-assigned to ${selectedOfficer._id}`,
       metadata: { assignmentType: 'auto', workload: officerWorkloads[0].activeCount },
     });
 
@@ -110,10 +109,9 @@ const autoAssign = async (complaintId: string, category: string, ward: number) =
     eventBus.emit(EVENTS.ASSIGNMENT_CREATED, {
       complaintId,
       officerId: selectedOfficer._id,
-      officerName: selectedOfficer.name,
     });
 
-    logger.info(`[AssignmentService] Complaint ${complaintId} assigned to officer ${selectedOfficer.name}`);
+    logger.info(`[AssignmentService] Complaint ${complaintId} assigned to officer ${selectedOfficer._id}`);
 
     return updatedComplaint;
   } catch (error) {

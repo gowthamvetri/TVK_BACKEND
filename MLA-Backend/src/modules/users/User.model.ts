@@ -8,7 +8,6 @@ import { ROLES } from '../../shared/constants';
 
 export interface IUser extends Document {
   _id: mongoose.Types.ObjectId;
-  name: string;
   phone: string;
   pin?: string;
   role: string;
@@ -36,12 +35,6 @@ export interface IUser extends Document {
 
 const userSchema = new mongoose.Schema<IUser>(
   {
-    name: {
-      type: String,
-      required: [true, 'Name is required'],
-      trim: true,
-      maxlength: 100,
-    },
     phone: {
       type: String,
       required: [true, 'Phone number is required'],

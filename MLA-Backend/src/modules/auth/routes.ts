@@ -55,13 +55,11 @@ router.post(
  *         application/json:
  *           schema:
  *             type: object
- *             required: [phone, otp, name, pin]
+ *             required: [phone, otp, pin]
  *             properties:
  *               phone:
  *                 type: string
  *               otp:
- *                 type: string
- *               name:
  *                 type: string
  *               pin:
  *                 type: string
