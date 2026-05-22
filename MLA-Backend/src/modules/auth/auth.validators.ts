@@ -21,7 +21,7 @@ const authValidators = {
       .withMessage('Valid Indian mobile number is required'),
   ],
 
-  verifyOTPAndRegister: [
+  verifyRegistrationPhone: [
     body('phone')
       .trim()
       .customSanitizer(normalizePhone)
@@ -31,7 +31,12 @@ const authValidators = {
       .isLength({ min: 6, max: 6 })
       .isNumeric()
       .withMessage('OTP must be a 6-digit number'),
+  ],
 
+  completeRegistration: [
+    body('registrationToken')
+      .notEmpty()
+      .withMessage('Registration token is required'),
     body('pin')
       .trim()
       .matches(/^\d{4,6}$/)
@@ -58,7 +63,7 @@ const authValidators = {
       .withMessage('PIN must be a 4-6 digit number'),
   ],
 
-  verifyLoginOTP: [
+  verifyForgotPinOTP: [
     body('phone')
       .trim()
       .customSanitizer(normalizePhone)
@@ -68,6 +73,16 @@ const authValidators = {
       .isLength({ min: 6, max: 6 })
       .isNumeric()
       .withMessage('OTP must be a 6-digit number'),
+  ],
+
+  resetPin: [
+    body('resetToken')
+      .notEmpty()
+      .withMessage('Reset token is required'),
+    body('newPin')
+      .trim()
+      .matches(/^\d{4,6}$/)
+      .withMessage('PIN must be a 4-6 digit number'),
   ],
 
   refreshToken: [

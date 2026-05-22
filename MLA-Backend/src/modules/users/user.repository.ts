@@ -70,10 +70,6 @@ const findAll = async (filter: Record<string, unknown> = {}, options: UserListOp
   return { data, total };
 };
 
-const updateFCMToken = async (userId: UserId, fcmToken: string): Promise<IUser | null> => {
-  return User.findByIdAndUpdate(userId, { fcmToken });
-};
-
 const deactivate = async (userId: UserId): Promise<IUser | null> => {
   return User.findByIdAndUpdate(userId, { isActive: false }, { new: true });
 };
@@ -92,7 +88,6 @@ const userRepository = {
   findWardCouncillor,
   findMLA,
   findAll,
-  updateFCMToken,
   deactivate,
   activate,
 };

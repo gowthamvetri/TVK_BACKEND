@@ -35,6 +35,28 @@ const generateAccessToken = (user: IUserTokenPayload): string => {
 };
 
 /**
+ * Generate registration token
+ */
+const generateRegistrationToken = (phone: string): string => {
+  return jwt.sign(
+    { phone },
+    config.jwt.registrationSecret as string,
+    { expiresIn: config.jwt.registrationExpiry as jwt.SignOptions['expiresIn'] }
+  );
+};
+
+/**
+ * Generate reset token
+ */
+const generateResetToken = (phone: string): string => {
+  return jwt.sign(
+    { phone },
+    config.jwt.resetSecret as string,
+    { expiresIn: config.jwt.resetExpiry as jwt.SignOptions['expiresIn'] }
+  );
+};
+
+/**
  * Generate refresh token
  */
 const generateRefreshToken = (user: IUserTokenPayload): string => {
@@ -80,18 +102,10 @@ const sendRegistrationOTP = async (phone: string) => {
   };
 };
 
-export interface IRegisterDTO {
-  phone: string;
-  otp: string;
-  pin: string;
-  ward?: number;
-  role?: string;
-}
-
 /**
- * Step 2: Verify OTP and register user
+ * Step 2: Verify OTP and return registration token
  */
-const verifyOTPAndRegister = async ({ phone, otp, pin, ward }: IRegisterDTO) => {
+const verifyRegistrationPhone = async (phone: string, otp: string) => {
   const otpRecord = await authRepository.findValidOTP(phone, otp, 'registration');
 
   if (!otpRecord) {
@@ -101,14 +115,46 @@ const verifyOTPAndRegister = async ({ phone, otp, pin, ward }: IRegisterDTO) => 
   // Mark OTP as used
   await authRepository.markOTPUsed(otpRecord._id);
 
-  // Create user
+  const registrationToken = generateRegistrationToken(phone);
+
+  return {
+    message: 'Phone verified successfully',
+    registrationToken,
+  };
+};
+
+export interface ICompleteRegistrationDTO {
+  registrationToken: string;
+  pin: string;
+  ward?: number;
+  role?: string;
+}
+
+/**
+ * Step 3: Complete registration using token
+ */
+const completeRegistration = async ({ registrationToken, pin, ward, role }: ICompleteRegistrationDTO) => {
+  let phone: string;
+  try {
+    const decoded = jwt.verify(registrationToken, config.jwt.registrationSecret as string) as { phone: string };
+    phone = decoded.phone;
+  } catch (error) {
+    throw new UnauthorizedError('Invalid or expired registration token');
+  }
+
+  // Check if user already exists just in case
+  const existingUser = await userRepository.findByPhone(phone);
+  if (existingUser) {
+    throw new BadRequestError('User already registered');
+  }
+
   const preRegisteredRole = await officialsService.getRoleForPhone(phone);
 
   const user = await userRepository.create({
     phone,
     pin,
     ward,
-    role: preRegisteredRole || ROLES.CITIZEN,
+    role: role || preRegisteredRole || ROLES.CITIZEN,
     isVerified: true,
   });
 
@@ -162,21 +208,21 @@ const loginWithPin = async (phone: string, pin: string) => {
 };
 
 /**
- * Send login OTP (alternative login method)
+ * Send Forgot PIN OTP
  */
-const sendLoginOTP = async (phone: string) => {
+const sendForgotPinOTP = async (phone: string) => {
   const user = await userRepository.findByPhone(phone);
   if (!user) {
     throw new NotFoundError('User not found');
   }
 
   const otp = generateOTP(6);
-  await authRepository.createOTP(phone, otp, 'login');
+  await authRepository.createOTP(phone, otp, 'reset_pin');
 
   // Send OTP via SMS
-  await smsService.sendOTP(phone, otp, 'login');
+  await smsService.sendOTP(phone, otp, 'reset');
 
-  logger.info(`[AuthService] Login OTP generated for ${phone}: ${config.app.isDevelopment ? otp : '***'}`);
+  logger.info(`[AuthService] Reset PIN OTP generated for ${phone}: ${config.app.isDevelopment ? otp : '***'}`);
 
   return {
     message: 'OTP sent successfully',
@@ -185,10 +231,10 @@ const sendLoginOTP = async (phone: string) => {
 };
 
 /**
- * Verify login OTP
+ * Verify Forgot PIN OTP and return reset token
  */
-const verifyLoginOTP = async (phone: string, otp: string) => {
-  const otpRecord = await authRepository.findValidOTP(phone, otp, 'login');
+const verifyForgotPinOTP = async (phone: string, otp: string) => {
+  const otpRecord = await authRepository.findValidOTP(phone, otp, 'reset_pin');
 
   if (!otpRecord) {
     throw new BadRequestError('Invalid or expired OTP', 'INVALID_OTP');
@@ -196,19 +242,38 @@ const verifyLoginOTP = async (phone: string, otp: string) => {
 
   await authRepository.markOTPUsed(otpRecord._id);
 
+  const resetToken = generateResetToken(phone);
+
+  return {
+    message: 'Phone verified successfully',
+    resetToken,
+  };
+};
+
+/**
+ * Reset PIN securely using token
+ */
+const resetPin = async (resetToken: string, newPin: string) => {
+  let phone: string;
+  try {
+    const decoded = jwt.verify(resetToken, config.jwt.resetSecret as string) as { phone: string };
+    phone = decoded.phone;
+  } catch (error) {
+    throw new UnauthorizedError('Invalid or expired reset token');
+  }
+
   const user = await userRepository.findByPhone(phone);
   if (!user) {
     throw new NotFoundError('User not found');
   }
 
-  const tokens = generateTokens(user);
-  await authRepository.updateRefreshToken(user._id, tokens.refreshToken);
-
-  eventBus.emit(EVENTS.USER_LOGIN, { userId: user._id });
+  // Update PIN and invalidate refresh tokens to force re-login
+  user.pin = newPin;
+  user.refreshToken = undefined;
+  await user.save();
 
   return {
-    user,
-    ...tokens,
+    message: 'PIN reset successfully. Please login with your new PIN.',
   };
 };
 
@@ -251,10 +316,12 @@ const authService = {
   generateRefreshToken,
   generateTokens,
   sendRegistrationOTP,
-  verifyOTPAndRegister,
+  verifyRegistrationPhone,
+  completeRegistration,
   loginWithPin,
-  sendLoginOTP,
-  verifyLoginOTP,
+  sendForgotPinOTP,
+  verifyForgotPinOTP,
+  resetPin,
   refreshAccessToken,
   logout,
 };

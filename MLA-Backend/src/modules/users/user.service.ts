@@ -43,10 +43,6 @@ const updateProfile = async (userId: string, updateData: IProfileUpdate) => {
   return user;
 };
 
-const updateFCMToken = async (userId: string, fcmToken: string) => {
-  return userRepository.updateFCMToken(userId, fcmToken);
-};
-
 const listUsers = async (query: IUserFilterQuery, filters: Record<string, unknown> = {}) => {
   const { page, limit, skip, sort } = buildPaginationQuery(query);
   const filter: Record<string, unknown> = { ...filters };
@@ -84,7 +80,6 @@ const getOfficersForWard = async (ward: number) => {
 const userService = {
   getProfile,
   updateProfile,
-  updateFCMToken,
   listUsers,
   deactivateUser,
   activateUser,

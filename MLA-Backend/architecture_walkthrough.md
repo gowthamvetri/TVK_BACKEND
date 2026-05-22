@@ -88,7 +88,6 @@ graph LR
     H -->|Events| K[EventBus]
     K --> L[Event Subscribers]
     L --> M[Notification Service]
-    M -->|Push| N[Firebase FCM]
     M -->|Socket| O[Socket.IO]
     M -->|Store| J
 ```

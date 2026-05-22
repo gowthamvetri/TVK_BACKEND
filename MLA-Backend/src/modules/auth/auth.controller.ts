@@ -4,7 +4,7 @@
  * No business logic here — delegates to AuthService.
  */
 import { Request, Response } from 'express';
-import authService, { IRegisterDTO } from './auth.service';
+import authService, { ICompleteRegistrationDTO } from './auth.service';
 import ApiResponse from '../../shared/utils/ApiResponse';
 import asyncHandler from '../../shared/utils/asyncHandler';
 
@@ -17,9 +17,14 @@ interface ILoginWithPinBody {
   pin: string;
 }
 
-interface IVerifyLoginOTPBody {
+interface IVerifyForgotPinOTPBody {
   phone: string;
   otp: string;
+}
+
+interface IResetPinBody {
+  resetToken: string;
+  newPin: string;
 }
 
 interface IRefreshTokenBody {
@@ -35,12 +40,26 @@ const sendRegistrationOTP = asyncHandler(async (req: Request<unknown, unknown, I
   return ApiResponse.success(res, { data: result, message: 'OTP sent successfully' });
 });
 
+interface IVerifyPhoneBody {
+  phone: string;
+  otp: string;
+}
+
 /**
- * POST /auth/register/verify-otp
+ * POST /auth/register/verify-phone
  */
-const verifyOTPAndRegister = asyncHandler(async (req: Request<unknown, unknown, IRegisterDTO>, res: Response) => {
-  const { phone, otp, pin, ward, role } = req.body;
-  const result = await authService.verifyOTPAndRegister({ phone, otp, pin, ward, role });
+const verifyRegistrationPhone = asyncHandler(async (req: Request<unknown, unknown, IVerifyPhoneBody>, res: Response) => {
+  const { phone, otp } = req.body;
+  const result = await authService.verifyRegistrationPhone(phone, otp);
+  return ApiResponse.success(res, { data: result, message: 'Phone verified successfully' });
+});
+
+/**
+ * POST /auth/register/complete
+ */
+const completeRegistration = asyncHandler(async (req: Request<unknown, unknown, ICompleteRegistrationDTO>, res: Response) => {
+  const { registrationToken, pin, ward, role } = req.body;
+  const result = await authService.completeRegistration({ registrationToken, pin, ward, role });
   return ApiResponse.created(res, { data: result, message: 'Registration successful' });
 });
 
@@ -54,21 +73,30 @@ const loginWithPin = asyncHandler(async (req: Request<unknown, unknown, ILoginWi
 });
 
 /**
- * POST /auth/login/send-otp
+ * POST /auth/forgot-pin/send-otp
  */
-const sendLoginOTP = asyncHandler(async (req: Request<unknown, unknown, ISendOTPBody>, res: Response) => {
+const sendForgotPinOTP = asyncHandler(async (req: Request<unknown, unknown, ISendOTPBody>, res: Response) => {
   const { phone } = req.body;
-  const result = await authService.sendLoginOTP(phone);
+  const result = await authService.sendForgotPinOTP(phone);
   return ApiResponse.success(res, { data: result, message: 'OTP sent successfully' });
 });
 
 /**
- * POST /auth/login/verify-otp
+ * POST /auth/forgot-pin/verify-otp
  */
-const verifyLoginOTP = asyncHandler(async (req: Request<unknown, unknown, IVerifyLoginOTPBody>, res: Response) => {
+const verifyForgotPinOTP = asyncHandler(async (req: Request<unknown, unknown, IVerifyForgotPinOTPBody>, res: Response) => {
   const { phone, otp } = req.body;
-  const result = await authService.verifyLoginOTP(phone, otp);
-  return ApiResponse.success(res, { data: result, message: 'Login successful' });
+  const result = await authService.verifyForgotPinOTP(phone, otp);
+  return ApiResponse.success(res, { data: result, message: 'Phone verified successfully' });
+});
+
+/**
+ * POST /auth/forgot-pin/reset-pin
+ */
+const resetPin = asyncHandler(async (req: Request<unknown, unknown, IResetPinBody>, res: Response) => {
+  const { resetToken, newPin } = req.body;
+  const result = await authService.resetPin(resetToken, newPin);
+  return ApiResponse.success(res, { data: result, message: 'PIN reset successfully' });
 });
 
 /**
@@ -90,10 +118,12 @@ const logout = asyncHandler(async (req: Request, res: Response) => {
 
 const authController = {
   sendRegistrationOTP,
-  verifyOTPAndRegister,
+  verifyRegistrationPhone,
+  completeRegistration,
   loginWithPin,
-  sendLoginOTP,
-  verifyLoginOTP,
+  sendForgotPinOTP,
+  verifyForgotPinOTP,
+  resetPin,
   refreshToken,
   logout,
 };

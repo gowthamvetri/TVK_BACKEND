@@ -1,0 +1,262 @@
+2026-05-22 14:03:54 [INFO]: [SmsService] Twilio client initialised successfully.
+2026-05-22 14:03:57 [INFO]: MongoDB connected: ac-tmfvyxl-shard-00-02.9imrfua.mongodb.net
+2026-05-22 14:03:57 [INFO]: [WebSocket] Socket.IO initialized
+2026-05-22 14:03:57 [DEBUG]: [EventBus] Subscriber registered for: complaint:created
+2026-05-22 14:03:57 [DEBUG]: [EventBus] Subscriber registered for: assignment:created
+2026-05-22 14:03:57 [DEBUG]: [EventBus] Subscriber registered for: complaint:status_changed
+2026-05-22 14:03:57 [DEBUG]: [EventBus] Subscriber registered for: complaint:resolved
+2026-05-22 14:03:57 [DEBUG]: [EventBus] Subscriber registered for: sla:breached
+2026-05-22 14:03:57 [DEBUG]: [EventBus] Subscriber registered for: escalation:triggered
+2026-05-22 14:03:57 [DEBUG]: [EventBus] Subscriber registered for: announcement:created
+2026-05-22 14:03:57 [INFO]: [EventSubscribers] All event subscribers registered
+2026-05-22 14:03:57 [INFO]: [SLAEngine] SLA monitoring started
+2026-05-22 14:03:57 [INFO]: [Workers] Background workers started
+2026-05-22 14:03:57 [INFO]: 
+2026-05-22 14:03:57 [INFO]:  MLA-Grievance-System started successfully
+2026-05-22 14:03:57 [INFO]:  Server:     http://localhost:5000
+2026-05-22 14:03:57 [INFO]:  API Docs:   http://localhost:5000/api-docs
+2026-05-22 14:03:57 [INFO]:  API Base:   http://localhost:5000/api/v1
+2026-05-22 14:03:57 [INFO]: 
+ Environment: development
+2026-05-22 14:03:57 [INFO]: 
+2026-05-22 14:07:42 [DEBUG]: [EventBus] Emitting: user:login {"payload":"{\"userId\":\"6a0c79d62c03beaa63b96b79\"}"}
+2026-05-22 14:24:41 [WARN]: MongoDB disconnected. Attempting reconnection...
+2026-05-22 14:35:25 [WARN]: MongoDB disconnected. Attempting reconnection...
+2026-05-22 14:38:41 [WARN]: MongoDB disconnected. Attempting reconnection...
+2026-05-22 14:40:14 [WARN]: MongoDB disconnected. Attempting reconnection...
+2026-05-22 14:45:42 [WARN]: MongoDB disconnected. Attempting reconnection...
+2026-05-22 15:09:07 [INFO]: [SmsService] Twilio client initialised successfully.
+2026-05-22 15:09:10 [INFO]: MongoDB connected: ac-tmfvyxl-shard-00-00.9imrfua.mongodb.net
+2026-05-22 15:09:10 [INFO]: [WebSocket] Socket.IO initialized
+2026-05-22 15:09:10 [DEBUG]: [EventBus] Subscriber registered for: complaint:created
+2026-05-22 15:09:10 [DEBUG]: [EventBus] Subscriber registered for: assignment:created
+2026-05-22 15:09:10 [DEBUG]: [EventBus] Subscriber registered for: complaint:status_changed
+2026-05-22 15:09:10 [DEBUG]: [EventBus] Subscriber registered for: complaint:resolved
+2026-05-22 15:09:10 [DEBUG]: [EventBus] Subscriber registered for: sla:breached
+2026-05-22 15:09:10 [DEBUG]: [EventBus] Subscriber registered for: escalation:triggered
+2026-05-22 15:09:10 [DEBUG]: [EventBus] Subscriber registered for: announcement:created
+2026-05-22 15:09:10 [INFO]: [EventSubscribers] All event subscribers registered
+2026-05-22 15:09:10 [INFO]: [SLAEngine] SLA monitoring started
+2026-05-22 15:09:10 [INFO]: [Workers] Background workers started
+2026-05-22 15:09:10 [INFO]: 
+2026-05-22 15:09:10 [INFO]:  MLA-Grievance-System started successfully
+2026-05-22 15:09:10 [INFO]:  Server:     http://localhost:5000
+2026-05-22 15:09:10 [INFO]:  API Docs:   http://localhost:5000/api-docs
+2026-05-22 15:09:10 [INFO]:  API Base:   http://localhost:5000/api/v1
+2026-05-22 15:09:10 [INFO]: 
+ Environment: development
+2026-05-22 15:09:10 [INFO]: 
+2026-05-22 15:10:52 [INFO]: [SmsService] Twilio client initialised successfully.
+2026-05-22 15:10:53 [INFO]: MongoDB connected: ac-tmfvyxl-shard-00-00.9imrfua.mongodb.net
+2026-05-22 15:10:53 [INFO]: [WebSocket] Socket.IO initialized
+2026-05-22 15:10:53 [DEBUG]: [EventBus] Subscriber registered for: complaint:created
+2026-05-22 15:10:53 [DEBUG]: [EventBus] Subscriber registered for: assignment:created
+2026-05-22 15:10:53 [DEBUG]: [EventBus] Subscriber registered for: complaint:status_changed
+2026-05-22 15:10:53 [DEBUG]: [EventBus] Subscriber registered for: complaint:resolved
+2026-05-22 15:10:53 [DEBUG]: [EventBus] Subscriber registered for: sla:breached
+2026-05-22 15:10:53 [DEBUG]: [EventBus] Subscriber registered for: escalation:triggered
+2026-05-22 15:10:53 [DEBUG]: [EventBus] Subscriber registered for: announcement:created
+2026-05-22 15:10:53 [INFO]: [EventSubscribers] All event subscribers registered
+2026-05-22 15:10:53 [INFO]: [SLAEngine] SLA monitoring started
+2026-05-22 15:10:53 [INFO]: [Workers] Background workers started
+2026-05-22 15:10:53 [INFO]: 
+2026-05-22 15:10:53 [INFO]:  MLA-Grievance-System started successfully
+2026-05-22 15:10:53 [INFO]:  Server:     http://localhost:5000
+2026-05-22 15:10:53 [INFO]:  API Docs:   http://localhost:5000/api-docs
+2026-05-22 15:10:53 [INFO]:  API Base:   http://localhost:5000/api/v1
+2026-05-22 15:10:53 [INFO]: 
+ Environment: development
+2026-05-22 15:10:53 [INFO]: 
+2026-05-22 15:11:11 [INFO]: [SmsService] Twilio client initialised successfully.
+2026-05-22 15:11:15 [INFO]: MongoDB connected: ac-tmfvyxl-shard-00-00.9imrfua.mongodb.net
+2026-05-22 15:11:15 [INFO]: [WebSocket] Socket.IO initialized
+2026-05-22 15:11:15 [DEBUG]: [EventBus] Subscriber registered for: complaint:created
+2026-05-22 15:11:15 [DEBUG]: [EventBus] Subscriber registered for: assignment:created
+2026-05-22 15:11:15 [DEBUG]: [EventBus] Subscriber registered for: complaint:status_changed
+2026-05-22 15:11:15 [DEBUG]: [EventBus] Subscriber registered for: complaint:resolved
+2026-05-22 15:11:15 [DEBUG]: [EventBus] Subscriber registered for: sla:breached
+2026-05-22 15:11:15 [DEBUG]: [EventBus] Subscriber registered for: escalation:triggered
+2026-05-22 15:11:15 [DEBUG]: [EventBus] Subscriber registered for: announcement:created
+2026-05-22 15:11:15 [INFO]: [EventSubscribers] All event subscribers registered
+2026-05-22 15:11:15 [INFO]: [SLAEngine] SLA monitoring started
+2026-05-22 15:11:15 [INFO]: [Workers] Background workers started
+2026-05-22 15:11:15 [INFO]: 
+2026-05-22 15:11:15 [INFO]:  MLA-Grievance-System started successfully
+2026-05-22 15:11:15 [INFO]:  Server:     http://localhost:5000
+2026-05-22 15:11:15 [INFO]:  API Docs:   http://localhost:5000/api-docs
+2026-05-22 15:11:15 [INFO]:  API Base:   http://localhost:5000/api/v1
+2026-05-22 15:11:15 [INFO]: 
+ Environment: development
+2026-05-22 15:11:15 [INFO]: 
+2026-05-22 15:12:06 [INFO]: [SmsService] Twilio client initialised successfully.
+2026-05-22 15:12:09 [INFO]: MongoDB connected: ac-tmfvyxl-shard-00-01.9imrfua.mongodb.net
+2026-05-22 15:12:09 [INFO]: [WebSocket] Socket.IO initialized
+2026-05-22 15:12:09 [DEBUG]: [EventBus] Subscriber registered for: complaint:created
+2026-05-22 15:12:09 [DEBUG]: [EventBus] Subscriber registered for: assignment:created
+2026-05-22 15:12:09 [DEBUG]: [EventBus] Subscriber registered for: complaint:status_changed
+2026-05-22 15:12:09 [DEBUG]: [EventBus] Subscriber registered for: complaint:resolved
+2026-05-22 15:12:09 [DEBUG]: [EventBus] Subscriber registered for: sla:breached
+2026-05-22 15:12:09 [DEBUG]: [EventBus] Subscriber registered for: escalation:triggered
+2026-05-22 15:12:09 [DEBUG]: [EventBus] Subscriber registered for: announcement:created
+2026-05-22 15:12:09 [INFO]: [EventSubscribers] All event subscribers registered
+2026-05-22 15:12:09 [INFO]: [SLAEngine] SLA monitoring started
+2026-05-22 15:12:09 [INFO]: [Workers] Background workers started
+2026-05-22 15:12:09 [INFO]: 
+2026-05-22 15:12:09 [INFO]:  MLA-Grievance-System started successfully
+2026-05-22 15:12:09 [INFO]:  Server:     http://localhost:5000
+2026-05-22 15:12:09 [INFO]:  API Docs:   http://localhost:5000/api-docs
+2026-05-22 15:12:09 [INFO]:  API Base:   http://localhost:5000/api/v1
+2026-05-22 15:12:09 [INFO]: 
+ Environment: development
+2026-05-22 15:12:09 [INFO]: 
+2026-05-22 15:46:26 [INFO]: [SmsService] SMS sent to +918148206252 | SID: SM3227b23fc66418f1e1217693be9c8e5a
+2026-05-22 15:46:26 [INFO]: [AuthService] Registration OTP generated for 8148206252: 614881
+2026-05-22 15:47:41 [DEBUG]: [EventBus] Emitting: user:registered {"payload":"{\"userId\":\"6a102d45f770a60856d57a03\",\"role\":\"citizen\"}"}
+2026-05-22 15:54:12 [INFO]: [SmsService] Twilio client initialised successfully.
+2026-05-22 15:54:14 [INFO]: MongoDB connected: ac-tmfvyxl-shard-00-01.9imrfua.mongodb.net
+2026-05-22 15:54:14 [INFO]: [WebSocket] Socket.IO initialized
+2026-05-22 15:54:14 [DEBUG]: [EventBus] Subscriber registered for: complaint:created
+2026-05-22 15:54:14 [DEBUG]: [EventBus] Subscriber registered for: assignment:created
+2026-05-22 15:54:14 [DEBUG]: [EventBus] Subscriber registered for: complaint:status_changed
+2026-05-22 15:54:14 [DEBUG]: [EventBus] Subscriber registered for: complaint:resolved
+2026-05-22 15:54:14 [DEBUG]: [EventBus] Subscriber registered for: sla:breached
+2026-05-22 15:54:14 [DEBUG]: [EventBus] Subscriber registered for: escalation:triggered
+2026-05-22 15:54:14 [DEBUG]: [EventBus] Subscriber registered for: announcement:created
+2026-05-22 15:54:14 [INFO]: [EventSubscribers] All event subscribers registered
+2026-05-22 15:54:14 [INFO]: [SLAEngine] SLA monitoring started
+2026-05-22 15:54:14 [INFO]: [Workers] Background workers started
+2026-05-22 15:54:14 [INFO]: 
+2026-05-22 15:54:14 [INFO]:  MLA-Grievance-System started successfully
+2026-05-22 15:54:14 [INFO]:  Server:     http://localhost:5000
+2026-05-22 15:54:14 [INFO]:  API Docs:   http://localhost:5000/api-docs
+2026-05-22 15:54:14 [INFO]:  API Base:   http://localhost:5000/api/v1
+2026-05-22 15:54:14 [INFO]: 
+ Environment: development
+2026-05-22 15:54:14 [INFO]: 
+2026-05-22 15:54:41 [INFO]: [SmsService] Twilio client initialised successfully.
+2026-05-22 15:54:42 [INFO]: MongoDB connected: ac-tmfvyxl-shard-00-02.9imrfua.mongodb.net
+2026-05-22 15:54:42 [INFO]: [WebSocket] Socket.IO initialized
+2026-05-22 15:54:42 [DEBUG]: [EventBus] Subscriber registered for: complaint:created
+2026-05-22 15:54:42 [DEBUG]: [EventBus] Subscriber registered for: assignment:created
+2026-05-22 15:54:42 [DEBUG]: [EventBus] Subscriber registered for: complaint:status_changed
+2026-05-22 15:54:42 [DEBUG]: [EventBus] Subscriber registered for: complaint:resolved
+2026-05-22 15:54:42 [DEBUG]: [EventBus] Subscriber registered for: sla:breached
+2026-05-22 15:54:42 [DEBUG]: [EventBus] Subscriber registered for: escalation:triggered
+2026-05-22 15:54:42 [DEBUG]: [EventBus] Subscriber registered for: announcement:created
+2026-05-22 15:54:42 [INFO]: [EventSubscribers] All event subscribers registered
+2026-05-22 15:54:42 [INFO]: [SLAEngine] SLA monitoring started
+2026-05-22 15:54:42 [INFO]: [Workers] Background workers started
+2026-05-22 15:54:42 [INFO]: 
+2026-05-22 15:54:42 [INFO]:  MLA-Grievance-System started successfully
+2026-05-22 15:54:42 [INFO]:  Server:     http://localhost:5000
+2026-05-22 15:54:42 [INFO]:  API Docs:   http://localhost:5000/api-docs
+2026-05-22 15:54:42 [INFO]:  API Base:   http://localhost:5000/api/v1
+2026-05-22 15:54:42 [INFO]: 
+ Environment: development
+2026-05-22 15:54:42 [INFO]: 
+2026-05-22 15:56:02 [INFO]: [SmsService] Twilio client initialised successfully.
+2026-05-22 15:56:04 [INFO]: MongoDB connected: ac-tmfvyxl-shard-00-00.9imrfua.mongodb.net
+2026-05-22 15:56:04 [INFO]: [WebSocket] Socket.IO initialized
+2026-05-22 15:56:04 [DEBUG]: [EventBus] Subscriber registered for: complaint:created
+2026-05-22 15:56:04 [DEBUG]: [EventBus] Subscriber registered for: assignment:created
+2026-05-22 15:56:04 [DEBUG]: [EventBus] Subscriber registered for: complaint:status_changed
+2026-05-22 15:56:04 [DEBUG]: [EventBus] Subscriber registered for: complaint:resolved
+2026-05-22 15:56:04 [DEBUG]: [EventBus] Subscriber registered for: sla:breached
+2026-05-22 15:56:04 [DEBUG]: [EventBus] Subscriber registered for: escalation:triggered
+2026-05-22 15:56:04 [DEBUG]: [EventBus] Subscriber registered for: announcement:created
+2026-05-22 15:56:04 [INFO]: [EventSubscribers] All event subscribers registered
+2026-05-22 15:56:04 [INFO]: [SLAEngine] SLA monitoring started
+2026-05-22 15:56:04 [INFO]: [Workers] Background workers started
+2026-05-22 15:56:04 [INFO]: 
+2026-05-22 15:56:04 [INFO]:  MLA-Grievance-System started successfully
+2026-05-22 15:56:04 [INFO]:  Server:     http://localhost:5000
+2026-05-22 15:56:04 [INFO]:  API Docs:   http://localhost:5000/api-docs
+2026-05-22 15:56:04 [INFO]:  API Base:   http://localhost:5000/api/v1
+2026-05-22 15:56:04 [INFO]: 
+ Environment: development
+2026-05-22 15:56:04 [INFO]: 
+2026-05-22 15:57:14 [INFO]: [SmsService] Twilio client initialised successfully.
+2026-05-22 15:57:16 [INFO]: MongoDB connected: ac-tmfvyxl-shard-00-01.9imrfua.mongodb.net
+2026-05-22 15:57:16 [INFO]: [WebSocket] Socket.IO initialized
+2026-05-22 15:57:16 [DEBUG]: [EventBus] Subscriber registered for: complaint:created
+2026-05-22 15:57:16 [DEBUG]: [EventBus] Subscriber registered for: assignment:created
+2026-05-22 15:57:16 [DEBUG]: [EventBus] Subscriber registered for: complaint:status_changed
+2026-05-22 15:57:16 [DEBUG]: [EventBus] Subscriber registered for: complaint:resolved
+2026-05-22 15:57:16 [DEBUG]: [EventBus] Subscriber registered for: sla:breached
+2026-05-22 15:57:16 [DEBUG]: [EventBus] Subscriber registered for: escalation:triggered
+2026-05-22 15:57:16 [DEBUG]: [EventBus] Subscriber registered for: announcement:created
+2026-05-22 15:57:16 [INFO]: [EventSubscribers] All event subscribers registered
+2026-05-22 15:57:16 [INFO]: [SLAEngine] SLA monitoring started
+2026-05-22 15:57:16 [INFO]: [Workers] Background workers started
+2026-05-22 15:57:16 [INFO]: 
+2026-05-22 15:57:16 [INFO]:  MLA-Grievance-System started successfully
+2026-05-22 15:57:16 [INFO]:  Server:     http://localhost:5000
+2026-05-22 15:57:16 [INFO]:  API Docs:   http://localhost:5000/api-docs
+2026-05-22 15:57:16 [INFO]:  API Base:   http://localhost:5000/api/v1
+2026-05-22 15:57:16 [INFO]: 
+ Environment: development
+2026-05-22 15:57:16 [INFO]: 
+2026-05-22 16:04:35 [INFO]: [SmsService] Twilio client initialised successfully.
+2026-05-22 16:04:38 [INFO]: MongoDB connected: ac-tmfvyxl-shard-00-02.9imrfua.mongodb.net
+2026-05-22 16:04:38 [INFO]: [WebSocket] Socket.IO initialized
+2026-05-22 16:04:38 [DEBUG]: [EventBus] Subscriber registered for: complaint:created
+2026-05-22 16:04:38 [DEBUG]: [EventBus] Subscriber registered for: assignment:created
+2026-05-22 16:04:38 [DEBUG]: [EventBus] Subscriber registered for: complaint:status_changed
+2026-05-22 16:04:38 [DEBUG]: [EventBus] Subscriber registered for: complaint:resolved
+2026-05-22 16:04:38 [DEBUG]: [EventBus] Subscriber registered for: sla:breached
+2026-05-22 16:04:38 [DEBUG]: [EventBus] Subscriber registered for: escalation:triggered
+2026-05-22 16:04:38 [DEBUG]: [EventBus] Subscriber registered for: announcement:created
+2026-05-22 16:04:38 [INFO]: [EventSubscribers] All event subscribers registered
+2026-05-22 16:04:38 [INFO]: [SLAEngine] SLA monitoring started
+2026-05-22 16:04:38 [INFO]: [Workers] Background workers started
+2026-05-22 16:04:38 [INFO]: 
+2026-05-22 16:04:38 [INFO]:  MLA-Grievance-System started successfully
+2026-05-22 16:04:38 [INFO]:  Server:     http://localhost:5000
+2026-05-22 16:04:38 [INFO]:  API Docs:   http://localhost:5000/api-docs
+2026-05-22 16:04:38 [INFO]:  API Base:   http://localhost:5000/api/v1
+2026-05-22 16:04:38 [INFO]: 
+ Environment: development
+2026-05-22 16:04:38 [INFO]: 
+2026-05-22 16:04:52 [INFO]: [SmsService] Twilio client initialised successfully.
+2026-05-22 16:04:56 [INFO]: MongoDB connected: ac-tmfvyxl-shard-00-02.9imrfua.mongodb.net
+2026-05-22 16:04:56 [INFO]: [WebSocket] Socket.IO initialized
+2026-05-22 16:04:56 [DEBUG]: [EventBus] Subscriber registered for: complaint:created
+2026-05-22 16:04:56 [DEBUG]: [EventBus] Subscriber registered for: assignment:created
+2026-05-22 16:04:56 [DEBUG]: [EventBus] Subscriber registered for: complaint:status_changed
+2026-05-22 16:04:56 [DEBUG]: [EventBus] Subscriber registered for: complaint:resolved
+2026-05-22 16:04:56 [DEBUG]: [EventBus] Subscriber registered for: sla:breached
+2026-05-22 16:04:56 [DEBUG]: [EventBus] Subscriber registered for: escalation:triggered
+2026-05-22 16:04:56 [DEBUG]: [EventBus] Subscriber registered for: announcement:created
+2026-05-22 16:04:56 [INFO]: [EventSubscribers] All event subscribers registered
+2026-05-22 16:04:56 [INFO]: [SLAEngine] SLA monitoring started
+2026-05-22 16:04:56 [INFO]: [Workers] Background workers started
+2026-05-22 16:04:56 [INFO]: 
+2026-05-22 16:04:56 [INFO]:  MLA-Grievance-System started successfully
+2026-05-22 16:04:56 [INFO]:  Server:     http://localhost:5000
+2026-05-22 16:04:56 [INFO]:  API Docs:   http://localhost:5000/api-docs
+2026-05-22 16:04:56 [INFO]:  API Base:   http://localhost:5000/api/v1
+2026-05-22 16:04:56 [INFO]: 
+ Environment: development
+2026-05-22 16:04:56 [INFO]: 
+2026-05-22 16:05:25 [INFO]: [SmsService] Twilio client initialised successfully.
+2026-05-22 16:05:29 [INFO]: MongoDB connected: ac-tmfvyxl-shard-00-02.9imrfua.mongodb.net
+2026-05-22 16:05:29 [INFO]: [WebSocket] Socket.IO initialized
+2026-05-22 16:05:29 [DEBUG]: [EventBus] Subscriber registered for: complaint:created
+2026-05-22 16:05:29 [DEBUG]: [EventBus] Subscriber registered for: assignment:created
+2026-05-22 16:05:29 [DEBUG]: [EventBus] Subscriber registered for: complaint:status_changed
+2026-05-22 16:05:29 [DEBUG]: [EventBus] Subscriber registered for: complaint:resolved
+2026-05-22 16:05:29 [DEBUG]: [EventBus] Subscriber registered for: sla:breached
+2026-05-22 16:05:29 [DEBUG]: [EventBus] Subscriber registered for: escalation:triggered
+2026-05-22 16:05:29 [DEBUG]: [EventBus] Subscriber registered for: announcement:created
+2026-05-22 16:05:29 [INFO]: [EventSubscribers] All event subscribers registered
+2026-05-22 16:05:29 [INFO]: [SLAEngine] SLA monitoring started
+2026-05-22 16:05:29 [INFO]: [Workers] Background workers started
+2026-05-22 16:05:29 [INFO]: 
+2026-05-22 16:05:29 [INFO]:  MLA-Grievance-System started successfully
+2026-05-22 16:05:29 [INFO]:  Server:     http://localhost:5000
+2026-05-22 16:05:29 [INFO]:  API Docs:   http://localhost:5000/api-docs
+2026-05-22 16:05:29 [INFO]:  API Base:   http://localhost:5000/api/v1
+2026-05-22 16:05:29 [INFO]: 
+ Environment: development
+2026-05-22 16:05:29 [INFO]: 
+2026-05-22 16:07:41 [WARN]: MongoDB disconnected. Attempting reconnection...

@@ -25,8 +25,12 @@ const config = {
   jwt: {
     accessSecret: process.env.JWT_ACCESS_SECRET || 'dev-access-secret-change-in-production',
     refreshSecret: process.env.JWT_REFRESH_SECRET || 'dev-refresh-secret-change-in-production',
+    registrationSecret: process.env.JWT_REGISTRATION_SECRET || 'dev-registration-secret-change-in-production',
+    resetSecret: process.env.JWT_RESET_SECRET || 'dev-reset-secret-change-in-production',
     accessExpiry: process.env.JWT_ACCESS_EXPIRY || '15m',
     refreshExpiry: process.env.JWT_REFRESH_EXPIRY || '7d',
+    registrationExpiry: process.env.JWT_REGISTRATION_EXPIRY || '15m',
+    resetExpiry: process.env.JWT_RESET_EXPIRY || '15m',
   },
 
   otp: {

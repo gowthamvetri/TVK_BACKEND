@@ -6,10 +6,6 @@ import userService, { IProfileUpdate, IUserFilterQuery } from './user.service';
 import ApiResponse from '../../shared/utils/ApiResponse';
 import asyncHandler from '../../shared/utils/asyncHandler';
 
-interface IUpdateFCMTokenBody {
-  fcmToken: string;
-}
-
 const getProfile = asyncHandler(async (req: Request, res: Response) => {
   const user = await userService.getProfile(req.user!.id);
   return ApiResponse.success(res, { data: user });
@@ -18,11 +14,6 @@ const getProfile = asyncHandler(async (req: Request, res: Response) => {
 const updateProfile = asyncHandler(async (req: Request<unknown, unknown, IProfileUpdate>, res: Response) => {
   const user = await userService.updateProfile(req.user!.id, req.body);
   return ApiResponse.success(res, { data: user, message: 'Profile updated' });
-});
-
-const updateFCMToken = asyncHandler(async (req: Request<unknown, unknown, IUpdateFCMTokenBody>, res: Response) => {
-  await userService.updateFCMToken(req.user!.id, req.body.fcmToken);
-  return ApiResponse.success(res, { message: 'FCM token updated' });
 });
 
 const listUsers = asyncHandler(async (req: Request<unknown, unknown, unknown, IUserFilterQuery>, res: Response) => {
@@ -53,7 +44,6 @@ const getWardOfficers = asyncHandler(async (req: Request<{ ward: string }>, res:
 const userController = {
   getProfile,
   updateProfile,
-  updateFCMToken,
   listUsers,
   getUserById,
   deactivateUser,

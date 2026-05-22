@@ -45,21 +45,61 @@ router.post(
 
 /**
  * @swagger
- * /auth/register/verify-otp:
+ * /auth/register/verify-phone:
  *   post:
  *     tags: [Auth]
- *     summary: Verify OTP and complete registration
+ *     summary: Verify OTP and get registration token
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
  *             type: object
- *             required: [phone, otp, pin]
+ *             required: [phone, otp]
  *             properties:
  *               phone:
  *                 type: string
  *               otp:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Phone verified successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     registrationToken:
+ *                       type: string
+ *                     message:
+ *                       type: string
+ */
+router.post(
+  '/register/verify-phone',
+  authLimiter,
+  authValidators.verifyRegistrationPhone,
+  validate,
+  authController.verifyRegistrationPhone
+);
+
+/**
+ * @swagger
+ * /auth/register/complete:
+ *   post:
+ *     tags: [Auth]
+ *     summary: Complete registration using registration token
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required: [registrationToken, pin]
+ *             properties:
+ *               registrationToken:
  *                 type: string
  *               pin:
  *                 type: string
@@ -72,11 +112,11 @@ router.post(
  *         description: Registration successful
  */
 router.post(
-  '/register/verify-otp',
+  '/register/complete',
   authLimiter,
-  authValidators.verifyOTPAndRegister,
+  authValidators.completeRegistration,
   validate,
-  authController.verifyOTPAndRegister
+  authController.completeRegistration
 );
 
 /**
@@ -96,32 +136,90 @@ router.post(
 
 /**
  * @swagger
- * /auth/login/send-otp:
+ * /auth/forgot-pin/send-otp:
  *   post:
  *     tags: [Auth]
- *     summary: Send OTP for login
+ *     summary: Send OTP for PIN reset
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               phone:
+ *                 type: string
+ *                 example: "9876543210"
+ *     responses:
+ *       200:
+ *         description: OTP sent successfully
  */
 router.post(
-  '/login/send-otp',
+  '/forgot-pin/send-otp',
   otpLimiter,
   authValidators.sendOTP,
   validate,
-  authController.sendLoginOTP
+  authController.sendForgotPinOTP
 );
 
 /**
  * @swagger
- * /auth/login/verify-otp:
+ * /auth/forgot-pin/verify-otp:
  *   post:
  *     tags: [Auth]
- *     summary: Verify OTP for login
+ *     summary: Verify OTP and get reset token
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required: [phone, otp]
+ *             properties:
+ *               phone:
+ *                 type: string
+ *               otp:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Phone verified successfully
  */
 router.post(
-  '/login/verify-otp',
+  '/forgot-pin/verify-otp',
   authLimiter,
-  authValidators.verifyLoginOTP,
+  authValidators.verifyForgotPinOTP,
   validate,
-  authController.verifyLoginOTP
+  authController.verifyForgotPinOTP
+);
+
+/**
+ * @swagger
+ * /auth/forgot-pin/reset-pin:
+ *   post:
+ *     tags: [Auth]
+ *     summary: Reset PIN using reset token
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required: [resetToken, newPin]
+ *             properties:
+ *               resetToken:
+ *                 type: string
+ *               newPin:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: PIN reset successfully
+ */
+router.post(
+  '/forgot-pin/reset-pin',
+  authLimiter,
+  authValidators.resetPin,
+  validate,
+  authController.resetPin
 );
 
 /**

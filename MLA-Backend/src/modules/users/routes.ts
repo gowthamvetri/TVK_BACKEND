@@ -39,20 +39,6 @@ router.put('/profile', userController.updateProfile);
 
 /**
  * @swagger
- * /users/fcm-token:
- *   patch:
- *     tags: [Users]
- *     summary: Update FCM push notification token
- */
-router.patch(
-  '/fcm-token',
-  [body('fcmToken').notEmpty().withMessage('FCM token is required')],
-  validate,
-  userController.updateFCMToken
-);
-
-/**
- * @swagger
  * /users:
  *   get:
  *     tags: [Users]

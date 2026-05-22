@@ -156,7 +156,7 @@ CREATED → ASSIGNED → IN_PROGRESS → RESOLVED → VERIFIED → CLOSED
 | Module | Base Path | Key Endpoints |
 |--------|-----------|--------------|
 | Auth | `/api/v1/auth` | register, login, refresh, logout |
-| Users | `/api/v1/users` | profile, list, FCM token |
+| Users | `/api/v1/users` | profile, list |
 | Complaints | `/api/v1/complaints` | CRUD, status, timeline, upvote, nearby |
 | Assignments | `/api/v1/assignments` | reassign, workload |
 | Escalations | `/api/v1/escalations` | escalate, resolve, list |
