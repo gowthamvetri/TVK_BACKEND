@@ -4,22 +4,31 @@ WORKDIR /app
 
 # Copy package files
 COPY package*.json ./
+# Install app dependencies (including dev for build)
+RUN apk add --no-cache python3 make g++ curl
 
-# Install production dependencies only
-RUN npm ci --only=production
+# Install npm deps
+COPY package*.json ./
+RUN npm ci
 
 # Copy source code
 COPY . .
 
-# Create uploads directory
-RUN mkdir -p uploads logs
+# Build TypeScript
+RUN npm run build
+
+# Remove devDependencies to keep image slim
+RUN npm prune --production
+
+# Create runtime directories
+RUN mkdir -p /app/uploads /app/logs
 
 # Expose port
 EXPOSE 5000
 
-# Health check
+# Healthcheck uses curl
 HEALTHCHECK --interval=30s --timeout=3s \
-  CMD wget -qO- http://localhost:5000/health || exit 1
+  CMD curl -f http://localhost:5000/health || exit 1
 
-# Start the application
-CMD ["node", "src/app.js"]
+# Start the compiled application
+CMD ["node", "dist/app.js"]
