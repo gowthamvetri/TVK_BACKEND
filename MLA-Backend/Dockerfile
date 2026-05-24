@@ -5,7 +5,7 @@ WORKDIR /app
 # Copy package files
 COPY package*.json ./
 # Install app dependencies (including dev for build)
-RUN apk add --no-cache python3 make g++ curl
+# RUN apk add --no-cache python3 make g++ curl
 
 # Install npm deps
 COPY package*.json ./

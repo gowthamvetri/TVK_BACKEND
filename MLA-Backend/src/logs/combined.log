@@ -260,3 +260,30 @@
  Environment: development
 2026-05-22 16:05:29 [INFO]: 
 2026-05-22 16:07:41 [WARN]: MongoDB disconnected. Attempting reconnection...
+2026-05-22 16:15:14 [WARN]: MongoDB disconnected. Attempting reconnection...
+2026-05-22 16:21:08 [WARN]: MongoDB disconnected. Attempting reconnection...
+2026-05-22 16:27:28 [WARN]: MongoDB disconnected. Attempting reconnection...
+2026-05-23 14:18:53 [INFO]: [SmsService] Twilio client initialised successfully.
+2026-05-23 14:18:56 [INFO]: MongoDB connected: ac-tmfvyxl-shard-00-02.9imrfua.mongodb.net
+2026-05-23 14:18:56 [INFO]: [WebSocket] Socket.IO initialized
+2026-05-23 14:18:56 [DEBUG]: [EventBus] Subscriber registered for: complaint:created
+2026-05-23 14:18:56 [DEBUG]: [EventBus] Subscriber registered for: assignment:created
+2026-05-23 14:18:56 [DEBUG]: [EventBus] Subscriber registered for: complaint:status_changed
+2026-05-23 14:18:56 [DEBUG]: [EventBus] Subscriber registered for: complaint:resolved
+2026-05-23 14:18:56 [DEBUG]: [EventBus] Subscriber registered for: sla:breached
+2026-05-23 14:18:56 [DEBUG]: [EventBus] Subscriber registered for: escalation:triggered
+2026-05-23 14:18:56 [DEBUG]: [EventBus] Subscriber registered for: announcement:created
+2026-05-23 14:18:56 [INFO]: [EventSubscribers] All event subscribers registered
+2026-05-23 14:18:56 [INFO]: [SLAEngine] SLA monitoring started
+2026-05-23 14:18:56 [INFO]: [Workers] Background workers started
+2026-05-23 14:18:56 [INFO]: 
+2026-05-23 14:18:56 [INFO]:  MLA-Grievance-System started successfully
+2026-05-23 14:18:56 [INFO]:  Server:     http://localhost:5000
+2026-05-23 14:18:56 [INFO]:  API Docs:   http://localhost:5000/api-docs
+2026-05-23 14:18:56 [INFO]:  API Base:   http://localhost:5000/api/v1
+2026-05-23 14:18:56 [INFO]: 
+ Environment: development
+2026-05-23 14:18:56 [INFO]: 
+2026-05-23 15:54:59 [WARN]: MongoDB disconnected. Attempting reconnection...
+2026-05-23 15:57:34 [WARN]: MongoDB disconnected. Attempting reconnection...
+2026-05-23 16:06:38 [WARN]: MongoDB disconnected. Attempting reconnection...
