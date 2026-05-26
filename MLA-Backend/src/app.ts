@@ -43,6 +43,16 @@ import {
 // === Error Handler ===
 import errorHandler from './shared/middlewares/errorHandler';
 
+// === Cache Layer ===
+import {
+  redisManager,
+  cacheService,
+  cacheInvalidator,
+  CacheKeyBuilder,
+  createCacheMiddleware,
+  cacheListResponse,
+} from './shared/cache';
+
 // === Module Routes ===
 import authRoutes from './modules/auth/routes';
 import userRoutes from './modules/users/routes';
@@ -99,6 +109,41 @@ if (config.app.isDevelopment) {
 // Rate limiting on API routes
 app.use(`/api/${config.app.apiVersion}`, apiLimiter);
 
+// === Cache Middleware ===
+// Automatically cache GET list responses with 5 minute TTL
+app.use(
+  `/api/${config.app.apiVersion}`,
+  createCacheMiddleware({
+    ttl: config.redis.ttl.list,
+    condition: (req) => {
+      // Cache GET requests to list endpoints
+      return req.method === 'GET' && req.path.includes('/list');
+    },
+    excludePaths: ['/auth', '/login', '/logout', '/refresh'],
+  })
+);
+
+// Setup cache monitoring
+cacheService.onMonitor((event) => {
+  if (!event.success && config.app.isDevelopment) {
+    logger.warn('Cache operation failed', {
+      operation: event.operation,
+      key: event.key,
+      error: event.error,
+    });
+  }
+});
+
+// Setup cache invalidation monitoring
+cacheInvalidator.onInvalidation((event) => {
+  logger.debug('Cache invalidation event', {
+    entity: event.entity,
+    action: event.action,
+    keysCount: event.keys.length,
+    reason: event.reason,
+  });
+});
+
 // === Health Check ===
 app.get('/health', (_req: Request, res: Response) => {
   res.status(200).json({
@@ -107,6 +152,33 @@ app.get('/health', (_req: Request, res: Response) => {
     environment: config.app.env,
     timestamp: new Date().toISOString(),
   });
+});
+
+// === Health Check with Cache Status ===
+app.get('/health/detailed', async (_req: Request, res: Response) => {
+  try {
+    const cacheHealth = await cacheService.health();
+    const redisStatus = redisManager.getStatus();
+
+    res.status(200).json({
+      success: true,
+      message: 'MLA Grievance System detailed health check',
+      environment: config.app.env,
+      cache: {
+        status: cacheHealth.status,
+        redis: redisStatus,
+        metrics: cacheService.getMetrics(),
+      },
+      timestamp: new Date().toISOString(),
+    });
+  } catch (error) {
+    res.status(200).json({
+      success: false,
+      message: 'Health check completed with errors',
+      error: error instanceof Error ? error.message : String(error),
+      timestamp: new Date().toISOString(),
+    });
+  }
 });
 
 // === API Documentation ===
@@ -150,7 +222,26 @@ app.use(errorHandler);
 // ======================================================
 
 async function startServer() {
+  // Skip server startup in test environment
+  // setup-env.ts sets NODE_ENV to 'test' before tests run
+  if (process.env.NODE_ENV === 'test') {
+    return;
+  }
+
   try {
+    // 0. Initialize Redis Cache Layer
+    // ======================================================
+    if (config.redis.enabled) {
+      const redisClient = await redisManager.connect();
+      if (redisClient) {
+        logger.info('✓ Redis Cache layer initialized');
+      } else {
+        logger.warn('⚠ Redis cache unavailable - running in degraded mode');
+      }
+    } else {
+      logger.info('⚠ Redis cache disabled via configuration');
+    }
+
     // 1. Connect to MongoDB
     // ======================================================
     // MLA-Backend - Enterprise Smart Grievance Management
@@ -197,6 +288,54 @@ process.on('uncaughtException', (error) => {
   process.exit(1);
 });
 
-startServer();
+// === Graceful Shutdown ===
+process.on('SIGTERM', async () => {
+  logger.info('SIGTERM received, shutting down gracefully...');
+
+  server.close(async () => {
+    logger.info('HTTP server closed');
+
+    // Disconnect Redis
+    await redisManager.disconnect();
+
+    logger.info('Application shut down complete');
+    process.exit(0);
+  });
+
+  // Force shutdown after 30 seconds
+  setTimeout(() => {
+    logger.error('Force shutdown after timeout');
+    process.exit(1);
+  }, 30000);
+});
+
+process.on('SIGINT', async () => {
+  logger.info('SIGINT received, shutting down gracefully...');
+
+  server.close(async () => {
+    logger.info('HTTP server closed');
+
+    // Disconnect Redis
+    await redisManager.disconnect();
+
+    logger.info('Application shut down complete');
+    process.exit(0);
+  });
+
+  // Force shutdown after 30 seconds
+  setTimeout(() => {
+    logger.error('Force shutdown after timeout');
+    process.exit(1);
+  }, 30000);
+});
+
+// Only start server if running as main process (not in tests)
+// NODE_ENV is set to 'test' in setup.ts which runs before tests
+const isTestEnvironment = process.env.NODE_ENV === 'test';
+
+if (!isTestEnvironment && require.main === module) {
+  startServer();
+}
 
 export default app;
+export { server, startServer };

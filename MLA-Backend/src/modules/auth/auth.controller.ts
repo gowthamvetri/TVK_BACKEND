@@ -56,10 +56,13 @@ const verifyRegistrationPhone = asyncHandler(async (req: Request<unknown, unknow
 
 /**
  * POST /auth/register/complete
+ * SECURITY: Role cannot be chosen by client; citizens always register as citizens.
+ * Elevated roles come only from pre-registered official registry.
  */
 const completeRegistration = asyncHandler(async (req: Request<unknown, unknown, ICompleteRegistrationDTO>, res: Response) => {
-  const { registrationToken, pin, ward, role } = req.body;
-  const result = await authService.completeRegistration({ registrationToken, pin, ward, role });
+  const { registrationToken, pin, ward } = req.body;
+  // Ignore any client-provided 'role' field
+  const result = await authService.completeRegistration({ registrationToken, pin, ward });
   return ApiResponse.created(res, { data: result, message: 'Registration successful' });
 });
 

@@ -9,6 +9,8 @@ import mongoSanitize from 'express-mongo-sanitize';
 import hpp from 'hpp';
 import config from '../../config';
 
+const isTest = process.env.NODE_ENV === 'test';
+
 /**
  * Helmet - sets various HTTP headers for security
  */
@@ -27,10 +29,12 @@ export const corsMiddleware = cors({
 
 /**
  * Rate Limiter - General API rate limiting
+ * Skipped in test environment to prevent test interference
  */
 export const apiLimiter = rateLimit({
   windowMs: config.rateLimit.windowMs,
   max: config.rateLimit.maxRequests,
+  skip: () => isTest,
   message: {
     success: false,
     message: 'Too many requests, please try again later',
@@ -42,10 +46,12 @@ export const apiLimiter = rateLimit({
 
 /**
  * Auth Rate Limiter - Stricter limit for auth endpoints
+ * Skipped in test environment to prevent test interference
  */
 export const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 20, // 20 requests per window
+  skip: () => isTest,
   message: {
     success: false,
     message: 'Too many authentication attempts, please try again later',
@@ -57,10 +63,12 @@ export const authLimiter = rateLimit({
 
 /**
  * OTP Rate Limiter - Very strict for OTP requests
+ * Skipped in test environment to prevent test interference
  */
 export const otpLimiter = rateLimit({
   windowMs: 10 * 60 * 1000, // 10 minutes
   max: 5, // 5 OTP requests per 10 minutes
+  skip: () => isTest,
   message: {
     success: false,
     message: 'Too many OTP requests, please try again later',

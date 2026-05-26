@@ -7,6 +7,7 @@ import mongoose from 'mongoose';
 import config from '../../config';
 import authRepository from './auth.repository';
 import userRepository from '../users/user.repository';
+import OTP from './OTP.model';
 import { generateOTP } from '../../shared/utils/helpers';
 import { BadRequestError, UnauthorizedError, NotFoundError } from '../../shared/utils/errors';
 import { ROLES } from '../../shared/constants';
@@ -104,11 +105,26 @@ const sendRegistrationOTP = async (phone: string) => {
 
 /**
  * Step 2: Verify OTP and return registration token
+ * SECURITY: Increment attempt count and lock out after max attempts
  */
 const verifyRegistrationPhone = async (phone: string, otp: string) => {
   const otpRecord = await authRepository.findValidOTP(phone, otp, 'registration');
 
   if (!otpRecord) {
+    // OTP not found or max attempts exceeded
+    // Try to find any OTP record to increment attempt
+    const anyOTPRecord = await OTP.findOne({
+      phone,
+      purpose: 'registration',
+      isUsed: false,
+      expiresAt: { $gt: new Date() },
+    });
+
+    if (anyOTPRecord) {
+      // Increment attempt to lock out after max attempts
+      await authRepository.incrementOTPAttempt(anyOTPRecord._id);
+    }
+
     throw new BadRequestError('Invalid or expired OTP', 'INVALID_OTP');
   }
 
@@ -127,13 +143,13 @@ export interface ICompleteRegistrationDTO {
   registrationToken: string;
   pin: string;
   ward?: number;
-  role?: string;
 }
 
 /**
  * Step 3: Complete registration using token
+ * SECURITY: Citizens always register as citizen; elevated roles come only from official registry.
  */
-const completeRegistration = async ({ registrationToken, pin, ward, role }: ICompleteRegistrationDTO) => {
+const completeRegistration = async ({ registrationToken, pin, ward }: ICompleteRegistrationDTO) => {
   let phone: string;
   try {
     const decoded = jwt.verify(registrationToken, config.jwt.registrationSecret as string) as { phone: string };
@@ -148,13 +164,16 @@ const completeRegistration = async ({ registrationToken, pin, ward, role }: ICom
     throw new BadRequestError('User already registered');
   }
 
+  // Get pre-registered role from official registry (if any)
+  // Otherwise, citizen is the default role
   const preRegisteredRole = await officialsService.getRoleForPhone(phone);
+  const userRole = preRegisteredRole || ROLES.CITIZEN;
 
   const user = await userRepository.create({
     phone,
     pin,
     ward,
-    role: role || preRegisteredRole || ROLES.CITIZEN,
+    role: userRole,
     isVerified: true,
   });
 
@@ -232,11 +251,25 @@ const sendForgotPinOTP = async (phone: string) => {
 
 /**
  * Verify Forgot PIN OTP and return reset token
+ * SECURITY: Increment attempt count and lock out after max attempts
  */
 const verifyForgotPinOTP = async (phone: string, otp: string) => {
   const otpRecord = await authRepository.findValidOTP(phone, otp, 'reset_pin');
 
   if (!otpRecord) {
+    // Try to find any OTP record to increment attempt
+    const anyOTPRecord = await OTP.findOne({
+      phone,
+      purpose: 'reset_pin',
+      isUsed: false,
+      expiresAt: { $gt: new Date() },
+    });
+
+    if (anyOTPRecord) {
+      // Increment attempt to lock out after max attempts
+      await authRepository.incrementOTPAttempt(anyOTPRecord._id);
+    }
+
     throw new BadRequestError('Invalid or expired OTP', 'INVALID_OTP');
   }
 

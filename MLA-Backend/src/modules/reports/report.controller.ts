@@ -6,6 +6,8 @@ import { FilterQuery } from 'mongoose';
 import { IComplaint } from '../complaints/Complaint.model';
 import reportService from './report.service';
 import asyncHandler from '../../shared/utils/asyncHandler';
+import { ROLES } from '../../shared/constants';
+import { ForbiddenError } from '../../shared/utils/errors';
 
 interface IDownloadQuery {
   ward?: string;
@@ -15,8 +17,21 @@ interface IDownloadQuery {
 }
 
 const downloadCSV = asyncHandler(async (req: Request<{}, {}, {}, IDownloadQuery>, res: Response) => {
+  const user = req.user!;
   const filter: FilterQuery<IComplaint> = {};
-  if (req.query.ward) filter.ward = parseInt(req.query.ward, 10);
+  
+  // SECURITY: Enforce ward-level access for ward councillors
+  if (req.query.ward) {
+    const requestedWard = parseInt(req.query.ward, 10);
+    if (user.role === ROLES.WARD_COUNCILLOR && user.ward !== requestedWard) {
+      throw new ForbiddenError('Ward councillors can only access reports for their assigned ward');
+    }
+    filter.ward = requestedWard;
+  } else if (user.role === ROLES.WARD_COUNCILLOR) {
+    // SECURITY: Restrict ward councillor to their ward by default
+    filter.ward = user.ward;
+  }
+  
   if (req.query.status) filter.status = req.query.status;
   if (req.query.fromDate || req.query.toDate) {
     filter.createdAt = {};
@@ -31,8 +46,20 @@ const downloadCSV = asyncHandler(async (req: Request<{}, {}, {}, IDownloadQuery>
 });
 
 const downloadPDF = asyncHandler(async (req: Request<{}, {}, {}, IDownloadQuery>, res: Response) => {
+  const user = req.user!;
   const filter: FilterQuery<IComplaint> = {};
-  if (req.query.ward) filter.ward = parseInt(req.query.ward, 10);
+  
+  // SECURITY: Enforce ward-level access for ward councillors
+  if (req.query.ward) {
+    const requestedWard = parseInt(req.query.ward, 10);
+    if (user.role === ROLES.WARD_COUNCILLOR && user.ward !== requestedWard) {
+      throw new ForbiddenError('Ward councillors can only access reports for their assigned ward');
+    }
+    filter.ward = requestedWard;
+  } else if (user.role === ROLES.WARD_COUNCILLOR) {
+    // SECURITY: Restrict ward councillor to their ward by default
+    filter.ward = user.ward;
+  }
 
   const pdfBuffer = await reportService.generateComplaintPDF(filter);
   res.setHeader('Content-Type', 'application/pdf');

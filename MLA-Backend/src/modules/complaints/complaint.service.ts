@@ -5,7 +5,7 @@
 import mongoose, { FilterQuery, UpdateQuery } from 'mongoose';
 import complaintRepository from './complaint.repository';
 import { IComplaint } from './Complaint.model';
-import { generateTrackingId, buildPaginationQuery } from '../../shared/utils/helpers';
+import { generateTrackingId, buildPaginationQuery, escapeRegex } from '../../shared/utils/helpers';
 import { NotFoundError, BadRequestError, ForbiddenError } from '../../shared/utils/errors';
 import {
   COMPLAINT_STATUS,
@@ -34,6 +34,51 @@ export interface ICreateComplaintDTO {
   department?: string;
   [key: string]: unknown;
 }
+
+export interface IAuthUser {
+  id: string;
+  role: string;
+  ward?: number;
+}
+
+/**
+ * SECURITY: Check if user has access to view/modify a complaint
+ */
+const _checkComplaintAccess = (complaint: IComplaint, userContext: Partial<IAuthUser>, action: string = 'view'): void => {
+  const complaintCitizenId = String(complaint.citizen?._id || complaint.citizen);
+  const userId = String(userContext.id);
+  const userRole = userContext.role;
+
+  // MLA has access to everything
+  if (userRole === ROLES.MLA) {
+    return;
+  }
+
+  // Citizens can access only their own complaints
+  if (userRole === ROLES.CITIZEN) {
+    if (complaintCitizenId !== userId) {
+      throw new ForbiddenError(`Cannot ${action} complaint belonging to another citizen`);
+    }
+    return;
+  }
+
+  // Service officers can access only their assigned complaints
+  if (userRole === ROLES.SERVICE_OFFICER) {
+    const assignedOfficerId = String(complaint.assignedOfficer?._id || complaint.assignedOfficer || '');
+    if (assignedOfficerId && assignedOfficerId !== userId) {
+      throw new ForbiddenError(`Cannot ${action} complaint not assigned to you`);
+    }
+    return;
+  }
+
+  // Ward councillors can access only complaints in their ward
+  if (userContext.role === ROLES.WARD_COUNCILLOR) {
+    if (complaint.ward !== userContext.ward) {
+      throw new ForbiddenError(`Cannot ${action} complaint outside your ward`);
+    }
+    return;
+  }
+};
 
 /**
  * Create a new complaint
@@ -95,19 +140,31 @@ const createComplaint = async (citizenId: string, complaintData: ICreateComplain
 
 /**
  * Get complaint by ID
+ * SECURITY: Enforce per-resource access control
  */
-const getComplaintById = async (complaintId: string) => {
+const getComplaintById = async (complaintId: string, userContext?: Partial<IAuthUser>) => {
   const complaint = await complaintRepository.findById(complaintId);
   if (!complaint) throw new NotFoundError('Complaint not found');
+  
+  if (userContext) {
+    _checkComplaintAccess(complaint, userContext, 'view');
+  }
+  
   return complaint;
 };
 
 /**
  * Get complaint by tracking ID (public)
  */
-const getComplaintByTrackingId = async (trackingId: string) => {
+const getComplaintByTrackingId = async (trackingId: string, userContext?: Partial<IAuthUser>) => {
   const complaint = await complaintRepository.findByTrackingId(trackingId);
   if (!complaint) throw new NotFoundError('Complaint not found');
+  
+  // SECURITY: Enforce per-resource access control if userContext provided
+  if (userContext) {
+    _checkComplaintAccess(complaint, userContext, 'view');
+  }
+  
   return complaint;
 };
 
@@ -149,10 +206,16 @@ const _validateStatusTransition = (currentStatus: string, newStatus: string, use
 
 /**
  * Update complaint status with validation
+ * SECURITY: Enforce per-resource access control
  */
-const updateStatus = async (complaintId: string, newStatus: string, userId: string, userRole: string, notes: string = '') => {
+const updateStatus = async (complaintId: string, newStatus: string, userId: string, userRole: string, notes: string = '', userContext?: Partial<IAuthUser>) => {
   const complaint = await complaintRepository.findById(complaintId);
   if (!complaint) throw new NotFoundError('Complaint not found');
+
+  // Enforce per-resource access control
+  if (userContext) {
+    _checkComplaintAccess(complaint, userContext, 'update status for');
+  }
 
   // Validate status transition
   _validateStatusTransition(complaint.status, newStatus, userRole);
@@ -198,10 +261,16 @@ const updateStatus = async (complaintId: string, newStatus: string, userId: stri
 
 /**
  * Add resolution proof
+ * SECURITY: Only assigned officer can add proof
  */
-const addResolutionProof = async (complaintId: string, proofImages: string[], notes: string, officerId: string) => {
+const addResolutionProof = async (complaintId: string, proofImages: string[], notes: string, officerId: string, userContext?: Partial<IAuthUser>) => {
   const complaint = await complaintRepository.findById(complaintId);
   if (!complaint) throw new NotFoundError('Complaint not found');
+
+  // Enforce resource access
+  if (userContext) {
+    _checkComplaintAccess(complaint, userContext, 'add resolution proof to');
+  }
 
   if (String(complaint.assignedOfficer?._id || complaint.assignedOfficer) !== String(officerId)) {
     throw new ForbiddenError('Only the assigned officer can add resolution proof');
@@ -242,31 +311,41 @@ const listComplaints = async (query: IComplaintQuery, userContext: Partial<IAuth
   const { page, limit, skip, sort } = buildPaginationQuery(query);
   const filter: FilterQuery<IComplaint> = {};
 
-  // Role-based filtering
+  // SECURITY: Apply role-based filtering first and enforce restrictions (cannot be overridden by query params)
   if (userContext.role === ROLES.CITIZEN) {
+    // Citizens can only see their own complaints
     filter.citizen = userContext.id;
   } else if (userContext.role === ROLES.SERVICE_OFFICER) {
+    // Officers can only see complaints assigned to them
     filter.assignedOfficer = userContext.id;
   } else if (userContext.role === ROLES.WARD_COUNCILLOR) {
+    // SECURITY: Ward councillors can only see complaints in their assigned ward
+    // This filter CANNOT be overridden by query parameters
     filter.ward = userContext.ward;
   }
-  // MLA sees all — no filter needed
+  // MLA sees all — no restriction on base filter
 
-  // Apply query filters
+  // Apply optional query filters (only for fields that don't override role-based restrictions)
   if (query.status) filter.status = query.status;
   if (query.category) filter.category = query.category;
   if (query.priority) filter.priority = query.priority;
-  if (query.ward) filter.ward = parseInt(query.ward, 10);
+  // SECURITY: Only allow ward filter override for MLA (no role restriction on this field)
+  // Citizens/Officers/Councillors already have their base filter set and cannot expand it via query params
+  if (query.ward && userContext.role === ROLES.MLA) {
+    filter.ward = parseInt(query.ward, 10);
+  }
   if (query.department) filter.department = query.department;
   if (query.slaBreached === 'true') filter.slaBreached = true;
   if (query.isEscalated === 'true') filter.isEscalated = true;
+  // SECURITY: Escape regex search terms to prevent regex injection
   if (query.search) {
+    const escapedSearch = escapeRegex(query.search);
     filter.$or = [
-      { title: { $regex: query.search, $options: 'i' } },
-      { trackingId: { $regex: query.search, $options: 'i' } },
-      { description: { $regex: query.search, $options: 'i' } },
-      { 'location.address': { $regex: query.search, $options: 'i' } },
-      { 'location.landmark': { $regex: query.search, $options: 'i' } },
+      { title: { $regex: escapedSearch, $options: 'i' } },
+      { trackingId: { $regex: escapedSearch, $options: 'i' } },
+      { description: { $regex: escapedSearch, $options: 'i' } },
+      { 'location.address': { $regex: escapedSearch, $options: 'i' } },
+      { 'location.landmark': { $regex: escapedSearch, $options: 'i' } },
     ];
   }
   if (query.fromDate || query.toDate) {
@@ -281,19 +360,30 @@ const listComplaints = async (query: IComplaintQuery, userContext: Partial<IAuth
 
 /**
  * Get complaint timeline (status history)
+ * SECURITY: Enforce per-resource access control
  */
-const getComplaintTimeline = async (complaintId: string) => {
+const getComplaintTimeline = async (complaintId: string, userContext?: Partial<IAuthUser>) => {
   const complaint = await complaintRepository.findById(complaintId);
   if (!complaint) throw new NotFoundError('Complaint not found');
+  
+  if (userContext) {
+    _checkComplaintAccess(complaint, userContext, 'view timeline for');
+  }
+  
   return complaintRepository.getStatusHistory(complaintId);
 };
 
 /**
  * Upvote a complaint
+ * SECURITY: Enforce resource access control
  */
-const upvoteComplaint = async (complaintId: string, citizenId: string) => {
+const upvoteComplaint = async (complaintId: string, citizenId: string, userContext?: Partial<IAuthUser>) => {
   const complaint = await complaintRepository.findById(complaintId);
   if (!complaint) throw new NotFoundError('Complaint not found');
+
+  if (userContext) {
+    _checkComplaintAccess(complaint, userContext, 'upvote');
+  }
 
   const alreadyUpvoted = await complaintRepository.hasUpvoted(complaintId, citizenId);
   if (alreadyUpvoted) {
@@ -312,8 +402,21 @@ const upvoteComplaint = async (complaintId: string, citizenId: string) => {
 
 /**
  * Remove upvote
+ * SECURITY: Only the user who upvoted can remove
  */
-const removeUpvote = async (complaintId: string, citizenId: string) => {
+const removeUpvote = async (complaintId: string, citizenId: string, userContext?: Partial<IAuthUser>) => {
+  const complaint = await complaintRepository.findById(complaintId);
+  if (!complaint) throw new NotFoundError('Complaint not found');
+
+  if (userContext) {
+    _checkComplaintAccess(complaint, userContext, 'remove upvote from');
+  }
+
+  const hasUpvoted = await complaintRepository.hasUpvoted(complaintId, citizenId);
+  if (!hasUpvoted) {
+    throw new BadRequestError('You have not upvoted this complaint');
+  }
+
   await complaintRepository.removeUpvote(complaintId, citizenId);
   return complaintRepository.update(complaintId, {
     $inc: { upvoteCount: -1 },

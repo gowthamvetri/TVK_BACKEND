@@ -4,7 +4,7 @@
  */
 import userRepository from './user.repository';
 import { NotFoundError, BadRequestError } from '../../shared/utils/errors';
-import { buildPaginationQuery } from '../../shared/utils/helpers';
+import { buildPaginationQuery, escapeRegex } from '../../shared/utils/helpers';
 
 export interface IProfileUpdate {
   pin?: string;
@@ -26,6 +26,13 @@ export interface IUserFilterQuery {
   [key: string]: unknown;
 }
 
+interface IUserContext {
+  id: string;
+  role: string;
+  ward?: number;
+  [key: string]: unknown;
+}
+
 const getProfile = async (userId: string) => {
   const user = await userRepository.findById(userId);
   if (!user) throw new NotFoundError('User not found');
@@ -43,22 +50,37 @@ const updateProfile = async (userId: string, updateData: IProfileUpdate) => {
   return user;
 };
 
-const listUsers = async (query: IUserFilterQuery, filters: Record<string, unknown> = {}) => {
+const listUsers = async (query: IUserFilterQuery, userContext?: IUserContext, filters: Record<string, unknown> = {}) => {
   const { page, limit, skip, sort } = buildPaginationQuery(query);
   const filter: Record<string, unknown> = { ...filters };
 
+  // SECURITY: Ward councillors can only list users in their ward
+  if (userContext?.role === 'ward_councillor') {
+    filter.ward = userContext.ward;
+    // Ward councillors cannot override their ward filter via query params
+  } else {
+    // MLA or other roles can filter by ward if specified
+    if (query.ward) filter.ward = parseInt(query.ward, 10);
+  }
+
   if (query.role) filter.role = query.role;
-  if (query.ward) filter.ward = parseInt(query.ward, 10);
   if (query.department) filter.department = query.department;
   if (query.isActive !== undefined) filter.isActive = query.isActive === 'true';
   if (query.search) {
+    // SECURITY: Escape regex search terms to prevent regex injection
+    const escapedSearch = escapeRegex(query.search);
     filter.$or = [
-      { phone: { $regex: query.search, $options: 'i' } },
+      { phone: { $regex: escapedSearch, $options: 'i' } },
+      { name: { $regex: escapedSearch, $options: 'i' } },
     ];
   }
 
   const { data, total } = await userRepository.findAll(filter, { skip, limit, sort });
   return { data, total, page, limit };
+};
+
+const getOfficersForWard = async (ward: number) => {
+  return userRepository.findOfficersByWard(ward);
 };
 
 const deactivateUser = async (userId: string) => {
@@ -73,17 +95,13 @@ const activateUser = async (userId: string) => {
   return user;
 };
 
-const getOfficersForWard = async (ward: number) => {
-  return userRepository.findOfficersByWard(ward);
-};
-
 const userService = {
   getProfile,
   updateProfile,
   listUsers,
+  getOfficersForWard,
   deactivateUser,
   activateUser,
-  getOfficersForWard,
 };
 
 export default userService;

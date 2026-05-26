@@ -11,8 +11,10 @@
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
     "resolveJsonModule": true,
-    "noImplicitAny": false,
-    "types": ["node"]
+    "types": ["node", "jest"],
+    "sourceMap": false,
+    "declaration": false,
+    "removeComments": true
   },
   "include": ["src/**/*.ts", "src/types/**/*.d.ts"],
   "exclude": ["node_modules", "dist"]

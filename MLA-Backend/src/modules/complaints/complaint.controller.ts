@@ -34,12 +34,13 @@ const createComplaint = asyncHandler(async (req: Request<unknown, unknown, ICrea
 });
 
 const getComplaintById = asyncHandler(async (req: Request, res: Response) => {
-  const complaint = await complaintService.getComplaintById(req.params.id);
+  const complaint = await complaintService.getComplaintById(req.params.id, req.user!);
   return ApiResponse.success(res, { data: complaint });
 });
 
 const getComplaintByTrackingId = asyncHandler(async (req: Request, res: Response) => {
-  const complaint = await complaintService.getComplaintByTrackingId(req.params.trackingId);
+  // SECURITY: Pass authenticated user context for authorization enforcement
+  const complaint = await complaintService.getComplaintByTrackingId(req.params.trackingId, req.user!);
   return ApiResponse.success(res, { data: complaint });
 });
 
@@ -54,7 +55,8 @@ const updateStatus = asyncHandler(async (req: Request<{ id: string }, unknown, I
     req.body.status,
     req.user!.id,
     req.user!.role,
-    req.body.notes || ''
+    req.body.notes || '',
+    req.user!
   );
   return ApiResponse.success(res, { data: complaint, message: 'Status updated' });
 });
@@ -64,23 +66,24 @@ const addResolutionProof = asyncHandler(async (req: Request<{ id: string }, unkn
     req.params.id,
     req.body.proofImages,
     req.body.notes || '',
-    req.user!.id
+    req.user!.id,
+    req.user!
   );
   return ApiResponse.success(res, { data: complaint, message: 'Resolution proof added' });
 });
 
 const getTimeline = asyncHandler(async (req: Request<{ id: string }>, res: Response) => {
-  const timeline = await complaintService.getComplaintTimeline(req.params.id);
+  const timeline = await complaintService.getComplaintTimeline(req.params.id, req.user!);
   return ApiResponse.success(res, { data: timeline });
 });
 
 const upvoteComplaint = asyncHandler(async (req: Request<{ id: string }>, res: Response) => {
-  const complaint = await complaintService.upvoteComplaint(req.params.id, req.user!.id);
+  const complaint = await complaintService.upvoteComplaint(req.params.id, req.user!.id, req.user!);
   return ApiResponse.success(res, { data: complaint, message: 'Complaint upvoted' });
 });
 
 const removeUpvote = asyncHandler(async (req: Request<{ id: string }>, res: Response) => {
-  const complaint = await complaintService.removeUpvote(req.params.id, req.user!.id);
+  const complaint = await complaintService.removeUpvote(req.params.id, req.user!.id, req.user!);
   return ApiResponse.success(res, { data: complaint, message: 'Upvote removed' });
 });
 

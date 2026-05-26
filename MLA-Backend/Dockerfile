@@ -26,9 +26,9 @@ RUN mkdir -p /app/uploads /app/logs
 # Expose port
 EXPOSE 5000
 
-# Healthcheck uses curl
+# SECURITY: Healthcheck using Node instead of curl (curl not available in Alpine)
 HEALTHCHECK --interval=30s --timeout=3s \
-  CMD curl -f http://localhost:5000/health || exit 1
+  CMD node -e "require('http').get('http://localhost:5000/health', (res) => { if (res.statusCode === 200) process.exit(0); else process.exit(1); }).on('error', () => process.exit(1));"
 
 # Start the compiled application
 CMD ["node", "dist/app.js"]

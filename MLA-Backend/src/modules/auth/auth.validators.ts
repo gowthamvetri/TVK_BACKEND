@@ -45,10 +45,8 @@ const authValidators = {
       .optional()
       .isInt({ min: 1 })
       .withMessage('Ward must be a positive integer'),
-    body('role')
-      .optional()
-      .isIn(['citizen', 'service_officer', 'ward_councillor', 'mla'])
-      .withMessage('Invalid role'),
+    // SECURITY: Role is NOT accepted from client. Citizens always register as citizen.
+    // Official roles come only from pre-registered official registry.
   ],
 
   loginWithPin: [

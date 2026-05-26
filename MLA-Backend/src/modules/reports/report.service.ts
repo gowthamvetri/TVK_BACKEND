@@ -3,13 +3,21 @@
  * Generates PDF and CSV reports.
  * Uses lightweight worker-like pattern for large reports.
  */
-import PDFDocument from 'pdfkit';
 import { Parser } from 'json2csv';
 import { FilterQuery } from 'mongoose';
 import Complaint, { IComplaint } from '../complaints/Complaint.model';
 import analyticsService from '../analytics/analytics.service';
 import { buildPaginationQuery } from '../../shared/utils/helpers';
 import logger from '../../shared/logger';
+
+// Lazy load pdfkit only when needed (not at startup)
+let PDFDocument: any = null;
+const getPDFDocument = async () => {
+  if (!PDFDocument) {
+    PDFDocument = (await import('pdfkit')).default;
+  }
+  return PDFDocument;
+};
 
 type PopulatedComplaint = Omit<IComplaint, 'citizen' | 'assignedOfficer'> & {
   citizen?: { name: string; phone: string };
@@ -59,8 +67,11 @@ const generateComplaintPDF = async (filters: FilterQuery<IComplaint> = {}) => {
 
   const kpis = await analyticsService.getConstituencyKPIs() as { totalComplaints: number, slaMetrics: { complianceRate: number | string, avgResolutionHours: number | string } };
 
+  // Lazy load PDFDocument only when generating a PDF
+  const PDFDocClass = await getPDFDocument();
+
   return new Promise((resolve, reject) => {
-    const doc = new PDFDocument({ margin: 50, size: 'A4' });
+    const doc = new PDFDocClass({ margin: 50, size: 'A4' });
     const chunks: Buffer[] = [];
 
     doc.on('data', (chunk: Buffer) => chunks.push(chunk));
