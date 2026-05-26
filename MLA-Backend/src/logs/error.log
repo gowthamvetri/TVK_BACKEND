@@ -15,3 +15,4 @@ Error: Invalid or expired OTP
 2026-05-26 11:15:28 [ERROR]: Redis error: {"error":"getaddrinfo ENOTFOUND relative-dove-70302.upstash.io"}
 2026-05-26 11:15:29 [ERROR]: Redis error: {"error":"getaddrinfo ENOTFOUND relative-dove-70302.upstash.io"}
 2026-05-26 11:15:29 [ERROR]: ✗ Redis max reconnection attempts exceeded
+2026-05-26 14:14:57 [ERROR]: MongoDB connection failed:

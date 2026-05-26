@@ -201,3 +201,10 @@ Error: Invalid or expired OTP
 2026-05-26 14:05:51 [INFO]: 
  Environment: development
 2026-05-26 14:05:51 [INFO]: 
+2026-05-26 14:14:43 [INFO]: [SmsService] Twilio client initialised successfully.
+2026-05-26 14:14:48 [INFO]: Redis: Connected
+2026-05-26 14:14:48 [INFO]: ✓ Redis connected successfully {"url":"rediss:***@relative-dove-70302.upstash.io:6379","protocol":"rediss"}
+2026-05-26 14:14:48 [INFO]: Cache Service initialized
+2026-05-26 14:14:48 [INFO]: ✓ Redis Cache layer initialized
+2026-05-26 14:14:49 [INFO]: Redis: Ready
+2026-05-26 14:14:57 [ERROR]: MongoDB connection failed:
