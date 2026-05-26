@@ -7,7 +7,7 @@
     "start": "node dist/app.js",
     "dev": "ts-node-dev --respawn --transpile-only src/app.ts",
     "build": "tsc",
-    "build:prod": "tsc && npm prune --production",
+    "build:prod": "npm install --include=dev && tsc",
     "typecheck": "tsc --noEmit",
     "seed": "ts-node src/database/seed.ts",
     "test": "jest",
