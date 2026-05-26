@@ -1,0 +1,17 @@
+2026-05-26 09:45:44 [ERROR]: Invalid or expired OTP
+Error: Invalid or expired OTP
+    at Object.verifyRegistrationPhone (D:\Projects\tvk-application\MLA-Backend\src\modules\auth\auth.service.ts:128:11)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at D:\Projects\tvk-application\MLA-Backend\src\modules\auth\auth.controller.ts:53:18 {"url":"/api/v1/auth/register/verify-phone","method":"POST","ip":"::1"}
+2026-05-26 11:15:26 [ERROR]: Redis error: {"error":"read ECONNRESET"}
+2026-05-26 11:15:26 [ERROR]: Redis error: {"error":"getaddrinfo ENOTFOUND relative-dove-70302.upstash.io"}
+2026-05-26 11:15:26 [ERROR]: Redis error: {"error":"getaddrinfo ENOTFOUND relative-dove-70302.upstash.io"}
+2026-05-26 11:15:26 [ERROR]: Redis error: {"error":"getaddrinfo ENOTFOUND relative-dove-70302.upstash.io"}
+2026-05-26 11:15:26 [ERROR]: Redis error: {"error":"getaddrinfo ENOTFOUND relative-dove-70302.upstash.io"}
+2026-05-26 11:15:27 [ERROR]: Redis error: {"error":"getaddrinfo ENOTFOUND relative-dove-70302.upstash.io"}
+2026-05-26 11:15:27 [ERROR]: Redis error: {"error":"getaddrinfo ENOTFOUND relative-dove-70302.upstash.io"}
+2026-05-26 11:15:27 [ERROR]: Redis error: {"error":"getaddrinfo ENOTFOUND relative-dove-70302.upstash.io"}
+2026-05-26 11:15:28 [ERROR]: Redis error: {"error":"getaddrinfo ENOTFOUND relative-dove-70302.upstash.io"}
+2026-05-26 11:15:28 [ERROR]: Redis error: {"error":"getaddrinfo ENOTFOUND relative-dove-70302.upstash.io"}
+2026-05-26 11:15:29 [ERROR]: Redis error: {"error":"getaddrinfo ENOTFOUND relative-dove-70302.upstash.io"}
+2026-05-26 11:15:29 [ERROR]: ✗ Redis max reconnection attempts exceeded

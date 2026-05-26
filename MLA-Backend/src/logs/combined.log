@@ -76,3 +76,38 @@
 2026-05-26 09:37:03 [INFO]: 
  Environment: development
 2026-05-26 09:37:03 [INFO]: 
+2026-05-26 09:41:29 [INFO]: [SmsService] Twilio client initialised successfully.
+2026-05-26 09:41:32 [INFO]: Redis: Connected
+2026-05-26 09:41:32 [INFO]: ✓ Redis connected successfully {"url":"rediss:***@relative-dove-70302.upstash.io:6379","protocol":"rediss"}
+2026-05-26 09:41:32 [INFO]: Cache Service initialized
+2026-05-26 09:41:32 [INFO]: ✓ Redis Cache layer initialized
+2026-05-26 09:41:32 [INFO]: Redis: Ready
+2026-05-26 09:41:33 [INFO]: MongoDB connected: ac-tmfvyxl-shard-00-00.9imrfua.mongodb.net
+2026-05-26 09:41:33 [INFO]: [WebSocket] Socket.IO initialized
+2026-05-26 09:41:33 [DEBUG]: [EventBus] Subscriber registered for: complaint:created
+2026-05-26 09:41:33 [DEBUG]: [EventBus] Subscriber registered for: assignment:created
+2026-05-26 09:41:33 [DEBUG]: [EventBus] Subscriber registered for: complaint:status_changed
+2026-05-26 09:41:33 [DEBUG]: [EventBus] Subscriber registered for: complaint:resolved
+2026-05-26 09:41:33 [DEBUG]: [EventBus] Subscriber registered for: sla:breached
+2026-05-26 09:41:33 [DEBUG]: [EventBus] Subscriber registered for: escalation:triggered
+2026-05-26 09:41:33 [DEBUG]: [EventBus] Subscriber registered for: announcement:created
+2026-05-26 09:41:33 [INFO]: [EventSubscribers] All event subscribers registered
+2026-05-26 09:41:33 [INFO]: [SLAEngine] SLA monitoring started
+2026-05-26 09:41:33 [INFO]: [Workers] Background workers started
+2026-05-26 09:41:33 [INFO]: 
+2026-05-26 09:41:33 [INFO]:  MLA-Grievance-System started successfully
+2026-05-26 09:41:33 [INFO]:  Server:     http://localhost:5000
+2026-05-26 09:41:33 [INFO]:  API Docs:   http://localhost:5000/api-docs
+2026-05-26 09:41:33 [INFO]:  API Base:   http://localhost:5000/api/v1
+2026-05-26 09:41:33 [INFO]: 
+ Environment: development
+2026-05-26 09:41:33 [INFO]: 
+2026-05-26 09:45:05 [INFO]: [SmsService] SMS sent to +918148206252 | SID: SM88e1e56d137ed479c0b06b97c3d30263
+2026-05-26 09:45:05 [INFO]: [AuthService] Registration OTP generated for 8148206252: 433744
+2026-05-26 09:45:44 [ERROR]: Invalid or expired OTP
+Error: Invalid or expired OTP
+    at Object.verifyRegistrationPhone (D:\Projects\tvk-application\MLA-Backend\src\modules\auth\auth.service.ts:128:11)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at D:\Projects\tvk-application\MLA-Backend\src\modules\auth\auth.controller.ts:53:18 {"url":"/api/v1/auth/register/verify-phone","method":"POST","ip":"::1"}
+2026-05-26 09:46:26 [DEBUG]: [EventBus] Emitting: user:registered {"payload":"{\"userId\":\"6a151e99a7a70bce5472f024\",\"role\":\"citizen\"}"}
+2026-05-26 09:46:47 [DEBUG]: [EventBus] Emitting: user:login {"payload":"{\"userId\":\"6a151e99a7a70bce5472f024\"}"}
