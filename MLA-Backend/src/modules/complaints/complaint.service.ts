@@ -263,7 +263,7 @@ const updateStatus = async (complaintId: string, newStatus: string, userId: stri
  * Add resolution proof
  * SECURITY: Only assigned officer can add proof
  */
-const addResolutionProof = async (complaintId: string, proofImages: string[], notes: string, officerId: string, userContext?: Partial<IAuthUser>) => {
+const addResolutionProof = async (complaintId: string, proofImages: any[], notes: string, officerId: string, userContext?: Partial<IAuthUser>) => {
   const complaint = await complaintRepository.findById(complaintId);
   if (!complaint) throw new NotFoundError('Complaint not found');
 

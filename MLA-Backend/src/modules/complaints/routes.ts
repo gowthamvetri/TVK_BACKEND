@@ -133,6 +133,7 @@ router.patch(
 router.post(
   '/:id/resolution-proof',
   authorize('service_officer'),
+  upload.array('proofImages', 5),
   complaintValidators.getById,
   validate,
   complaintController.addResolutionProof

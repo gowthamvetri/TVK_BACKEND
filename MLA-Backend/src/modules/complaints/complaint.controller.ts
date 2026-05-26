@@ -14,7 +14,7 @@ interface IUpdateStatusBody {
 }
 
 interface IResolutionProofBody {
-  proofImages: string[];
+  proofImages?: string | any[];
   notes?: string;
 }
 
@@ -62,9 +62,32 @@ const updateStatus = asyncHandler(async (req: Request<{ id: string }, unknown, I
 });
 
 const addResolutionProof = asyncHandler(async (req: Request<{ id: string }, unknown, IResolutionProofBody>, res: Response) => {
+  let finalProofImages: any[] = [];
+
+  // Handle manually passed URLs (if any)
+  if (req.body.proofImages) {
+    if (typeof req.body.proofImages === 'string') {
+      try {
+        const parsed = JSON.parse(req.body.proofImages);
+        if (Array.isArray(parsed)) finalProofImages = parsed;
+      } catch {
+        finalProofImages = [req.body.proofImages];
+      }
+    } else if (Array.isArray(req.body.proofImages)) {
+      finalProofImages = req.body.proofImages;
+    }
+  }
+
+  // Handle uploaded files via multer
+  if (req.files && Array.isArray(req.files) && req.files.length > 0) {
+    const filePaths = (req.files as Express.Multer.File[]).map((file) => file.path);
+    const uploadedImages = await uploadService.uploadMultiple(filePaths, 'mla-grievance/complaints/resolution');
+    finalProofImages = [...finalProofImages, ...uploadedImages];
+  }
+
   const complaint = await complaintService.addResolutionProof(
     req.params.id,
-    req.body.proofImages,
+    finalProofImages,
     req.body.notes || '',
     req.user!.id,
     req.user!
