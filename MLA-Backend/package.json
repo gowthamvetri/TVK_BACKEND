@@ -18,7 +18,7 @@
     "docs": "ts-node src/config/swagger.ts"
   },
   "engines": {
-    "node": ">=18.0.0"
+    "node": "20.x"
   },
   "keywords": [
     "grievance",
