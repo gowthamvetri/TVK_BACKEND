@@ -111,3 +111,39 @@ Error: Invalid or expired OTP
     at D:\Projects\tvk-application\MLA-Backend\src\modules\auth\auth.controller.ts:53:18 {"url":"/api/v1/auth/register/verify-phone","method":"POST","ip":"::1"}
 2026-05-26 09:46:26 [DEBUG]: [EventBus] Emitting: user:registered {"payload":"{\"userId\":\"6a151e99a7a70bce5472f024\",\"role\":\"citizen\"}"}
 2026-05-26 09:46:47 [DEBUG]: [EventBus] Emitting: user:login {"payload":"{\"userId\":\"6a151e99a7a70bce5472f024\"}"}
+2026-05-26 11:15:25 [WARN]: MongoDB disconnected. Attempting reconnection...
+2026-05-26 11:15:26 [ERROR]: Redis error: {"error":"read ECONNRESET"}
+2026-05-26 11:15:26 [WARN]: Redis: Connection closed
+2026-05-26 11:15:26 [INFO]: Redis: Attempting to reconnect (attempt 1)
+2026-05-26 11:15:26 [ERROR]: Redis error: {"error":"getaddrinfo ENOTFOUND relative-dove-70302.upstash.io"}
+2026-05-26 11:15:26 [WARN]: Redis: Connection closed
+2026-05-26 11:15:26 [INFO]: Redis: Attempting to reconnect (attempt 2)
+2026-05-26 11:15:26 [ERROR]: Redis error: {"error":"getaddrinfo ENOTFOUND relative-dove-70302.upstash.io"}
+2026-05-26 11:15:26 [WARN]: Redis: Connection closed
+2026-05-26 11:15:26 [INFO]: Redis: Attempting to reconnect (attempt 3)
+2026-05-26 11:15:26 [ERROR]: Redis error: {"error":"getaddrinfo ENOTFOUND relative-dove-70302.upstash.io"}
+2026-05-26 11:15:26 [WARN]: Redis: Connection closed
+2026-05-26 11:15:26 [INFO]: Redis: Attempting to reconnect (attempt 4)
+2026-05-26 11:15:26 [ERROR]: Redis error: {"error":"getaddrinfo ENOTFOUND relative-dove-70302.upstash.io"}
+2026-05-26 11:15:26 [WARN]: Redis: Connection closed
+2026-05-26 11:15:26 [INFO]: Redis: Attempting to reconnect (attempt 5)
+2026-05-26 11:15:27 [ERROR]: Redis error: {"error":"getaddrinfo ENOTFOUND relative-dove-70302.upstash.io"}
+2026-05-26 11:15:27 [WARN]: Redis: Connection closed
+2026-05-26 11:15:27 [INFO]: Redis: Attempting to reconnect (attempt 6)
+2026-05-26 11:15:27 [ERROR]: Redis error: {"error":"getaddrinfo ENOTFOUND relative-dove-70302.upstash.io"}
+2026-05-26 11:15:27 [WARN]: Redis: Connection closed
+2026-05-26 11:15:27 [INFO]: Redis: Attempting to reconnect (attempt 7)
+2026-05-26 11:15:27 [ERROR]: Redis error: {"error":"getaddrinfo ENOTFOUND relative-dove-70302.upstash.io"}
+2026-05-26 11:15:27 [WARN]: Redis: Connection closed
+2026-05-26 11:15:27 [INFO]: Redis: Attempting to reconnect (attempt 8)
+2026-05-26 11:15:28 [ERROR]: Redis error: {"error":"getaddrinfo ENOTFOUND relative-dove-70302.upstash.io"}
+2026-05-26 11:15:28 [WARN]: Redis: Connection closed
+2026-05-26 11:15:28 [INFO]: Redis: Attempting to reconnect (attempt 9)
+2026-05-26 11:15:28 [ERROR]: Redis error: {"error":"getaddrinfo ENOTFOUND relative-dove-70302.upstash.io"}
+2026-05-26 11:15:28 [WARN]: Redis: Connection closed
+2026-05-26 11:15:28 [INFO]: Redis: Attempting to reconnect (attempt 10)
+2026-05-26 11:15:29 [ERROR]: Redis error: {"error":"getaddrinfo ENOTFOUND relative-dove-70302.upstash.io"}
+2026-05-26 11:15:29 [ERROR]: ✗ Redis max reconnection attempts exceeded
+2026-05-26 11:15:29 [WARN]: Redis: Connection closed
+2026-05-26 11:15:29 [WARN]: Redis: Connection ended
+2026-05-26 11:40:26 [WARN]: MongoDB disconnected. Attempting reconnection...
