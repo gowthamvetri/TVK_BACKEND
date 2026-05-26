@@ -169,13 +169,12 @@ networks:
     driver: bridge
 
 # ============================================
-# Volumes
+# Volumes (currently not used - local volumes via ./uploads and ./logs)
 # ============================================
-volumes:
-  # Uncomment if using Redis
-  # redis-data:
-  #   driver: local
-  
-  # Uncomment if using MongoDB locally
-  # mongo-data:
+# Uncomment below if using Redis or MongoDB containers
+# volumes:
+#   redis-data:
+#     driver: local
+#   mongo-data:
+#     driver: local
   #   driver: local

@@ -6,7 +6,6 @@ coverage
 .git
 .gitignore
 .github
-.npmrc
 README.md
 LICENSE
 *.log
@@ -24,6 +23,5 @@ Thumbs.db
 *~
 .eslintignore
 .eslintrc
-tsconfig.json
 jest.config.js
 api-test
