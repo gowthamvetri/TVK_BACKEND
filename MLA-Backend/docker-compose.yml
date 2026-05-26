@@ -1,30 +1,181 @@
 version: '3.8'
 
+# ============================================
+# Docker Compose: MLA-Backend Production Setup
+# ============================================
+# 
+# Services:
+#   - app: Main Express API server
+#   - redis: Caching layer (optional, uncomment to enable)
+#
+# Configuration:
+#   - Uses .env file for secrets
+#   - Persistent volumes for uploads and logs
+#   - Health checks for service reliability
+#   - Proper signal handling for graceful shutdown
+#   - Network isolation between services
+
 services:
   app:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: mla-grievance-api
+    
+    # Port mapping: <host>:<container>
     ports:
       - "${PORT:-5000}:5000"
+    
+    # Environment configuration
     env_file:
       - .env
+    
     environment:
+      # Production settings
       - NODE_ENV=production
+      - PORT=5000
+      - LOG_LEVEL=info
+      
+      # Database (configure in .env for security)
+      # - MONGODB_URI=mongodb+srv://user:pass@cluster.mongodb.net/db
+      
+      # Redis (uncomment when using redis service below)
+      # - REDIS_URL=redis://redis:6379
+      # - REDIS_ENABLED=true
+      
+      # External Services (configure in .env)
+      # - CLOUDINARY_CLOUD_NAME
+      # - CLOUDINARY_API_KEY
+      # - CLOUDINARY_API_SECRET
+      # - TWILIO_ACCOUNT_SID
+      # - TWILIO_AUTH_TOKEN
+      # - TWILIO_FROM_NUMBER
+    
+    # Volume mounts for persistent data
     volumes:
-      - ./uploads:/app/uploads
-      - ./logs:/app/logs
+      # Uploads: User-submitted images and files
+      - ./uploads:/app/uploads:rw
+      # Logs: Application and system logs
+      - ./logs:/app/logs:rw
+    
+    # Container restart policy
     restart: unless-stopped
+    
+    # Security options
+    security_opt:
+      - no-new-privileges:true
+    
+    # Resource limits (prevent DOS)
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 512M
+        reservations:
+          cpus: '1'
+          memory: 256M
+    
+    # Health check configuration
     healthcheck:
-      test: ["CMD", "node", "-e", "require('http').get('http://localhost:5000/health', (r) => { if (r.statusCode === 200) process.exit(0); else process.exit(1); }).on('error', () => process.exit(1))"]
+      # Basic health check
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:5000/health', (r) => { if (r.statusCode === 200) process.exit(0); else process.exit(1); }).on('error', () => process.exit(1));"]
       interval: 30s
-      timeout: 3s
+      timeout: 5s
       retries: 3
+      start_period: 10s
+    
+    # Logging configuration
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+        labels: "service=mla-api"
+    
+    # Network (uses default bridge)
+    networks:
+      - mla-network
+    
+    # Standard input/output for better logging
+    stdin_open: false
+    tty: false
 
-  # Optional: Local Redis for development
-  # Uncomment when ready to add Redis caching
-  redis:
-    image: redis:7-alpine
-    container_name: mla-redis
-    ports:
-      - "6379:6379"
-    restart: unless-stopped
+  # ============================================
+  # OPTIONAL: Redis Cache Layer
+  # ============================================
+  # Uncomment this section to enable Redis caching
+  # After enabling, update app environment:
+  #   - REDIS_URL=redis://redis:6379
+  #   - REDIS_ENABLED=true
+  
+  # redis:
+  #   image: redis:7-alpine
+  #   container_name: mla-redis
+  #   command: redis-server --appendonly yes --requirepass ${REDIS_PASSWORD:-}
+  #   
+  #   ports:
+  #     - "${REDIS_PORT:-6379}:6379"
+  #   
+  #   volumes:
+  #     # Persistent data for Redis
+  #     - redis-data:/data
+  #   
+  #   restart: unless-stopped
+  #   
+  #   healthcheck:
+  #     test: ["CMD", "redis-cli", "ping"]
+  #     interval: 10s
+  #     timeout: 3s
+  #     retries: 3
+  #   
+  #   networks:
+  #     - mla-network
+  #   
+  #   deploy:
+  #     resources:
+  #       limits:
+  #         memory: 256M
+
+# ============================================
+# OPTIONAL: MongoDB Service
+# ============================================
+# Use this for local development only
+# For production, use MongoDB Atlas (cloud)
+#
+# mongodb:
+#   image: mongo:7-alpine
+#   container_name: mla-mongodb
+#   
+#   environment:
+#     MONGO_INITDB_ROOT_USERNAME: root
+#     MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD:-rootpassword}
+#   
+#   ports:
+#     - "27017:27017"
+#   
+#   volumes:
+#     - mongo-data:/data/db
+#   
+#   restart: unless-stopped
+#   
+#   networks:
+#     - mla-network
+
+# ============================================
+# Networks
+# ============================================
+networks:
+  mla-network:
+    driver: bridge
+
+# ============================================
+# Volumes
+# ============================================
+volumes:
+  # Uncomment if using Redis
+  # redis-data:
+  #   driver: local
+  
+  # Uncomment if using MongoDB locally
+  # mongo-data:
+  #   driver: local
