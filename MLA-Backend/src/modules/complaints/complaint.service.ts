@@ -385,6 +385,35 @@ const listComplaints = async (query: IComplaintQuery, userContext: Partial<IAuth
 };
 
 /**
+ * List all complaints for a specific ward (Public feed for upvoting/tracking)
+ * Does not restrict by citizen ID so citizens can see ward issues
+ */
+const listComplaintsByWard = async (ward: number, query: IComplaintQuery) => {
+  const { page, limit, skip, sort } = buildPaginationQuery(query);
+  const filter: FilterQuery<IComplaint> = { ward };
+
+  if (query.status) filter.status = query.status;
+  if (query.category) filter.category = query.category;
+  if (query.priority) filter.priority = query.priority;
+  if (query.department) filter.department = query.department;
+  if (query.slaBreached === 'true') filter.slaBreached = true;
+  if (query.isEscalated === 'true') filter.isEscalated = true;
+  if (query.search) {
+    const escapedSearch = escapeRegex(query.search);
+    filter.$or = [
+      { title: { $regex: escapedSearch, $options: 'i' } },
+      { trackingId: { $regex: escapedSearch, $options: 'i' } },
+      { description: { $regex: escapedSearch, $options: 'i' } },
+      { address: { $regex: escapedSearch, $options: 'i' } },
+      { landmark: { $regex: escapedSearch, $options: 'i' } },
+    ];
+  }
+
+  const { data, total } = await complaintRepository.findAll(filter, { skip, limit, sort });
+  return { data, total, page, limit };
+};
+
+/**
  * Get complaint timeline (status history)
  * SECURITY: Enforce per-resource access control
  */
@@ -460,9 +489,10 @@ const complaintService = {
   createComplaint,
   getComplaintById,
   getComplaintByTrackingId,
+  listComplaints,
+  listComplaintsByWard,
   updateStatus,
   addResolutionProof,
-  listComplaints,
   getComplaintTimeline,
   upvoteComplaint,
   removeUpvote,

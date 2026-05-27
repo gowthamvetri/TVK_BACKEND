@@ -606,3 +606,29 @@ Error: Invalid or expired OTP
  Environment: development
 2026-05-27 12:07:50 [INFO]: 
 2026-05-27 12:35:11 [INFO]: SIGINT received, shutting down gracefully...
+2026-05-27 16:25:25 [INFO]: [SmsService] Twilio client initialised successfully.
+2026-05-27 16:25:25 [INFO]: [BullBoard] Monitoring dashboard initialized
+2026-05-27 16:25:25 [INFO]: Redis: Connected
+2026-05-27 16:25:25 [INFO]: ✓ Redis connected successfully {"url":"rediss:***@relative-dove-70302.upstash.io:6379","protocol":"rediss"}
+2026-05-27 16:25:25 [INFO]: Cache Service initialized
+2026-05-27 16:25:26 [INFO]: ✓ Redis Cache layer initialized
+2026-05-27 16:25:26 [INFO]: [RedisQueueConnection] Connected and ready
+2026-05-27 16:25:26 [INFO]: Redis: Ready
+2026-05-27 16:25:26 [INFO]: MongoDB connected: ac-tmfvyxl-shard-00-02.9imrfua.mongodb.net
+2026-05-27 16:28:22 [INFO]: [SmsService] Twilio client initialised successfully.
+2026-05-27 16:28:23 [INFO]: [BullBoard] Monitoring dashboard initialized
+2026-05-27 16:28:23 [INFO]: Redis: Connected
+2026-05-27 16:28:23 [INFO]: ✓ Redis connected successfully {"url":"rediss:***@relative-dove-70302.upstash.io:6379","protocol":"rediss"}
+2026-05-27 16:28:23 [INFO]: Cache Service initialized
+2026-05-27 16:28:23 [INFO]: ✓ Redis Cache layer initialized
+2026-05-27 16:28:24 [INFO]: [RedisQueueConnection] Connected and ready
+2026-05-27 16:28:24 [INFO]: Redis: Ready
+2026-05-27 16:28:30 [INFO]: [SmsService] Twilio client initialised successfully.
+2026-05-27 16:28:31 [INFO]: [BullBoard] Monitoring dashboard initialized
+2026-05-27 16:28:32 [INFO]: Redis: Connected
+2026-05-27 16:28:32 [INFO]: ✓ Redis connected successfully {"url":"rediss:***@relative-dove-70302.upstash.io:6379","protocol":"rediss"}
+2026-05-27 16:28:32 [INFO]: Cache Service initialized
+2026-05-27 16:28:32 [INFO]: ✓ Redis Cache layer initialized
+2026-05-27 16:28:32 [INFO]: [RedisQueueConnection] Connected and ready
+2026-05-27 16:28:32 [INFO]: Redis: Ready
+2026-05-27 16:28:32 [INFO]: MongoDB connected: ac-tmfvyxl-shard-00-02.9imrfua.mongodb.net

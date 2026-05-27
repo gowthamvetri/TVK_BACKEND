@@ -11,7 +11,7 @@
 3. [Architecture](#architecture)
 4. [Technology Stack](#technology-stack)
 5. [Setup Instructions](#setup-instructions)
-6. [API Endpoints (77 Total)](#api-endpoints-77-total)
+6. [API Endpoints (78 Total)](#api-endpoints-78-total)
 7. [Testing Guide](#testing-guide)
 8. [Coverage Directory](#coverage-directory)
 9. [Database Models](#database-models)
@@ -33,13 +33,14 @@ An **Enterprise-grade Modular Monolith** backend system for constituency-level c
 
 ### Key Features
 
-✅ **77 API Endpoints** across 15 modules  
+✅ **78 API Endpoints** across 15 modules  
 ✅ **Role-Based Access Control (RBAC)** - 4 roles with ward-level scoping  
 ✅ **OTP-based Authentication** - Phone-based registration and login  
 ✅ **Real-time Notifications** - Socket.IO for live updates  
 ✅ **SLA Monitoring** - Automatic escalation for overdue complaints  
 ✅ **File Uploads** - Cloudinary integration for images  
 ✅ **Analytics Dashboard** - Constituency and ward-level KPIs  
+✅ **Distributed Job Processing** - BullMQ backed by Redis for background tasks  
 ✅ **Comprehensive Testing** - 151+ tests with full coverage  
 ✅ **Production-Ready** - Security hardened, documented, and scalable  
 
@@ -118,7 +119,9 @@ src/
 ├── websocket/
 │   └── index.ts                  # Socket.IO event handlers
 ├── workers/
-│   └── index.ts                  # Background job schedulers
+│   └── index.ts                  # BullMQ Distributed Workers
+├── queues/                       # BullMQ Queue Instances
+├── jobs/                         # BullMQ Job Interfaces
 ├── jest.d.ts                     # Jest custom matcher types
 └── __tests__/                    # Test suite
     ├── setup.ts                  # Global test configuration
@@ -155,7 +158,7 @@ src/
 │                                                  │
 │  ┌──────────────────────────────────────────┐  │
 │  │   In-Process Event Bus (EventEmitter)    │  │
-│  │ (Future: Redis Pub/Sub / RabbitMQ)       │  │
+│  │ (BullMQ Distributed Jobs via Redis)       │  │
 │  └──────────────────────────────────────────┘  │
 ├──────────────────────────────────────────────────┤
 │              Repository/Data Layer               │
@@ -291,7 +294,7 @@ npm run format       # Prettier formatting
 
 ---
 
-## API Endpoints (77 Total)
+## API Endpoints (78 Total)
 
 ### Authentication (9 Endpoints)
 ```
@@ -317,10 +320,11 @@ PATCH  /users/:id/deactivate            Deactivate user
 PATCH  /users/:id/activate              Activate user
 ```
 
-### Complaints (10 Endpoints)
+### Complaints (11 Endpoints)
 ```
 POST   /complaints                       Create complaint
 GET    /complaints                       List complaints (paginated)
+GET    /complaints/ward/:ward            Get complaints by ward
 GET    /complaints/nearby                Get nearby complaints
 GET    /complaints/track/:trackingId    Track by tracking ID
 GET    /complaints/:id                   Get complaint details
@@ -484,7 +488,7 @@ npm test -- src/__tests__/unit
 - Cloudinary - `mockCloudinaryUpload()`, `mockCloudinaryDelete()`
 - Redis - `mockRedis()` (set, get, del, etc.)
 - Socket.IO - `mockSocketIO()`
-- node-cron - `mockCron()`
+- BullMQ - `mockQueue()`
 
 ### Test Data Cleanup
 
