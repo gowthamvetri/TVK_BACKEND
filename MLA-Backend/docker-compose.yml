@@ -55,8 +55,6 @@ services:
     volumes:
       # Uploads: User-submitted images and files
       - ./uploads:/app/uploads:rw
-      # Logs: Application and system logs
-      - ./logs:/app/logs:rw
     
     # Container restart policy
     restart: unless-stopped

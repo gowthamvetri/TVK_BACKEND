@@ -80,8 +80,8 @@ COPY --chown=nodejs:nodejs tsconfig.json ./
 COPY --chown=nodejs:nodejs src/config src/config
 
 # Create directories with proper ownership
-RUN mkdir -p uploads logs && \
-    chown -R nodejs:nodejs uploads logs
+RUN mkdir -p uploads && \
+    chown -R nodejs:nodejs uploads
 
 # Switch to non-root user
 USER nodejs
