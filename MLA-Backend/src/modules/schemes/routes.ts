@@ -28,6 +28,12 @@ router.post(
     body('title').trim().isLength({ min: 5, max: 200 }),
     body('description').trim().isLength({ min: 10, max: 5000 }),
     body('type').optional().isIn(['scheme', 'event', 'program']),
+    body('requiredDocuments').optional().custom((value) => {
+      if (typeof value === 'string') {
+        try { JSON.parse(value); return true; } catch { throw new Error('Invalid JSON'); }
+      }
+      return Array.isArray(value);
+    }),
   ],
   validate,
   schemeController.create

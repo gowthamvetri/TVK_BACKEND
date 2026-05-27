@@ -553,3 +553,29 @@ Error: Invalid or expired OTP
 2026-05-27 09:55:24 [INFO]: 
  Environment: development
 2026-05-27 09:55:24 [INFO]: 
+2026-05-27 09:55:53 [INFO]: [SmsService] Twilio client initialised successfully.
+2026-05-27 09:55:55 [INFO]: Redis: Connected
+2026-05-27 09:55:55 [INFO]: ✓ Redis connected successfully {"url":"rediss:***@relative-dove-70302.upstash.io:6379","protocol":"rediss"}
+2026-05-27 09:55:55 [INFO]: Cache Service initialized
+2026-05-27 09:55:55 [INFO]: ✓ Redis Cache layer initialized
+2026-05-27 09:55:55 [INFO]: Redis: Ready
+2026-05-27 09:55:56 [INFO]: MongoDB connected: ac-tmfvyxl-shard-00-02.9imrfua.mongodb.net
+2026-05-27 09:55:56 [INFO]: [WebSocket] Socket.IO initialized
+2026-05-27 09:55:56 [DEBUG]: [EventBus] Subscriber registered for: complaint:created
+2026-05-27 09:55:56 [DEBUG]: [EventBus] Subscriber registered for: assignment:created
+2026-05-27 09:55:56 [DEBUG]: [EventBus] Subscriber registered for: complaint:status_changed
+2026-05-27 09:55:56 [DEBUG]: [EventBus] Subscriber registered for: complaint:resolved
+2026-05-27 09:55:56 [DEBUG]: [EventBus] Subscriber registered for: sla:breached
+2026-05-27 09:55:56 [DEBUG]: [EventBus] Subscriber registered for: escalation:triggered
+2026-05-27 09:55:56 [DEBUG]: [EventBus] Subscriber registered for: announcement:created
+2026-05-27 09:55:56 [INFO]: [EventSubscribers] All event subscribers registered
+2026-05-27 09:55:56 [INFO]: [SLAEngine] SLA monitoring started
+2026-05-27 09:55:56 [INFO]: [Workers] Background workers started
+2026-05-27 09:55:56 [INFO]: 
+2026-05-27 09:55:56 [INFO]:  MLA-Grievance-System started successfully
+2026-05-27 09:55:56 [INFO]:  Server:     http://localhost:5000
+2026-05-27 09:55:56 [INFO]:  API Docs:   http://localhost:5000/api-docs
+2026-05-27 09:55:56 [INFO]:  API Base:   http://localhost:5000/api/v1
+2026-05-27 09:55:56 [INFO]: 
+ Environment: development
+2026-05-27 09:55:56 [INFO]: 

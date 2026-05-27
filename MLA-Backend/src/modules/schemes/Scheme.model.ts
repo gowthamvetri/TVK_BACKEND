@@ -18,6 +18,10 @@ export interface IScheme extends Document {
     publicId?: string;
   }[];
   targetWards: number[];
+  requiredDocuments?: {
+    name: string;
+    isRequired: boolean;
+  }[];
   createdBy: mongoose.Types.ObjectId;
   isActive: boolean;
   createdAt: Date;
@@ -64,6 +68,19 @@ const schemeSchema = new mongoose.Schema<IScheme>(
       },
     ],
     targetWards: [Number],
+    requiredDocuments: [
+      {
+        name: {
+          type: String,
+          required: true,
+          trim: true,
+        },
+        isRequired: {
+          type: Boolean,
+          default: true,
+        },
+      },
+    ],
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',

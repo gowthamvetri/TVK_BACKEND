@@ -22,6 +22,7 @@ export interface ISchemeCreateDTO {
   endDate?: Date;
   images?: ISchemeImage[];
   targetWards?: number[];
+  requiredDocuments?: { name: string; isRequired: boolean }[];
 }
 
 export type ISchemeUpdateDTO = Partial<ISchemeCreateDTO>;
