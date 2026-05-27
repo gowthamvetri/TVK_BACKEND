@@ -11,6 +11,7 @@ export interface IAnnouncement extends Document {
   authorRole: string;
   category: string;
   targetWards: number[];
+  publishDate: Date;
   images?: {
     url?: string;
     publicId?: string;
@@ -48,8 +49,12 @@ const announcementSchema = new mongoose.Schema<IAnnouncement>(
     },
     category: {
       type: String,
-      enum: ['announcement', 'event'],
-      default: 'general',
+      enum: ['announcement'],
+      required: true,
+    },
+    publishDate: {
+      type: Date,
+      default: Date.now,
     },
     targetWards: [
       {

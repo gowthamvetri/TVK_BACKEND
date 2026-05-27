@@ -208,3 +208,348 @@ Error: Invalid or expired OTP
 2026-05-26 14:14:48 [INFO]: ✓ Redis Cache layer initialized
 2026-05-26 14:14:49 [INFO]: Redis: Ready
 2026-05-26 14:14:57 [ERROR]: MongoDB connection failed:
+2026-05-27 09:31:17 [INFO]: [SmsService] Twilio client initialised successfully.
+2026-05-27 09:31:18 [INFO]: Redis: Connected
+2026-05-27 09:31:18 [INFO]: ✓ Redis connected successfully {"url":"rediss:***@relative-dove-70302.upstash.io:6379","protocol":"rediss"}
+2026-05-27 09:31:18 [INFO]: Cache Service initialized
+2026-05-27 09:31:18 [INFO]: ✓ Redis Cache layer initialized
+2026-05-27 09:31:18 [INFO]: Redis: Ready
+2026-05-27 09:31:21 [INFO]: MongoDB connected: ac-tmfvyxl-shard-00-00.9imrfua.mongodb.net
+2026-05-27 09:31:21 [INFO]: [WebSocket] Socket.IO initialized
+2026-05-27 09:31:21 [DEBUG]: [EventBus] Subscriber registered for: complaint:created
+2026-05-27 09:31:21 [DEBUG]: [EventBus] Subscriber registered for: assignment:created
+2026-05-27 09:31:21 [DEBUG]: [EventBus] Subscriber registered for: complaint:status_changed
+2026-05-27 09:31:21 [DEBUG]: [EventBus] Subscriber registered for: complaint:resolved
+2026-05-27 09:31:21 [DEBUG]: [EventBus] Subscriber registered for: sla:breached
+2026-05-27 09:31:21 [DEBUG]: [EventBus] Subscriber registered for: escalation:triggered
+2026-05-27 09:31:21 [DEBUG]: [EventBus] Subscriber registered for: announcement:created
+2026-05-27 09:31:21 [INFO]: [EventSubscribers] All event subscribers registered
+2026-05-27 09:31:21 [INFO]: [SLAEngine] SLA monitoring started
+2026-05-27 09:31:21 [INFO]: [Workers] Background workers started
+2026-05-27 09:31:21 [INFO]: 
+2026-05-27 09:31:21 [INFO]:  MLA-Grievance-System started successfully
+2026-05-27 09:31:21 [INFO]:  Server:     http://localhost:5000
+2026-05-27 09:31:21 [INFO]:  API Docs:   http://localhost:5000/api-docs
+2026-05-27 09:31:21 [INFO]:  API Base:   http://localhost:5000/api/v1
+2026-05-27 09:31:21 [INFO]: 
+ Environment: development
+2026-05-27 09:31:21 [INFO]: 
+2026-05-27 09:31:30 [INFO]: [SmsService] Twilio client initialised successfully.
+2026-05-27 09:31:30 [INFO]: Redis: Connected
+2026-05-27 09:31:30 [INFO]: ✓ Redis connected successfully {"url":"rediss:***@relative-dove-70302.upstash.io:6379","protocol":"rediss"}
+2026-05-27 09:31:30 [INFO]: Cache Service initialized
+2026-05-27 09:31:30 [INFO]: ✓ Redis Cache layer initialized
+2026-05-27 09:31:30 [INFO]: Redis: Ready
+2026-05-27 09:31:33 [INFO]: MongoDB connected: ac-tmfvyxl-shard-00-00.9imrfua.mongodb.net
+2026-05-27 09:31:33 [INFO]: [WebSocket] Socket.IO initialized
+2026-05-27 09:31:33 [DEBUG]: [EventBus] Subscriber registered for: complaint:created
+2026-05-27 09:31:33 [DEBUG]: [EventBus] Subscriber registered for: assignment:created
+2026-05-27 09:31:33 [DEBUG]: [EventBus] Subscriber registered for: complaint:status_changed
+2026-05-27 09:31:33 [DEBUG]: [EventBus] Subscriber registered for: complaint:resolved
+2026-05-27 09:31:33 [DEBUG]: [EventBus] Subscriber registered for: sla:breached
+2026-05-27 09:31:33 [DEBUG]: [EventBus] Subscriber registered for: escalation:triggered
+2026-05-27 09:31:33 [DEBUG]: [EventBus] Subscriber registered for: announcement:created
+2026-05-27 09:31:33 [INFO]: [EventSubscribers] All event subscribers registered
+2026-05-27 09:31:33 [INFO]: [SLAEngine] SLA monitoring started
+2026-05-27 09:31:33 [INFO]: [Workers] Background workers started
+2026-05-27 09:31:33 [INFO]: 
+2026-05-27 09:31:33 [INFO]:  MLA-Grievance-System started successfully
+2026-05-27 09:31:33 [INFO]:  Server:     http://localhost:5000
+2026-05-27 09:31:33 [INFO]:  API Docs:   http://localhost:5000/api-docs
+2026-05-27 09:31:33 [INFO]:  API Base:   http://localhost:5000/api/v1
+2026-05-27 09:31:33 [INFO]: 
+ Environment: development
+2026-05-27 09:31:33 [INFO]: 
+2026-05-27 09:31:46 [INFO]: [SmsService] Twilio client initialised successfully.
+2026-05-27 09:31:47 [INFO]: Redis: Connected
+2026-05-27 09:31:47 [INFO]: ✓ Redis connected successfully {"url":"rediss:***@relative-dove-70302.upstash.io:6379","protocol":"rediss"}
+2026-05-27 09:31:47 [INFO]: Cache Service initialized
+2026-05-27 09:31:47 [INFO]: ✓ Redis Cache layer initialized
+2026-05-27 09:31:48 [INFO]: Redis: Ready
+2026-05-27 09:31:49 [INFO]: MongoDB connected: ac-tmfvyxl-shard-00-00.9imrfua.mongodb.net
+2026-05-27 09:31:49 [INFO]: [WebSocket] Socket.IO initialized
+2026-05-27 09:31:49 [DEBUG]: [EventBus] Subscriber registered for: complaint:created
+2026-05-27 09:31:49 [DEBUG]: [EventBus] Subscriber registered for: assignment:created
+2026-05-27 09:31:49 [DEBUG]: [EventBus] Subscriber registered for: complaint:status_changed
+2026-05-27 09:31:49 [DEBUG]: [EventBus] Subscriber registered for: complaint:resolved
+2026-05-27 09:31:49 [DEBUG]: [EventBus] Subscriber registered for: sla:breached
+2026-05-27 09:31:49 [DEBUG]: [EventBus] Subscriber registered for: escalation:triggered
+2026-05-27 09:31:49 [DEBUG]: [EventBus] Subscriber registered for: announcement:created
+2026-05-27 09:31:49 [INFO]: [EventSubscribers] All event subscribers registered
+2026-05-27 09:31:49 [INFO]: [SLAEngine] SLA monitoring started
+2026-05-27 09:31:49 [INFO]: [Workers] Background workers started
+2026-05-27 09:31:49 [INFO]: 
+2026-05-27 09:31:49 [INFO]:  MLA-Grievance-System started successfully
+2026-05-27 09:31:49 [INFO]:  Server:     http://localhost:5000
+2026-05-27 09:31:49 [INFO]:  API Docs:   http://localhost:5000/api-docs
+2026-05-27 09:31:49 [INFO]:  API Base:   http://localhost:5000/api/v1
+2026-05-27 09:31:49 [INFO]: 
+ Environment: development
+2026-05-27 09:31:49 [INFO]: 
+2026-05-27 09:32:07 [INFO]: [SmsService] Twilio client initialised successfully.
+2026-05-27 09:32:08 [INFO]: Redis: Connected
+2026-05-27 09:32:08 [INFO]: ✓ Redis connected successfully {"url":"rediss:***@relative-dove-70302.upstash.io:6379","protocol":"rediss"}
+2026-05-27 09:32:08 [INFO]: Cache Service initialized
+2026-05-27 09:32:08 [INFO]: ✓ Redis Cache layer initialized
+2026-05-27 09:32:10 [INFO]: Redis: Ready
+2026-05-27 09:32:12 [INFO]: MongoDB connected: ac-tmfvyxl-shard-00-00.9imrfua.mongodb.net
+2026-05-27 09:32:12 [INFO]: [WebSocket] Socket.IO initialized
+2026-05-27 09:32:12 [DEBUG]: [EventBus] Subscriber registered for: complaint:created
+2026-05-27 09:32:12 [DEBUG]: [EventBus] Subscriber registered for: assignment:created
+2026-05-27 09:32:12 [DEBUG]: [EventBus] Subscriber registered for: complaint:status_changed
+2026-05-27 09:32:12 [DEBUG]: [EventBus] Subscriber registered for: complaint:resolved
+2026-05-27 09:32:12 [DEBUG]: [EventBus] Subscriber registered for: sla:breached
+2026-05-27 09:32:12 [DEBUG]: [EventBus] Subscriber registered for: escalation:triggered
+2026-05-27 09:32:12 [DEBUG]: [EventBus] Subscriber registered for: announcement:created
+2026-05-27 09:32:12 [INFO]: [EventSubscribers] All event subscribers registered
+2026-05-27 09:32:12 [INFO]: [SLAEngine] SLA monitoring started
+2026-05-27 09:32:12 [INFO]: [Workers] Background workers started
+2026-05-27 09:32:12 [INFO]: 
+2026-05-27 09:32:12 [INFO]:  MLA-Grievance-System started successfully
+2026-05-27 09:32:12 [INFO]:  Server:     http://localhost:5000
+2026-05-27 09:32:12 [INFO]:  API Docs:   http://localhost:5000/api-docs
+2026-05-27 09:32:12 [INFO]:  API Base:   http://localhost:5000/api/v1
+2026-05-27 09:32:12 [INFO]: 
+ Environment: development
+2026-05-27 09:32:12 [INFO]: 
+2026-05-27 09:33:34 [INFO]: [SmsService] Twilio client initialised successfully.
+2026-05-27 09:33:34 [INFO]: Redis: Connected
+2026-05-27 09:33:34 [INFO]: ✓ Redis connected successfully {"url":"rediss:***@relative-dove-70302.upstash.io:6379","protocol":"rediss"}
+2026-05-27 09:33:34 [INFO]: Cache Service initialized
+2026-05-27 09:33:34 [INFO]: ✓ Redis Cache layer initialized
+2026-05-27 09:33:35 [INFO]: Redis: Ready
+2026-05-27 09:33:38 [INFO]: MongoDB connected: ac-tmfvyxl-shard-00-00.9imrfua.mongodb.net
+2026-05-27 09:33:38 [INFO]: [WebSocket] Socket.IO initialized
+2026-05-27 09:33:38 [DEBUG]: [EventBus] Subscriber registered for: complaint:created
+2026-05-27 09:33:38 [DEBUG]: [EventBus] Subscriber registered for: assignment:created
+2026-05-27 09:33:38 [DEBUG]: [EventBus] Subscriber registered for: complaint:status_changed
+2026-05-27 09:33:38 [DEBUG]: [EventBus] Subscriber registered for: complaint:resolved
+2026-05-27 09:33:38 [DEBUG]: [EventBus] Subscriber registered for: sla:breached
+2026-05-27 09:33:38 [DEBUG]: [EventBus] Subscriber registered for: escalation:triggered
+2026-05-27 09:33:38 [DEBUG]: [EventBus] Subscriber registered for: announcement:created
+2026-05-27 09:33:38 [INFO]: [EventSubscribers] All event subscribers registered
+2026-05-27 09:33:38 [INFO]: [SLAEngine] SLA monitoring started
+2026-05-27 09:33:38 [INFO]: [Workers] Background workers started
+2026-05-27 09:33:38 [INFO]: 
+2026-05-27 09:33:38 [INFO]:  MLA-Grievance-System started successfully
+2026-05-27 09:33:38 [INFO]:  Server:     http://localhost:5000
+2026-05-27 09:33:38 [INFO]:  API Docs:   http://localhost:5000/api-docs
+2026-05-27 09:33:38 [INFO]:  API Base:   http://localhost:5000/api/v1
+2026-05-27 09:33:38 [INFO]: 
+ Environment: development
+2026-05-27 09:33:38 [INFO]: 
+2026-05-27 09:33:43 [INFO]: [SmsService] Twilio client initialised successfully.
+2026-05-27 09:33:44 [INFO]: Redis: Connected
+2026-05-27 09:33:44 [INFO]: ✓ Redis connected successfully {"url":"rediss:***@relative-dove-70302.upstash.io:6379","protocol":"rediss"}
+2026-05-27 09:33:44 [INFO]: Cache Service initialized
+2026-05-27 09:33:44 [INFO]: ✓ Redis Cache layer initialized
+2026-05-27 09:33:44 [INFO]: Redis: Ready
+2026-05-27 09:33:47 [INFO]: MongoDB connected: ac-tmfvyxl-shard-00-00.9imrfua.mongodb.net
+2026-05-27 09:33:47 [INFO]: [WebSocket] Socket.IO initialized
+2026-05-27 09:33:47 [DEBUG]: [EventBus] Subscriber registered for: complaint:created
+2026-05-27 09:33:47 [DEBUG]: [EventBus] Subscriber registered for: assignment:created
+2026-05-27 09:33:47 [DEBUG]: [EventBus] Subscriber registered for: complaint:status_changed
+2026-05-27 09:33:47 [DEBUG]: [EventBus] Subscriber registered for: complaint:resolved
+2026-05-27 09:33:47 [DEBUG]: [EventBus] Subscriber registered for: sla:breached
+2026-05-27 09:33:47 [DEBUG]: [EventBus] Subscriber registered for: escalation:triggered
+2026-05-27 09:33:47 [DEBUG]: [EventBus] Subscriber registered for: announcement:created
+2026-05-27 09:33:47 [INFO]: [EventSubscribers] All event subscribers registered
+2026-05-27 09:33:47 [INFO]: [SLAEngine] SLA monitoring started
+2026-05-27 09:33:47 [INFO]: [Workers] Background workers started
+2026-05-27 09:33:47 [INFO]: 
+2026-05-27 09:33:47 [INFO]:  MLA-Grievance-System started successfully
+2026-05-27 09:33:47 [INFO]:  Server:     http://localhost:5000
+2026-05-27 09:33:47 [INFO]:  API Docs:   http://localhost:5000/api-docs
+2026-05-27 09:33:47 [INFO]:  API Base:   http://localhost:5000/api/v1
+2026-05-27 09:33:47 [INFO]: 
+ Environment: development
+2026-05-27 09:33:47 [INFO]: 
+2026-05-27 09:33:54 [INFO]: [SmsService] Twilio client initialised successfully.
+2026-05-27 09:33:55 [INFO]: Redis: Connected
+2026-05-27 09:33:55 [INFO]: ✓ Redis connected successfully {"url":"rediss:***@relative-dove-70302.upstash.io:6379","protocol":"rediss"}
+2026-05-27 09:33:55 [INFO]: Cache Service initialized
+2026-05-27 09:33:55 [INFO]: ✓ Redis Cache layer initialized
+2026-05-27 09:33:55 [INFO]: Redis: Ready
+2026-05-27 09:33:58 [INFO]: [SmsService] Twilio client initialised successfully.
+2026-05-27 09:33:58 [INFO]: Redis: Connected
+2026-05-27 09:33:58 [INFO]: ✓ Redis connected successfully {"url":"rediss:***@relative-dove-70302.upstash.io:6379","protocol":"rediss"}
+2026-05-27 09:33:58 [INFO]: Cache Service initialized
+2026-05-27 09:33:58 [INFO]: ✓ Redis Cache layer initialized
+2026-05-27 09:33:58 [INFO]: Redis: Ready
+2026-05-27 09:34:00 [INFO]: MongoDB connected: ac-tmfvyxl-shard-00-01.9imrfua.mongodb.net
+2026-05-27 09:34:00 [INFO]: [WebSocket] Socket.IO initialized
+2026-05-27 09:34:00 [DEBUG]: [EventBus] Subscriber registered for: complaint:created
+2026-05-27 09:34:00 [DEBUG]: [EventBus] Subscriber registered for: assignment:created
+2026-05-27 09:34:00 [DEBUG]: [EventBus] Subscriber registered for: complaint:status_changed
+2026-05-27 09:34:00 [DEBUG]: [EventBus] Subscriber registered for: complaint:resolved
+2026-05-27 09:34:00 [DEBUG]: [EventBus] Subscriber registered for: sla:breached
+2026-05-27 09:34:00 [DEBUG]: [EventBus] Subscriber registered for: escalation:triggered
+2026-05-27 09:34:00 [DEBUG]: [EventBus] Subscriber registered for: announcement:created
+2026-05-27 09:34:00 [INFO]: [EventSubscribers] All event subscribers registered
+2026-05-27 09:34:00 [INFO]: [SLAEngine] SLA monitoring started
+2026-05-27 09:34:00 [INFO]: [Workers] Background workers started
+2026-05-27 09:34:00 [INFO]: 
+2026-05-27 09:34:00 [INFO]:  MLA-Grievance-System started successfully
+2026-05-27 09:34:00 [INFO]:  Server:     http://localhost:5000
+2026-05-27 09:34:00 [INFO]:  API Docs:   http://localhost:5000/api-docs
+2026-05-27 09:34:00 [INFO]:  API Base:   http://localhost:5000/api/v1
+2026-05-27 09:34:00 [INFO]: 
+ Environment: development
+2026-05-27 09:34:00 [INFO]: 
+2026-05-27 09:34:10 [INFO]: [SmsService] Twilio client initialised successfully.
+2026-05-27 09:34:11 [INFO]: Redis: Connected
+2026-05-27 09:34:11 [INFO]: ✓ Redis connected successfully {"url":"rediss:***@relative-dove-70302.upstash.io:6379","protocol":"rediss"}
+2026-05-27 09:34:11 [INFO]: Cache Service initialized
+2026-05-27 09:34:11 [INFO]: ✓ Redis Cache layer initialized
+2026-05-27 09:34:12 [INFO]: Redis: Ready
+2026-05-27 09:34:13 [INFO]: MongoDB connected: ac-tmfvyxl-shard-00-00.9imrfua.mongodb.net
+2026-05-27 09:34:13 [INFO]: [WebSocket] Socket.IO initialized
+2026-05-27 09:34:13 [DEBUG]: [EventBus] Subscriber registered for: complaint:created
+2026-05-27 09:34:13 [DEBUG]: [EventBus] Subscriber registered for: assignment:created
+2026-05-27 09:34:13 [DEBUG]: [EventBus] Subscriber registered for: complaint:status_changed
+2026-05-27 09:34:13 [DEBUG]: [EventBus] Subscriber registered for: complaint:resolved
+2026-05-27 09:34:13 [DEBUG]: [EventBus] Subscriber registered for: sla:breached
+2026-05-27 09:34:13 [DEBUG]: [EventBus] Subscriber registered for: escalation:triggered
+2026-05-27 09:34:13 [DEBUG]: [EventBus] Subscriber registered for: announcement:created
+2026-05-27 09:34:13 [INFO]: [EventSubscribers] All event subscribers registered
+2026-05-27 09:34:13 [INFO]: [SLAEngine] SLA monitoring started
+2026-05-27 09:34:13 [INFO]: [Workers] Background workers started
+2026-05-27 09:34:13 [INFO]: 
+2026-05-27 09:34:13 [INFO]:  MLA-Grievance-System started successfully
+2026-05-27 09:34:13 [INFO]:  Server:     http://localhost:5000
+2026-05-27 09:34:13 [INFO]:  API Docs:   http://localhost:5000/api-docs
+2026-05-27 09:34:13 [INFO]:  API Base:   http://localhost:5000/api/v1
+2026-05-27 09:34:13 [INFO]: 
+ Environment: development
+2026-05-27 09:34:13 [INFO]: 
+2026-05-27 09:34:35 [INFO]: [SmsService] Twilio client initialised successfully.
+2026-05-27 09:34:37 [INFO]: Redis: Connected
+2026-05-27 09:34:37 [INFO]: ✓ Redis connected successfully {"url":"rediss:***@relative-dove-70302.upstash.io:6379","protocol":"rediss"}
+2026-05-27 09:34:37 [INFO]: Cache Service initialized
+2026-05-27 09:34:37 [INFO]: ✓ Redis Cache layer initialized
+2026-05-27 09:34:37 [INFO]: Redis: Ready
+2026-05-27 09:34:40 [INFO]: MongoDB connected: ac-tmfvyxl-shard-00-01.9imrfua.mongodb.net
+2026-05-27 09:34:40 [INFO]: [WebSocket] Socket.IO initialized
+2026-05-27 09:34:40 [DEBUG]: [EventBus] Subscriber registered for: complaint:created
+2026-05-27 09:34:40 [DEBUG]: [EventBus] Subscriber registered for: assignment:created
+2026-05-27 09:34:40 [DEBUG]: [EventBus] Subscriber registered for: complaint:status_changed
+2026-05-27 09:34:40 [DEBUG]: [EventBus] Subscriber registered for: complaint:resolved
+2026-05-27 09:34:40 [DEBUG]: [EventBus] Subscriber registered for: sla:breached
+2026-05-27 09:34:40 [DEBUG]: [EventBus] Subscriber registered for: escalation:triggered
+2026-05-27 09:34:40 [DEBUG]: [EventBus] Subscriber registered for: announcement:created
+2026-05-27 09:34:40 [INFO]: [EventSubscribers] All event subscribers registered
+2026-05-27 09:34:40 [INFO]: [SLAEngine] SLA monitoring started
+2026-05-27 09:34:40 [INFO]: [Workers] Background workers started
+2026-05-27 09:34:40 [INFO]: 
+2026-05-27 09:34:40 [INFO]:  MLA-Grievance-System started successfully
+2026-05-27 09:34:40 [INFO]:  Server:     http://localhost:5000
+2026-05-27 09:34:40 [INFO]:  API Docs:   http://localhost:5000/api-docs
+2026-05-27 09:34:40 [INFO]:  API Base:   http://localhost:5000/api/v1
+2026-05-27 09:34:40 [INFO]: 
+ Environment: development
+2026-05-27 09:34:40 [INFO]: 
+2026-05-27 09:44:22 [INFO]: [SmsService] Twilio client initialised successfully.
+2026-05-27 09:44:26 [INFO]: [SmsService] Twilio client initialised successfully.
+2026-05-27 09:44:26 [INFO]: Redis: Connected
+2026-05-27 09:44:26 [INFO]: ✓ Redis connected successfully {"url":"rediss:***@relative-dove-70302.upstash.io:6379","protocol":"rediss"}
+2026-05-27 09:44:26 [INFO]: Cache Service initialized
+2026-05-27 09:44:26 [INFO]: ✓ Redis Cache layer initialized
+2026-05-27 09:44:26 [INFO]: Redis: Ready
+2026-05-27 09:44:28 [INFO]: MongoDB connected: ac-tmfvyxl-shard-00-01.9imrfua.mongodb.net
+2026-05-27 09:44:28 [INFO]: [WebSocket] Socket.IO initialized
+2026-05-27 09:44:28 [DEBUG]: [EventBus] Subscriber registered for: complaint:created
+2026-05-27 09:44:28 [DEBUG]: [EventBus] Subscriber registered for: assignment:created
+2026-05-27 09:44:28 [DEBUG]: [EventBus] Subscriber registered for: complaint:status_changed
+2026-05-27 09:44:28 [DEBUG]: [EventBus] Subscriber registered for: complaint:resolved
+2026-05-27 09:44:28 [DEBUG]: [EventBus] Subscriber registered for: sla:breached
+2026-05-27 09:44:28 [DEBUG]: [EventBus] Subscriber registered for: escalation:triggered
+2026-05-27 09:44:28 [DEBUG]: [EventBus] Subscriber registered for: announcement:created
+2026-05-27 09:44:28 [INFO]: [EventSubscribers] All event subscribers registered
+2026-05-27 09:44:28 [INFO]: [SLAEngine] SLA monitoring started
+2026-05-27 09:44:28 [INFO]: [Workers] Background workers started
+2026-05-27 09:44:28 [INFO]: 
+2026-05-27 09:44:28 [INFO]:  MLA-Grievance-System started successfully
+2026-05-27 09:44:28 [INFO]:  Server:     http://localhost:5000
+2026-05-27 09:44:28 [INFO]:  API Docs:   http://localhost:5000/api-docs
+2026-05-27 09:44:28 [INFO]:  API Base:   http://localhost:5000/api/v1
+2026-05-27 09:44:28 [INFO]: 
+ Environment: development
+2026-05-27 09:44:28 [INFO]: 
+2026-05-27 09:54:46 [INFO]: [SmsService] Twilio client initialised successfully.
+2026-05-27 09:54:48 [INFO]: Redis: Connected
+2026-05-27 09:54:48 [INFO]: ✓ Redis connected successfully {"url":"rediss:***@relative-dove-70302.upstash.io:6379","protocol":"rediss"}
+2026-05-27 09:54:48 [INFO]: Cache Service initialized
+2026-05-27 09:54:48 [INFO]: ✓ Redis Cache layer initialized
+2026-05-27 09:54:48 [INFO]: Redis: Ready
+2026-05-27 09:54:49 [INFO]: MongoDB connected: ac-tmfvyxl-shard-00-00.9imrfua.mongodb.net
+2026-05-27 09:54:49 [INFO]: [WebSocket] Socket.IO initialized
+2026-05-27 09:54:49 [DEBUG]: [EventBus] Subscriber registered for: complaint:created
+2026-05-27 09:54:49 [DEBUG]: [EventBus] Subscriber registered for: assignment:created
+2026-05-27 09:54:49 [DEBUG]: [EventBus] Subscriber registered for: complaint:status_changed
+2026-05-27 09:54:49 [DEBUG]: [EventBus] Subscriber registered for: complaint:resolved
+2026-05-27 09:54:49 [DEBUG]: [EventBus] Subscriber registered for: sla:breached
+2026-05-27 09:54:49 [DEBUG]: [EventBus] Subscriber registered for: escalation:triggered
+2026-05-27 09:54:49 [DEBUG]: [EventBus] Subscriber registered for: announcement:created
+2026-05-27 09:54:49 [INFO]: [EventSubscribers] All event subscribers registered
+2026-05-27 09:54:49 [INFO]: [SLAEngine] SLA monitoring started
+2026-05-27 09:54:49 [INFO]: [Workers] Background workers started
+2026-05-27 09:54:50 [INFO]: 
+2026-05-27 09:54:50 [INFO]:  MLA-Grievance-System started successfully
+2026-05-27 09:54:50 [INFO]:  Server:     http://localhost:5000
+2026-05-27 09:54:50 [INFO]:  API Docs:   http://localhost:5000/api-docs
+2026-05-27 09:54:50 [INFO]:  API Base:   http://localhost:5000/api/v1
+2026-05-27 09:54:50 [INFO]: 
+ Environment: development
+2026-05-27 09:54:50 [INFO]: 
+2026-05-27 09:55:03 [INFO]: [SmsService] Twilio client initialised successfully.
+2026-05-27 09:55:05 [INFO]: Redis: Connected
+2026-05-27 09:55:05 [INFO]: ✓ Redis connected successfully {"url":"rediss:***@relative-dove-70302.upstash.io:6379","protocol":"rediss"}
+2026-05-27 09:55:05 [INFO]: Cache Service initialized
+2026-05-27 09:55:05 [INFO]: ✓ Redis Cache layer initialized
+2026-05-27 09:55:06 [INFO]: Redis: Ready
+2026-05-27 09:55:06 [INFO]: MongoDB connected: ac-tmfvyxl-shard-00-00.9imrfua.mongodb.net
+2026-05-27 09:55:06 [INFO]: [WebSocket] Socket.IO initialized
+2026-05-27 09:55:06 [DEBUG]: [EventBus] Subscriber registered for: complaint:created
+2026-05-27 09:55:06 [DEBUG]: [EventBus] Subscriber registered for: assignment:created
+2026-05-27 09:55:06 [DEBUG]: [EventBus] Subscriber registered for: complaint:status_changed
+2026-05-27 09:55:06 [DEBUG]: [EventBus] Subscriber registered for: complaint:resolved
+2026-05-27 09:55:06 [DEBUG]: [EventBus] Subscriber registered for: sla:breached
+2026-05-27 09:55:06 [DEBUG]: [EventBus] Subscriber registered for: escalation:triggered
+2026-05-27 09:55:06 [DEBUG]: [EventBus] Subscriber registered for: announcement:created
+2026-05-27 09:55:06 [INFO]: [EventSubscribers] All event subscribers registered
+2026-05-27 09:55:06 [INFO]: [SLAEngine] SLA monitoring started
+2026-05-27 09:55:06 [INFO]: [Workers] Background workers started
+2026-05-27 09:55:06 [INFO]: 
+2026-05-27 09:55:06 [INFO]:  MLA-Grievance-System started successfully
+2026-05-27 09:55:06 [INFO]:  Server:     http://localhost:5000
+2026-05-27 09:55:06 [INFO]:  API Docs:   http://localhost:5000/api-docs
+2026-05-27 09:55:06 [INFO]:  API Base:   http://localhost:5000/api/v1
+2026-05-27 09:55:06 [INFO]: 
+ Environment: development
+2026-05-27 09:55:06 [INFO]: 
+2026-05-27 09:55:22 [INFO]: [SmsService] Twilio client initialised successfully.
+2026-05-27 09:55:23 [INFO]: Redis: Connected
+2026-05-27 09:55:23 [INFO]: ✓ Redis connected successfully {"url":"rediss:***@relative-dove-70302.upstash.io:6379","protocol":"rediss"}
+2026-05-27 09:55:23 [INFO]: Cache Service initialized
+2026-05-27 09:55:23 [INFO]: ✓ Redis Cache layer initialized
+2026-05-27 09:55:23 [INFO]: Redis: Ready
+2026-05-27 09:55:24 [INFO]: MongoDB connected: ac-tmfvyxl-shard-00-02.9imrfua.mongodb.net
+2026-05-27 09:55:24 [INFO]: [WebSocket] Socket.IO initialized
+2026-05-27 09:55:24 [DEBUG]: [EventBus] Subscriber registered for: complaint:created
+2026-05-27 09:55:24 [DEBUG]: [EventBus] Subscriber registered for: assignment:created
+2026-05-27 09:55:24 [DEBUG]: [EventBus] Subscriber registered for: complaint:status_changed
+2026-05-27 09:55:24 [DEBUG]: [EventBus] Subscriber registered for: complaint:resolved
+2026-05-27 09:55:24 [DEBUG]: [EventBus] Subscriber registered for: sla:breached
+2026-05-27 09:55:24 [DEBUG]: [EventBus] Subscriber registered for: escalation:triggered
+2026-05-27 09:55:24 [DEBUG]: [EventBus] Subscriber registered for: announcement:created
+2026-05-27 09:55:24 [INFO]: [EventSubscribers] All event subscribers registered
+2026-05-27 09:55:24 [INFO]: [SLAEngine] SLA monitoring started
+2026-05-27 09:55:24 [INFO]: [Workers] Background workers started
+2026-05-27 09:55:24 [INFO]: 
+2026-05-27 09:55:24 [INFO]:  MLA-Grievance-System started successfully
+2026-05-27 09:55:24 [INFO]:  Server:     http://localhost:5000
+2026-05-27 09:55:24 [INFO]:  API Docs:   http://localhost:5000/api-docs
+2026-05-27 09:55:24 [INFO]:  API Base:   http://localhost:5000/api/v1
+2026-05-27 09:55:24 [INFO]: 
+ Environment: development
+2026-05-27 09:55:24 [INFO]: 

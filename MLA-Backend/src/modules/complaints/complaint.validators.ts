@@ -28,7 +28,11 @@ const complaintValidators = {
       .optional()
       .isArray({ min: 2, max: 2 })
       .withMessage('Coordinates must be [longitude, latitude]'),
-    body('location.address')
+    body('address')
+      .optional()
+      .trim()
+      .isLength({ max: 500 }),
+    body('landmark')
       .optional()
       .trim()
       .isLength({ max: 500 }),

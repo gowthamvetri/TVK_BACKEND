@@ -17,9 +17,9 @@ export interface IComplaint extends Document {
   location?: {
     type: string;
     coordinates: number[];
-    address?: string;
-    landmark?: string;
   };
+  address?: string;
+  landmark?: string;
   images?: {
     url?: string;
     publicId?: string;
@@ -107,9 +107,9 @@ const complaintSchema = new mongoose.Schema<IComplaint>(
         type: [Number], // [longitude, latitude]
         default: [0, 0],
       },
-      address: String,
-      landmark: String,
     },
+    address: String,
+    landmark: String,
     images: [
       {
         url: String,

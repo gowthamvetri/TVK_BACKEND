@@ -167,8 +167,8 @@ export const createTestComplaint = (overrides = {}) => ({
   ward: 1,
   location: {
     coordinates: [72.8526, 19.0176],
-    address: 'Mumbai, Maharashtra',
   },
+  address: 'Mumbai, Maharashtra',
   images: [],
   assignedOfficer: null,
   department: null,

@@ -18,6 +18,7 @@ export interface IAnnouncementCreateDTO {
   body: string;
   category?: string;
   targetWards?: number[];
+  publishDate?: Date;
   images?: IAnnouncementImage[];
   expiresAt?: Date;
 }

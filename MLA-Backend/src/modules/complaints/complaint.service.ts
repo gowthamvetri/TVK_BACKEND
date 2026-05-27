@@ -26,10 +26,10 @@ export interface ICreateComplaintDTO {
   priority?: string;
   location?: {
     type?: string;
-    address?: string;
-    landmark?: string;
     coordinates?: number[];
   };
+  address?: string;
+  landmark?: string;
   images?: { url?: string; publicId?: string }[];
   department?: string;
   [key: string]: unknown;
@@ -95,19 +95,19 @@ const createComplaint = async (citizenId: string, complaintData: ICreateComplain
   const slaDeadline = new Date(Date.now() + slaHours * 60 * 60 * 1000);
 
   const citizenObjectId = new mongoose.Types.ObjectId(citizenId);
-  const { location, ...rest } = complaintData;
+  const { location, address, landmark, ...rest } = complaintData;
   const normalizedLocation = location
     ? {
         type: 'Point',
         coordinates: location.coordinates || [0, 0],
-        address: location.address,
-        landmark: location.landmark,
       }
     : undefined;
 
   const complaint = await complaintRepository.create({
     ...rest,
     ...(normalizedLocation ? { location: normalizedLocation } : {}),
+    ...(address ? { address } : {}),
+    ...(landmark ? { landmark } : {}),
     trackingId,
     citizen: citizenObjectId,
     status: COMPLAINT_STATUS.CREATED,
@@ -344,8 +344,8 @@ const listComplaints = async (query: IComplaintQuery, userContext: Partial<IAuth
       { title: { $regex: escapedSearch, $options: 'i' } },
       { trackingId: { $regex: escapedSearch, $options: 'i' } },
       { description: { $regex: escapedSearch, $options: 'i' } },
-      { 'location.address': { $regex: escapedSearch, $options: 'i' } },
-      { 'location.landmark': { $regex: escapedSearch, $options: 'i' } },
+      { address: { $regex: escapedSearch, $options: 'i' } },
+      { landmark: { $regex: escapedSearch, $options: 'i' } },
     ];
   }
   if (query.fromDate || query.toDate) {

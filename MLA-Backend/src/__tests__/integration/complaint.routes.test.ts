@@ -53,9 +53,9 @@ describe('Complaint Routes - Integration Tests', () => {
           ward: 1,
           location: {
             coordinates: [72.8526, 19.0176],
-            address: 'Mumbai, Maharashtra',
-            landmark: 'Near Market',
           },
+          address: 'Mumbai, Maharashtra',
+          landmark: 'Near Market',
         });
 
       expect(res.status).toBe(201);
@@ -91,7 +91,8 @@ describe('Complaint Routes - Integration Tests', () => {
           category: 'water_supply',
           priority: 'high',
           ward: 1,
-          location: { coordinates: [72.8526, 19.0176], address: 'Test' },
+          location: { coordinates: [72.8526, 19.0176] },
+          address: 'Test',
         });
 
       expect(res.status).toBe(201);
