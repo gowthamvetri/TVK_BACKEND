@@ -17,6 +17,10 @@ const swaggerOptions = {
     },
     servers: [
       {
+        url: `https://tvk-backend-ak7l.onrender.com/api/${config.app.apiVersion}`,
+        description: 'Production Server (Render)',
+      },
+      {
         url: `http://localhost:${config.app.port}/api/${config.app.apiVersion}`,
         description: 'Development Server',
       },

@@ -15,7 +15,8 @@ import officialsService from '../officials/officials.service';
 import eventBus from '../../shared/events/eventBus';
 import EVENTS from '../../shared/events/eventNames';
 import logger from '../../shared/logger';
-import smsService from '../../shared/services/sms.service';
+import { otpQueue } from '../../queues';
+import { JOB_NAMES, PRIORITIES } from '../../shared/queues/queue.constants';
 
 interface IUserTokenPayload {
   _id: mongoose.Types.ObjectId | string;
@@ -91,8 +92,12 @@ const sendRegistrationOTP = async (phone: string) => {
   const otp = generateOTP(6);
   await authRepository.createOTP(phone, otp, 'registration');
 
-  // Send OTP via SMS
-  await smsService.sendOTP(phone, otp, 'registration');
+  // Asynchronously send OTP via Queue
+  await otpQueue.add(
+    JOB_NAMES.SEND_OTP,
+    { phone, otp, purpose: 'registration' },
+    { priority: PRIORITIES.CRITICAL }
+  );
 
   logger.info(`[AuthService] Registration OTP generated for ${phone}: ${config.app.isDevelopment ? otp : '***'}`);
 
@@ -238,8 +243,12 @@ const sendForgotPinOTP = async (phone: string) => {
   const otp = generateOTP(6);
   await authRepository.createOTP(phone, otp, 'reset_pin');
 
-  // Send OTP via SMS
-  await smsService.sendOTP(phone, otp, 'reset');
+  // Asynchronously send OTP via Queue
+  await otpQueue.add(
+    JOB_NAMES.SEND_OTP,
+    { phone, otp, purpose: 'forgot_pin' },
+    { priority: PRIORITIES.CRITICAL }
+  );
 
   logger.info(`[AuthService] Reset PIN OTP generated for ${phone}: ${config.app.isDevelopment ? otp : '***'}`);
 

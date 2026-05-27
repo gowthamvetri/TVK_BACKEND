@@ -40,8 +40,8 @@ services:
       # - MONGODB_URI=mongodb+srv://user:pass@cluster.mongodb.net/db
       
       # Redis (uncomment when using redis service below)
-      # - REDIS_URL=redis://redis:6379
-      # - REDIS_ENABLED=true
+      - REDIS_URL=redis://redis:6379
+      - REDIS_ENABLED=true
       
       # External Services (configure in .env)
       # - CLOUDINARY_CLOUD_NAME
@@ -108,33 +108,33 @@ services:
   #   - REDIS_URL=redis://redis:6379
   #   - REDIS_ENABLED=true
   
-  # redis:
-  #   image: redis:7-alpine
-  #   container_name: mla-redis
-  #   command: redis-server --appendonly yes --requirepass ${REDIS_PASSWORD:-}
-  #   
-  #   ports:
-  #     - "${REDIS_PORT:-6379}:6379"
-  #   
-  #   volumes:
-  #     # Persistent data for Redis
-  #     - redis-data:/data
-  #   
-  #   restart: unless-stopped
-  #   
-  #   healthcheck:
-  #     test: ["CMD", "redis-cli", "ping"]
-  #     interval: 10s
-  #     timeout: 3s
-  #     retries: 3
-  #   
-  #   networks:
-  #     - mla-network
-  #   
-  #   deploy:
-  #     resources:
-  #       limits:
-  #         memory: 256M
+  redis:
+    image: redis:7-alpine
+    container_name: mla-redis
+    command: redis-server --appendonly yes
+    
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    
+    volumes:
+      # Persistent data for Redis
+      - redis-data:/data
+    
+    restart: unless-stopped
+    
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+    
+    networks:
+      - mla-network
+    
+    deploy:
+      resources:
+        limits:
+          memory: 256M
 
 # ============================================
 # OPTIONAL: MongoDB Service
@@ -172,9 +172,9 @@ networks:
 # Volumes (currently not used - local volumes via ./uploads and ./logs)
 # ============================================
 # Uncomment below if using Redis or MongoDB containers
-# volumes:
-#   redis-data:
-#     driver: local
+volumes:
+  redis-data:
+    driver: local
 #   mongo-data:
 #     driver: local
   #   driver: local

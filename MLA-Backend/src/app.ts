@@ -73,9 +73,10 @@ import officialRoutes from './modules/officials/routes';
 
 // === WebSocket & Workers ===
 import { initializeWebSocket } from './websocket';
-import startWorkers from './workers';
+import { startWorkers } from './workers';
 import registerEventSubscribers from './modules/notifications/eventSubscribers';
 import { start as startSlaEngine } from './modules/complaints/sla.engine';
+import bullBoardAdapter from './monitoring/bull-board';
 
 // ======================================================
 // APPLICATION SETUP
@@ -188,6 +189,9 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
   customCss: '.swagger-ui .topbar { display: none }',
   customSiteTitle: 'MLA Grievance API Docs',
 }));
+
+// === Background Queue Monitoring Dashboard ===
+app.use('/admin/queues', bullBoardAdapter.getRouter());
 
 // === API Routes ===
 const apiBase = `/api/${config.app.apiVersion}`;

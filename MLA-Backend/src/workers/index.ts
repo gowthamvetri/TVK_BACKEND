@@ -1,55 +1,32 @@
 /**
- * Workers - Cron Jobs & Background Tasks
- *
- * Lightweight scheduled tasks for free-tier deployment.
- * FUTURE UPGRADE: Replace with BullMQ workers.
+ * BullMQ Distributed Workers Initialization
  */
-import cron from 'node-cron';
-import analyticsService from '../modules/analytics/analytics.service';
 import logger from '../shared/logger';
-import fs from 'fs';
-import path from 'path';
+import { cleanupQueue, analyticsQueue } from '../queues';
+import { JOB_NAMES } from '../shared/queues/queue.constants';
+import './otp.worker';
+import './notification.worker';
+import './escalation.worker';
+import './analytics.worker';
+import './reports.worker';
+import './uploads.worker';
+import './cleanup.worker';
 
-const startWorkers = () => {
-  // === Daily Analytics Precomputation ===
-  // Runs at midnight every day
-  cron.schedule('0 0 * * *', async () => {
-    logger.info('[Worker] Running daily analytics precomputation...');
-    await analyticsService.precomputeDailyAnalytics();
-  });
+export const startWorkers = async () => {
+  logger.info('[Workers] All BullMQ workers have been initialized and are ready to process distributed jobs.');
 
-  // === Cleanup expired uploads (temp files) ===
-  // Runs at 3 AM every day
-  cron.schedule('0 3 * * *', async () => {
-    const uploadsDir = path.join(__dirname, '../../uploads');
+  // Setup repeatable jobs
+  await cleanupQueue.add(
+    JOB_NAMES.CLEANUP_STALE_DATA,
+    { type: 'otp' },
+    { repeat: { pattern: '0 3 * * *' } } // 3 AM every day
+  );
 
-    try {
-      if (fs.existsSync(uploadsDir)) {
-        const files = fs.readdirSync(uploadsDir);
-        const now = Date.now();
-        let cleaned = 0;
+  await analyticsQueue.add(
+    JOB_NAMES.AGGREGATE_KPIS,
+    { period: 'daily' },
+    { repeat: { pattern: '0 0 * * *' } } // Midnight every day
+  );
 
-        files.forEach((file) => {
-          const filePath = path.join(uploadsDir, file);
-          const stat = fs.statSync(filePath);
-          const ageHours = (now - stat.mtimeMs) / (1000 * 60 * 60);
-
-          if (ageHours > 24) {
-            fs.unlinkSync(filePath);
-            cleaned += 1;
-          }
-        });
-
-        if (cleaned > 0) {
-          logger.info(`[Worker] Cleaned ${cleaned} expired temp upload files`);
-        }
-      }
-    } catch (error) {
-      logger.error('[Worker] Upload cleanup failed:', error);
-    }
-  });
-
-  logger.info('[Workers] Background workers started');
+  logger.info('[Workers] Repeatable jobs registered.');
 };
-
-export default startWorkers;

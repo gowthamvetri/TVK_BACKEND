@@ -64,6 +64,10 @@ const complaintValidators = {
     query('latitude').isFloat({ min: -90, max: 90 }).withMessage('Valid latitude is required'),
     query('maxDistance').optional().isInt({ min: 100, max: 5000 }),
   ],
+
+  getByWard: [
+    param('ward').isInt({ min: 1 }).withMessage('Valid ward number is required'),
+  ],
 };
 
 export default complaintValidators;

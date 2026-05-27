@@ -11,7 +11,7 @@
 3. [Architecture](#architecture)
 4. [Technology Stack](#technology-stack)
 5. [Setup Instructions](#setup-instructions)
-6. [API Endpoints (67 Total)](#api-endpoints-67-total)
+6. [API Endpoints (77 Total)](#api-endpoints-77-total)
 7. [Testing Guide](#testing-guide)
 8. [Coverage Directory](#coverage-directory)
 9. [Database Models](#database-models)
@@ -33,7 +33,7 @@ An **Enterprise-grade Modular Monolith** backend system for constituency-level c
 
 ### Key Features
 
-✅ **67 API Endpoints** across 14 modules  
+✅ **77 API Endpoints** across 15 modules  
 ✅ **Role-Based Access Control (RBAC)** - 4 roles with ward-level scoping  
 ✅ **OTP-based Authentication** - Phone-based registration and login  
 ✅ **Real-time Notifications** - Socket.IO for live updates  
@@ -86,7 +86,7 @@ src/
 ├── database/
 │   ├── connection.ts              # MongoDB connection manager
 │   └── seed.ts                    # Development seed data
-├── modules/                       # 14 domain modules
+├── modules/                       # 15 domain modules
 │   ├── auth/                      # Authentication (OTP, PIN, JWT)
 │   ├── users/                     # User management & profiles
 │   ├── complaints/                # Complaint lifecycle & SLA
@@ -96,7 +96,9 @@ src/
 │   ├── analytics/                 # KPI & aggregation
 │   ├── reports/                   # PDF/CSV exports
 │   ├── announcements/             # Public announcements
-│   ├── schemes/                   # Government schemes/events
+│   ├── events/                    # Public events
+│   ├── schemes/                   # Government schemes
+│   ├── scheme-applications/       # Citizen scheme applications
 │   ├── dashboard/                 # Role-specific dashboards
 │   ├── feedback/                  # App feedback collection
 │   ├── uploads/                   # File upload management
@@ -144,7 +146,7 @@ src/
 │  │ (Helmet) │  (JWT)   │   Handling          │  │
 │  └──────────┴──────────┴──────────────────────┘  │
 ├──────────────────────────────────────────────────┤
-│        14 Domain Modules (Service Layer)         │
+│        15 Domain Modules (Service Layer)         │
 │  ┌────────┬────────┬──────────┬──────────────┐  │
 │  │ Auth   │Complnts│Escalation│Analytics    │  │
 │  │ Users  │ SLA    │Events    │ Notifications│  │
@@ -289,7 +291,7 @@ npm run format       # Prettier formatting
 
 ---
 
-## API Endpoints (67 Total)
+## API Endpoints (77 Total)
 
 ### Authentication (9 Endpoints)
 ```
@@ -367,6 +369,24 @@ GET    /schemes/:id                      Get scheme
 POST   /schemes                          Create scheme
 PUT    /schemes/:id                      Update scheme
 PATCH  /schemes/:id/deactivate          Deactivate scheme
+```
+
+### Events (5 Endpoints)
+```
+GET    /events                          List events
+GET    /events/:id                      Get event
+POST   /events                          Create event
+PUT    /events/:id                      Update event
+PATCH  /events/:id/deactivate          Deactivate event
+```
+
+### Scheme Applications (5 Endpoints)
+```
+POST   /scheme-applications             Apply for scheme
+GET    /scheme-applications/my-applications My applications
+GET    /scheme-applications/scheme/:id  List scheme applications (Admin)
+GET    /scheme-applications/:id         Get application
+PATCH  /scheme-applications/:id/status  Update status
 ```
 
 ### Analytics (4 Endpoints)
@@ -583,7 +603,9 @@ Target: > 80% coverage on core modules
   priority: 'low' | 'medium' | 'high'
   status: 'created' | 'assigned' | 'in_progress' | 'escalated' | 'resolved'
   ward: number (required)
-  location: { coordinates: [longitude, latitude], address, landmark }
+  location: { type: 'Point', coordinates: [longitude, latitude] }
+  address: string
+  landmark: string
   attachments: [{ url, publicId }]
   citizenId: ObjectId (ref: User)
   assignedOfficerId: ObjectId (ref: User)
@@ -609,7 +631,52 @@ Target: > 80% coverage on core modules
 }
 ```
 
-### 4. Notification Model
+### 4. Scheme Model
+```typescript
+{
+  _id: ObjectId
+  title: string (required)
+  description: string
+  type: 'scheme' | 'event' | 'program'
+  requiredDocuments: [{ name: string, isRequired: boolean }]
+  targetWards: [number]
+  images: [{ url, publicId }]
+  createdBy: ObjectId (ref: User)
+  isActive: boolean
+  createdAt: Date
+}
+```
+
+### 5. Event Model
+```typescript
+{
+  _id: ObjectId
+  title: string (required)
+  description: string
+  eventDate: Date
+  venueName: string
+  images: [{ url, publicId }]
+  author: ObjectId (ref: User)
+  isActive: boolean
+  createdAt: Date
+}
+```
+
+### 6. Scheme Application Model
+```typescript
+{
+  _id: ObjectId
+  scheme: ObjectId (ref: Scheme)
+  citizen: ObjectId (ref: User)
+  status: 'pending' | 'approved' | 'rejected'
+  submittedDocuments: [{ documentName, url, publicId }]
+  applicationData: object
+  remarks: string
+  createdAt: Date
+}
+```
+
+### 7. Notification Model
 ```typescript
 {
   _id: ObjectId

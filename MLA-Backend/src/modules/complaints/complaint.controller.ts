@@ -124,6 +124,12 @@ const getNearbyComplaints = asyncHandler(async (req: Request<unknown, unknown, u
   return ApiResponse.success(res, { data: complaints });
 });
 
+const getComplaintsByWard = asyncHandler(async (req: Request<{ ward: string }, unknown, unknown, IComplaintQuery>, res: Response) => {
+  const queryWithWard = { ...req.query, ward: req.params.ward };
+  const { data, total, page, limit } = await complaintService.listComplaints(queryWithWard, req.user!);
+  return ApiResponse.paginated(res, { data, total, page, limit });
+});
+
 const complaintController = {
   createComplaint,
   getComplaintById,
@@ -135,6 +141,7 @@ const complaintController = {
   upvoteComplaint,
   removeUpvote,
   getNearbyComplaints,
+  getComplaintsByWard,
 };
 
 export default complaintController;

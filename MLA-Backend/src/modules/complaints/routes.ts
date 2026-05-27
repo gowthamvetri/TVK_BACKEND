@@ -68,6 +68,27 @@ router.get('/', complaintController.listComplaints);
 
 /**
  * @swagger
+ * /complaints/ward/{ward}:
+ *   get:
+ *     tags: [Complaints]
+ *     summary: List complaints for a specific ward
+ *     parameters:
+ *       - in: path
+ *         name: ward
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     security: [{ bearerAuth: [] }]
+ */
+router.get(
+  '/ward/:ward',
+  complaintValidators.getByWard,
+  validate,
+  complaintController.getComplaintsByWard
+);
+
+/**
+ * @swagger
  * /complaints/nearby:
  *   get:
  *     tags: [Complaints]

@@ -17,6 +17,8 @@ import {
 import eventBus from '../../shared/events/eventBus';
 import EVENTS from '../../shared/events/eventNames';
 import logger from '../../shared/logger';
+import { escalationQueue, notificationQueue } from '../../queues';
+import { JOB_NAMES, PRIORITIES } from '../../shared/queues/queue.constants';
 
 export interface ICreateComplaintDTO {
   title?: string;
@@ -132,6 +134,18 @@ const createComplaint = async (citizenId: string, complaintData: ICreateComplain
     ward: complaint.ward,
     priority: complaint.priority,
   });
+
+  // Asynchronously Queue SLA Check
+  if (complaint.slaDeadline) {
+    const delayMs = complaint.slaDeadline.getTime() - Date.now();
+    if (delayMs > 0) {
+      await escalationQueue.add(
+        JOB_NAMES.SLA_CHECK,
+        { complaintId: complaint._id.toString() },
+        { delay: delayMs, priority: PRIORITIES.HIGH }
+      );
+    }
+  }
 
   logger.info(`[ComplaintService] Complaint created: ${trackingId}`);
 
@@ -254,6 +268,18 @@ const updateStatus = async (complaintId: string, newStatus: string, userId: stri
 
   if (newStatus === COMPLAINT_STATUS.RESOLVED) {
     eventBus.emit(EVENTS.COMPLAINT_RESOLVED, { complaintId, complaint: updated });
+  }
+
+  // Re-queue SLA Check if deadline changed and status is active
+  if (updated && updated.slaDeadline && [COMPLAINT_STATUS.ASSIGNED as string, COMPLAINT_STATUS.IN_PROGRESS as string].includes(updated.status)) {
+    const delayMs = updated.slaDeadline.getTime() - Date.now();
+    if (delayMs > 0) {
+      await escalationQueue.add(
+        JOB_NAMES.SLA_CHECK,
+        { complaintId: updated._id.toString() },
+        { delay: delayMs, priority: PRIORITIES.HIGH }
+      );
+    }
   }
 
   return updated;
