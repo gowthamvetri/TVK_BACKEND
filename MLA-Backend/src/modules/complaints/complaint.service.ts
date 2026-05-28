@@ -334,7 +334,8 @@ export interface IAuthUser {
  * List complaints with advanced filtering
  */
 const listComplaints = async (query: IComplaintQuery, userContext: Partial<IAuthUser> = {}) => {
-  const { page, limit, skip, sort } = buildPaginationQuery(query);
+  let { page, limit, skip, sort } = buildPaginationQuery(query);
+  if (!query.sort) sort = '-upvoteCount -createdAt';
   const filter: FilterQuery<IComplaint> = {};
 
   // SECURITY: Apply role-based filtering first and enforce restrictions (cannot be overridden by query params)
@@ -399,7 +400,8 @@ const listComplaints = async (query: IComplaintQuery, userContext: Partial<IAuth
  * Does not restrict by citizen ID so citizens can see ward issues
  */
 const listComplaintsByWard = async (ward: number, query: IComplaintQuery) => {
-  const { page, limit, skip, sort } = buildPaginationQuery(query);
+  let { page, limit, skip, sort } = buildPaginationQuery(query);
+  if (!query.sort) sort = '-upvoteCount -createdAt';
   const filter: FilterQuery<IComplaint> = { ward };
 
   if (query.status) filter.status = query.status;
