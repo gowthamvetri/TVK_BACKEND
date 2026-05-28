@@ -49,7 +49,7 @@ router.use(authenticate);
  */
 router.post(
   '/',
-  authorize('citizen'),
+  authorize('citizen','service_officer', 'ward_councillor', 'mla'),
   upload.array('images', 5),
   normalizeCreateBody,
   complaintValidators.create,
