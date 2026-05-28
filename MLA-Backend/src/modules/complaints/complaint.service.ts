@@ -85,7 +85,7 @@ const _checkComplaintAccess = (complaint: IComplaint, userContext: Partial<IAuth
 /**
  * Create a new complaint
  */
-const createComplaint = async (citizenId: string, complaintData: ICreateComplaintDTO) => {
+const createComplaint = async (userContext: IAuthUser, complaintData: ICreateComplaintDTO) => {
   const trackingId = generateTrackingId();
 
   // Calculate SLA deadline based on category-driven priority
@@ -96,7 +96,7 @@ const createComplaint = async (citizenId: string, complaintData: ICreateComplain
   const slaHours = SLA_DEADLINES[priority as keyof typeof SLA_DEADLINES] || SLA_DEADLINES[COMPLAINT_PRIORITY.MEDIUM];
   const slaDeadline = new Date(Date.now() + slaHours * 60 * 60 * 1000);
 
-  const citizenObjectId = new mongoose.Types.ObjectId(citizenId);
+  const creatorObjectId = new mongoose.Types.ObjectId(userContext.id);
   const { location, address, landmark, ...rest } = complaintData;
   const normalizedLocation = location
     ? {
@@ -111,7 +111,7 @@ const createComplaint = async (citizenId: string, complaintData: ICreateComplain
     ...(address ? { address } : {}),
     ...(landmark ? { landmark } : {}),
     trackingId,
-    citizen: citizenObjectId,
+    citizen: creatorObjectId,
     status: COMPLAINT_STATUS.CREATED,
     priority,
     slaDeadline,
@@ -122,8 +122,8 @@ const createComplaint = async (citizenId: string, complaintData: ICreateComplain
     complaint: complaint._id,
     fromStatus: null,
     toStatus: COMPLAINT_STATUS.CREATED,
-    changedBy: citizenObjectId,
-    changedByRole: ROLES.CITIZEN,
+    changedBy: creatorObjectId,
+    changedByRole: userContext.role,
     notes: 'Complaint created',
   });
 

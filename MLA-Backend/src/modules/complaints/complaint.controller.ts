@@ -29,7 +29,7 @@ const createComplaint = asyncHandler(async (req: Request<unknown, unknown, ICrea
     complaintData.images = uploadedImages;
   }
 
-  const complaint = await complaintService.createComplaint(req.user!.id, complaintData);
+  const complaint = await complaintService.createComplaint(req.user!, complaintData);
   return ApiResponse.created(res, { data: complaint, message: 'Complaint submitted successfully' });
 });
 
