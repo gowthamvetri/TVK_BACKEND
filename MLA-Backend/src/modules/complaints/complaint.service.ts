@@ -363,21 +363,31 @@ const listComplaints = async (query: IComplaintQuery, userContext: Partial<IAuth
   if (query.department) filter.department = query.department;
   if (query.slaBreached === 'true') filter.slaBreached = true;
   if (query.isEscalated === 'true') filter.isEscalated = true;
-  // SECURITY: Escape regex search terms to prevent regex injection
-  if (query.search) {
-    const escapedSearch = escapeRegex(query.search);
-    filter.$or = [
-      { title: { $regex: escapedSearch, $options: 'i' } },
-      { trackingId: { $regex: escapedSearch, $options: 'i' } },
-      { description: { $regex: escapedSearch, $options: 'i' } },
-      { address: { $regex: escapedSearch, $options: 'i' } },
-      { landmark: { $regex: escapedSearch, $options: 'i' } },
-    ];
-  }
   if (query.fromDate || query.toDate) {
     filter.createdAt = {};
     if (query.fromDate) filter.createdAt.$gte = new Date(query.fromDate);
     if (query.toDate) filter.createdAt.$lte = new Date(query.toDate);
+  }
+
+  // Advanced Search: N-Gram Regex
+  if (query.search) {
+    const escapedSearch = escapeRegex(query.search);
+    const searchWords = escapedSearch.split(/\s+/).filter((w) => w.length > 0);
+
+    const regexOrConditions = searchWords.map((word) => ({
+      $or: [
+        { title: { $regex: word, $options: 'i' } },
+        { description: { $regex: word, $options: 'i' } },
+        { address: { $regex: word, $options: 'i' } },
+        { landmark: { $regex: word, $options: 'i' } },
+        { trackingId: { $regex: word, $options: 'i' } },
+      ],
+    }));
+
+    if (regexOrConditions.length > 0) {
+      filter.$and = filter.$and || [];
+      filter.$and.push(...regexOrConditions);
+    }
   }
 
   const { data, total } = await complaintRepository.findAll(filter, { skip, limit, sort });
@@ -398,15 +408,25 @@ const listComplaintsByWard = async (ward: number, query: IComplaintQuery) => {
   if (query.department) filter.department = query.department;
   if (query.slaBreached === 'true') filter.slaBreached = true;
   if (query.isEscalated === 'true') filter.isEscalated = true;
+  // Advanced Search: N-Gram Regex
   if (query.search) {
     const escapedSearch = escapeRegex(query.search);
-    filter.$or = [
-      { title: { $regex: escapedSearch, $options: 'i' } },
-      { trackingId: { $regex: escapedSearch, $options: 'i' } },
-      { description: { $regex: escapedSearch, $options: 'i' } },
-      { address: { $regex: escapedSearch, $options: 'i' } },
-      { landmark: { $regex: escapedSearch, $options: 'i' } },
-    ];
+    const searchWords = escapedSearch.split(/\s+/).filter((w) => w.length > 0);
+
+    const regexOrConditions = searchWords.map((word) => ({
+      $or: [
+        { title: { $regex: word, $options: 'i' } },
+        { description: { $regex: word, $options: 'i' } },
+        { address: { $regex: word, $options: 'i' } },
+        { landmark: { $regex: word, $options: 'i' } },
+        { trackingId: { $regex: word, $options: 'i' } },
+      ],
+    }));
+
+    if (regexOrConditions.length > 0) {
+      filter.$and = filter.$and || [];
+      filter.$and.push(...regexOrConditions);
+    }
   }
 
   const { data, total } = await complaintRepository.findAll(filter, { skip, limit, sort });
