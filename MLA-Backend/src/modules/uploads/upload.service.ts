@@ -9,6 +9,8 @@ import logger from '../../shared/logger';
 import fs from 'fs';
 import path from 'path';
 
+import sharp from 'sharp';
+
 // Configure Cloudinary
 cloudinary.config({
   cloud_name: config.cloudinary.cloudName,
@@ -25,16 +27,26 @@ cloudinary.config({
  * @returns {Object} { url, publicId }
  */
 const uploadImage = async (filePath: string, folder: string = 'mla-grievance', metadata?: { resourceId?: string; resourceType?: string }) => {
+  let uploadFilePath = filePath;
+  let optimizedFilePath = '';
+
   try {
+    const isImage = filePath.match(/\.(jpg|jpeg|png|webp|gif)$/i);
     const uploadOptions: any = {
       folder,
-      resource_type: 'image',
-      transformation: [
-        { width: 1200, crop: 'limit' },     // Max width 1200px
-        { quality: 'auto:good' },             // Auto quality optimization
-        { fetch_format: 'auto' },             // Auto format (WebP when supported)
-      ],
+      resource_type: 'auto',
     };
+
+    if (isImage) {
+      optimizedFilePath = `${filePath.replace(/\.[^/.]+$/, '')}-optimized.webp`;
+      
+      await sharp(filePath)
+        .resize({ width: 1200, withoutEnlargement: true })
+        .webp({ quality: 80 })
+        .toFile(optimizedFilePath);
+
+      uploadFilePath = optimizedFilePath;
+    }
 
     // SECURITY: Store metadata for ownership verification
     if (metadata) {
@@ -44,7 +56,7 @@ const uploadImage = async (filePath: string, folder: string = 'mla-grievance', m
       };
     }
 
-    const result = await cloudinary.uploader.upload(filePath, uploadOptions);
+    const result = await cloudinary.uploader.upload(uploadFilePath, uploadOptions);
 
     return {
       url: result.secure_url,
@@ -55,14 +67,18 @@ const uploadImage = async (filePath: string, folder: string = 'mla-grievance', m
     logger.error('[UploadService] Image upload failed:', error);
     throw error;
   } finally {
-    // SECURITY: Always clean up temporary local file, whether upload succeeded or failed
+    // SECURITY: Always clean up temporary local file(s), whether upload succeeded or failed
     try {
       if (fs.existsSync(filePath)) {
         fs.unlinkSync(filePath);
-        logger.debug(`[UploadService] Temporary file cleaned up: ${filePath}`);
+        logger.debug(`[UploadService] Temporary original file cleaned up: ${filePath}`);
+      }
+      if (optimizedFilePath && fs.existsSync(optimizedFilePath)) {
+        fs.unlinkSync(optimizedFilePath);
+        logger.debug(`[UploadService] Temporary optimized file cleaned up: ${optimizedFilePath}`);
       }
     } catch (cleanupError) {
-      logger.warn(`[UploadService] Failed to cleanup temp file ${filePath}:`, cleanupError);
+      logger.warn(`[UploadService] Failed to cleanup temp files:`, cleanupError);
     }
   }
 };

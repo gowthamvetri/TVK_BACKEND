@@ -31,8 +31,8 @@ const schemeApplicationSchema = new mongoose.Schema<ISchemeApplication>(
     },
     status: {
       type: String,
-      enum: ['pending', 'approved', 'rejected'],
-      default: 'pending',
+      enum: ['applied', 'approved', 'rejected'],
+      default: 'applied',
       index: true,
     },
     submittedDocuments: [
