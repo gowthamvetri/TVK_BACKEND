@@ -31,7 +31,7 @@ const uploadImage = async (filePath: string, folder: string = 'mla-grievance', m
   let optimizedFilePath = '';
 
   try {
-    const isImage = filePath.match(/\.(jpg|jpeg|png|webp|gif)$/i);
+    const isImage = filePath.match(/\.(jpg|jpeg|png|webp|gif|heic|heif|avif)$/i);
     const isRaw = filePath.match(/\.(pdf|csv|doc|docx|txt|xls|xlsx)$/i);
     
     const uploadOptions: any = {
