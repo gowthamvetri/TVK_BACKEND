@@ -32,9 +32,11 @@ const uploadImage = async (filePath: string, folder: string = 'mla-grievance', m
 
   try {
     const isImage = filePath.match(/\.(jpg|jpeg|png|webp|gif)$/i);
+    const isRaw = filePath.match(/\.(pdf|csv|doc|docx|txt|xls|xlsx)$/i);
+    
     const uploadOptions: any = {
       folder,
-      resource_type: 'auto',
+      resource_type: isRaw ? 'raw' : 'auto',
     };
 
     if (isImage) {
