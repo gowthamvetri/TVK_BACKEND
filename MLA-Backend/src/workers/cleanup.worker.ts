@@ -1,4 +1,5 @@
 import { Worker, Job } from 'bullmq';
+import { defaultWorkerOptions } from '../shared/queues/queue.options';
 import { redisConnection } from '../shared/redis/connection';
 import { QUEUES, JOB_NAMES } from '../shared/queues/queue.constants';
 import { ICleanupStaleDataJob } from '../jobs/cleanup';
@@ -22,6 +23,7 @@ export const cleanupWorker = new Worker<ICleanupStaleDataJob>(
   },
   {
     connection: redisConnection,
+    ...defaultWorkerOptions,
     concurrency: 1,
   }
 );

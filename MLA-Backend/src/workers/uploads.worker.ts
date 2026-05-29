@@ -1,4 +1,5 @@
 import { Worker, Job } from 'bullmq';
+import { defaultWorkerOptions } from '../shared/queues/queue.options';
 import { redisConnection } from '../shared/redis/connection';
 import { QUEUES, JOB_NAMES } from '../shared/queues/queue.constants';
 import { IProcessImageJob } from '../jobs/uploads';
@@ -18,6 +19,7 @@ export const uploadsWorker = new Worker<IProcessImageJob>(
   },
   {
     connection: redisConnection,
+    ...defaultWorkerOptions,
     concurrency: 5,
   }
 );

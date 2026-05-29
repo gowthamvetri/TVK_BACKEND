@@ -1,4 +1,5 @@
 import { Worker, Job } from 'bullmq';
+import { defaultWorkerOptions } from '../shared/queues/queue.options';
 import { redisConnection } from '../shared/redis/connection';
 import { QUEUES, JOB_NAMES } from '../shared/queues/queue.constants';
 import { ISLACheckJob, IAutoEscalateJob } from '../jobs/escalations';
@@ -30,6 +31,7 @@ export const escalationWorker = new Worker<EscalationJob>(
   },
   {
     connection: redisConnection,
+    ...defaultWorkerOptions,
     concurrency: 2, // Process fewer SLA checks concurrently to avoid DB locks
   }
 );

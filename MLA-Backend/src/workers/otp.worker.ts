@@ -1,4 +1,5 @@
 import { Worker, Job } from 'bullmq';
+import { defaultWorkerOptions } from '../shared/queues/queue.options';
 import { redisConnection } from '../shared/redis/connection';
 import { QUEUES, JOB_NAMES } from '../shared/queues/queue.constants';
 import { ISendOTPJob } from '../jobs/otp';
@@ -21,6 +22,7 @@ export const otpWorker = new Worker<ISendOTPJob>(
   },
   {
     connection: redisConnection,
+    ...defaultWorkerOptions,
     concurrency: 5,
   }
 );

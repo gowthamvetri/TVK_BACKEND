@@ -1,4 +1,5 @@
 import { Worker, Job } from 'bullmq';
+import { defaultWorkerOptions } from '../shared/queues/queue.options';
 import { redisConnection } from '../shared/redis/connection';
 import { QUEUES, JOB_NAMES } from '../shared/queues/queue.constants';
 import { ISendSMSJob, IWebsocketBroadcastJob } from '../jobs/notifications';
@@ -38,6 +39,7 @@ export const notificationWorker = new Worker<NotificationJob>(
   },
   {
     connection: redisConnection,
+    ...defaultWorkerOptions,
     concurrency: 10, // Notifications can be highly concurrent
   }
 );
