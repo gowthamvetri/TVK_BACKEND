@@ -25,7 +25,6 @@ router.get('/:id', [param('id').isMongoId()], validate, schemeApplicationControl
 
 router.post(
   '/',
-  authorize('citizen'),
   upload.array('documents', 10), // Maximum 10 documents
   [
     body('schemeId').isMongoId().withMessage('Valid schemeId is required'),
