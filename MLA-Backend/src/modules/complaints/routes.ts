@@ -183,7 +183,6 @@ router.get(
  */
 router.post(
   '/:id/upvote',
-  authorize('citizen'),
   complaintValidators.getById,
   validate,
   complaintController.upvoteComplaint
@@ -198,7 +197,6 @@ router.post(
  */
 router.delete(
   '/:id/upvote',
-  authorize('citizen'),
   complaintValidators.getById,
   validate,
   complaintController.removeUpvote
