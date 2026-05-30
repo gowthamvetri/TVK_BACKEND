@@ -49,7 +49,24 @@ router.put(
   '/:id',
   authorize('mla', 'ward_councillor'),
   upload.array('images', 5),
-  [param('id').isMongoId()],
+  [
+    param('id').isMongoId(),
+    body('title').optional().trim().isLength({ min: 5, max: 200 }),
+    body('description').optional().trim().isLength({ min: 10, max: 5000 }),
+    body('category').optional().isIn(['all', 'women', 'men', 'children', 'transgender_people', 'school_students', 'college_students', 'senior_citizens', 'people_with_disabilities']),
+    body('requiredDocuments').optional().custom((value) => {
+      if (typeof value === 'string') {
+        try { JSON.parse(value); return true; } catch { throw new Error('Invalid JSON'); }
+      }
+      return Array.isArray(value);
+    }),
+    body('dynamicFields').optional().custom((value) => {
+      if (typeof value === 'string') {
+        try { JSON.parse(value); return true; } catch { throw new Error('Invalid JSON'); }
+      }
+      return Array.isArray(value);
+    }),
+  ],
   validate,
   schemeController.update
 );
