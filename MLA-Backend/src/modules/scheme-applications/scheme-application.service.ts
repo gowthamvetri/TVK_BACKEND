@@ -42,8 +42,25 @@ const apply = async (citizenId: string, data: IApplicationCreateDTO) => {
   if (scheme.dynamicFields && scheme.dynamicFields.length > 0) {
     const appData = data.applicationData || {};
     for (const field of scheme.dynamicFields) {
-      if (!appData[field] || (typeof appData[field] === 'string' && (appData[field] as string).trim() === '')) {
-        throw new ValidationError(`Required field missing: ${field}`);
+      const value = appData[field.label];
+      const isMissing = value === undefined || value === null || (typeof value === 'string' && value.trim() === '');
+
+      if (field.isRequired && isMissing) {
+        throw new ValidationError(`Required field missing: ${field.label}`);
+      }
+
+      if (!isMissing) {
+        if (field.type === 'number') {
+          if (isNaN(Number(value))) {
+            throw new ValidationError(`Field ${field.label} must be a valid number`);
+          }
+        } else if (field.type === 'select') {
+          if (field.options && field.options.length > 0) {
+            if (!field.options.includes(value as string)) {
+              throw new ValidationError(`Field ${field.label} must be one of: ${field.options.join(', ')}`);
+            }
+          }
+        }
       }
     }
   }

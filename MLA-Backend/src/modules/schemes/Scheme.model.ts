@@ -21,7 +21,12 @@ export interface IScheme extends Document {
     name: string;
     isRequired: boolean;
   }[];
-  dynamicFields?: string[];
+  dynamicFields?: {
+    label: string;
+    type: 'text' | 'number' | 'select';
+    options?: string[];
+    isRequired: boolean;
+  }[];
   createdBy: mongoose.Types.ObjectId;
   isActive: boolean;
   createdAt: Date;
@@ -89,8 +94,21 @@ const schemeSchema = new mongoose.Schema<IScheme>(
     ],
     dynamicFields: [
       {
-        type: String,
-        trim: true,
+        label: {
+          type: String,
+          required: true,
+          trim: true,
+        },
+        type: {
+          type: String,
+          enum: ['text', 'number', 'select'],
+          required: true,
+        },
+        options: [String],
+        isRequired: {
+          type: Boolean,
+          default: true,
+        },
       },
     ],
     createdBy: {
