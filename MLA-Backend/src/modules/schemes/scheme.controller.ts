@@ -10,7 +10,7 @@ import asyncHandler from '../../shared/utils/asyncHandler';
 type SchemeRequestBody = ISchemeCreateDTO & { images?: string | ISchemeImage[] };
 
 const create = asyncHandler(async (req: Request<unknown, unknown, SchemeRequestBody>, res: Response) => {
-  const { images, requiredDocuments, ...rest } = req.body;
+  const { images, requiredDocuments, dynamicFields, ...rest } = req.body;
   const schemeData: ISchemeCreateDTO = {
     ...rest,
     ...(Array.isArray(images) ? { images } : {}),
@@ -24,6 +24,16 @@ const create = asyncHandler(async (req: Request<unknown, unknown, SchemeRequestB
     }
   } else if (Array.isArray(requiredDocuments)) {
     schemeData.requiredDocuments = requiredDocuments;
+  }
+
+  if (typeof dynamicFields === 'string') {
+    try {
+      schemeData.dynamicFields = JSON.parse(dynamicFields);
+    } catch {
+      // Ignored, handled by validation
+    }
+  } else if (Array.isArray(dynamicFields)) {
+    schemeData.dynamicFields = dynamicFields;
   }
 
   if (req.files && Array.isArray(req.files) && req.files.length > 0) {
@@ -47,7 +57,7 @@ const list = asyncHandler(async (req: Request<unknown, unknown, unknown, IScheme
 });
 
 const update = asyncHandler(async (req: Request<{ id: string }, unknown, SchemeRequestBody>, res: Response) => {
-  const { images, requiredDocuments, ...rest } = req.body;
+  const { images, requiredDocuments, dynamicFields, ...rest } = req.body;
   let parsedImages: ISchemeImage[] | undefined;
 
   if (typeof images === 'string') {
@@ -76,6 +86,16 @@ const update = asyncHandler(async (req: Request<{ id: string }, unknown, SchemeR
     }
   } else if (Array.isArray(requiredDocuments)) {
     schemeData.requiredDocuments = requiredDocuments;
+  }
+
+  if (typeof dynamicFields === 'string') {
+    try {
+      schemeData.dynamicFields = JSON.parse(dynamicFields);
+    } catch {
+      // Ignored
+    }
+  } else if (Array.isArray(dynamicFields)) {
+    schemeData.dynamicFields = dynamicFields;
   }
 
   if (req.files && Array.isArray(req.files) && req.files.length > 0) {

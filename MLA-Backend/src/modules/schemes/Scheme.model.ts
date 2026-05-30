@@ -22,6 +22,7 @@ export interface IScheme extends Document {
     name: string;
     isRequired: boolean;
   }[];
+  dynamicFields?: string[];
   createdBy: mongoose.Types.ObjectId;
   isActive: boolean;
   createdAt: Date;
@@ -79,6 +80,12 @@ const schemeSchema = new mongoose.Schema<IScheme>(
           type: Boolean,
           default: true,
         },
+      },
+    ],
+    dynamicFields: [
+      {
+        type: String,
+        trim: true,
       },
     ],
     createdBy: {

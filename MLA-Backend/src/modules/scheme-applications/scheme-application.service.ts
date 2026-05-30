@@ -38,6 +38,16 @@ const apply = async (citizenId: string, data: IApplicationCreateDTO) => {
     }
   }
 
+  // Validate dynamic fields
+  if (scheme.dynamicFields && scheme.dynamicFields.length > 0) {
+    const appData = data.applicationData || {};
+    for (const field of scheme.dynamicFields) {
+      if (!appData[field] || (typeof appData[field] === 'string' && (appData[field] as string).trim() === '')) {
+        throw new ValidationError(`Required field missing: ${field}`);
+      }
+    }
+  }
+
   // Ensure user hasn't already applied
   const existing = await SchemeApplication.findOne({ scheme: data.schemeId, citizen: citizenId });
   if (existing) {

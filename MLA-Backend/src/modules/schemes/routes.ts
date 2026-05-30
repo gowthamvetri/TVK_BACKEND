@@ -34,6 +34,12 @@ router.post(
       }
       return Array.isArray(value);
     }),
+    body('dynamicFields').optional().custom((value) => {
+      if (typeof value === 'string') {
+        try { JSON.parse(value); return true; } catch { throw new Error('Invalid JSON'); }
+      }
+      return Array.isArray(value);
+    }),
   ],
   validate,
   schemeController.create
