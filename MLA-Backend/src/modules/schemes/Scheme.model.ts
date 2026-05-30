@@ -44,8 +44,18 @@ const schemeSchema = new mongoose.Schema<IScheme>(
     },
     category: {
       type: String,
-      enum: ['Women', 'Men', 'Children', 'Transgender', 'Schl students', 'Clg students', 'Elder citizen', 'Disabled ppl'],
-      default: 'Women',
+      enum: [
+        'all',
+        'women',
+        'men',
+        'children',
+        'transgender_people',
+        'school_students',
+        'college_students',
+        'senior_citizens',
+        'people_with_disabilities'
+      ],
+      default: 'all',
     },
     eligibility: {
       type: String,
