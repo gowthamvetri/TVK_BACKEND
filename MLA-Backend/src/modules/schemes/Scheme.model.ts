@@ -10,7 +10,6 @@ export interface IScheme extends Document {
   type: string;
   eligibility?: string;
   benefits?: string;
-  applicationLink?: string;
   startDate?: Date;
   endDate?: Date;
   images?: {
@@ -45,18 +44,14 @@ const schemeSchema = new mongoose.Schema<IScheme>(
     },
     type: {
       type: String,
-      enum: ['scheme', 'event', 'program'],
-      default: 'scheme',
+      enum: ['Women', 'Men', 'Children', 'Transgender', 'Schl students', 'Clg students', 'Elder citizen', 'Disabled ppl'],
+      default: 'Women',
     },
     eligibility: {
       type: String,
       trim: true,
     },
     benefits: {
-      type: String,
-      trim: true,
-    },
-    applicationLink: {
       type: String,
       trim: true,
     },
