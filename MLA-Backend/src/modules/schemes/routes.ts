@@ -27,7 +27,7 @@ router.post(
   [
     body('title').trim().isLength({ min: 5, max: 200 }),
     body('description').trim().isLength({ min: 10, max: 5000 }),
-    body('category').optional().isIn(['Women', 'Men', 'Children', 'Transgender', 'Schl students', 'Clg students', 'Elder citizen', 'Disabled ppl']),
+    body('category').optional().isIn(['all', 'women', 'men', 'children', 'transgender_people', 'school_students', 'college_students', 'senior_citizens', 'people_with_disabilities']),
     body('requiredDocuments').optional().custom((value) => {
       if (typeof value === 'string') {
         try { JSON.parse(value); return true; } catch { throw new Error('Invalid JSON'); }
