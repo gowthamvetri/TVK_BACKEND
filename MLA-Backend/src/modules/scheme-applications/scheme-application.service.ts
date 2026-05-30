@@ -64,7 +64,7 @@ const apply = async (citizenId: string, data: IApplicationCreateDTO) => {
 
 const getById = async (id: string) => {
   const application = await SchemeApplication.findById(id)
-    .populate('scheme', 'title type')
+    .populate('scheme', 'title category')
     .populate('citizen', 'name phone ward address');
   if (!application) throw new NotFoundError('Scheme Application not found');
   return application;
@@ -77,7 +77,7 @@ const listByCitizen = async (citizenId: string, query: IApplicationListQuery) =>
 
   const [data, total] = await Promise.all([
     SchemeApplication.find(filter)
-      .populate('scheme', 'title type')
+      .populate('scheme', 'title category')
       .sort(sort)
       .skip(skip)
       .limit(limit)

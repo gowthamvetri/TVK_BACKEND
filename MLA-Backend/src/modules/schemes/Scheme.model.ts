@@ -7,7 +7,7 @@ import mongoose, { Document } from 'mongoose';
 export interface IScheme extends Document {
   title: string;
   description: string;
-  type: string;
+  category: string;
   eligibility?: string;
   benefits?: string;
   startDate?: Date;
@@ -42,18 +42,9 @@ const schemeSchema = new mongoose.Schema<IScheme>(
       trim: true,
       maxlength: 5000,
     },
-    type: {
+    category: {
       type: String,
-      enum: [
-        'women',
-        'men',
-        'children',
-        'transgender_people',
-        'school_students',
-        'college_students',
-        'senior_citizens',
-        'people_with_disabilities'
-      ],
+      enum: ['Women', 'Men', 'Children', 'Transgender', 'Schl students', 'Clg students', 'Elder citizen', 'Disabled ppl'],
       default: 'Women',
     },
     eligibility: {

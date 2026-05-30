@@ -14,7 +14,7 @@ export interface ISchemeImage {
 export interface ISchemeCreateDTO {
   title: string;
   description: string;
-  type?: string;
+  category?: string;
   eligibility?: string;
   benefits?: string;
   applicationLink?: string;
@@ -29,7 +29,7 @@ export interface ISchemeCreateDTO {
 export type ISchemeUpdateDTO = Partial<ISchemeCreateDTO>;
 
 export interface ISchemeListQuery extends PaginationQuery {
-  type?: string;
+  category?: string;
   ward?: string;
 }
 
@@ -46,7 +46,7 @@ const getById = async (id: string) => {
 const list = async (query: ISchemeListQuery) => {
   const { page, limit, skip, sort } = buildPaginationQuery(query);
   const filter: FilterQuery<IScheme> = { isActive: true };
-  if (query.type) filter.type = query.type;
+  if (query.category) filter.category = query.category;
   if (query.ward) filter.$or = [{ targetWards: parseInt(query.ward, 10) }, { targetWards: { $size: 0 } }];
 
   const [data, total] = await Promise.all([
