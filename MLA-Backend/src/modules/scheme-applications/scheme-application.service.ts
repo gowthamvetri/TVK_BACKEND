@@ -139,10 +139,57 @@ const updateStatus = async (id: string, status: string, remarks?: string) => {
   return application;
 };
 
+const exportApplications = async (schemeId: string) => {
+  const scheme = await Scheme.findById(schemeId);
+  if (!scheme) throw new NotFoundError('Scheme not found');
+
+  const applications = await SchemeApplication.find({ scheme: schemeId })
+    .populate('citizen', 'name phone ward')
+    .sort('-createdAt')
+    .lean() as any[];
+
+  if (applications.length === 0) {
+    throw new ValidationError('No applications found for this scheme to export');
+  }
+
+  const data = applications.map(app => {
+    const baseData: Record<string, any> = {
+      'Scheme Name': scheme.title,
+      'Applicant Name': app.citizen?.name || 'N/A',
+      'Applicant Phone': app.citizen?.phone || 'N/A',
+      'Ward': app.citizen?.ward || 'N/A',
+      'Status': app.status,
+      'Applied On': app.createdAt ? new Date(app.createdAt).toLocaleString() : '',
+      'Remarks': app.remarks || '',
+    };
+
+    // Flatten dynamic application data fields
+    if (app.applicationData) {
+      for (const [key, value] of Object.entries(app.applicationData)) {
+        baseData[`Field: ${key}`] = value;
+      }
+    }
+
+    // Flatten document URLs
+    if (app.submittedDocuments && Array.isArray(app.submittedDocuments)) {
+      app.submittedDocuments.forEach((doc: any) => {
+        baseData[`Doc: ${doc.documentName}`] = doc.url;
+      });
+    }
+
+    return baseData;
+  });
+
+  const { Parser } = require('json2csv');
+  const parser = new Parser();
+  return parser.parse(data);
+};
+
 export default {
   apply,
   getById,
   listByCitizen,
   listByScheme,
   updateStatus,
+  exportApplications,
 };

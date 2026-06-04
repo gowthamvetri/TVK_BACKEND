@@ -74,10 +74,19 @@ const updateStatus = asyncHandler(async (req: Request<{ id: string }, unknown, {
   return ApiResponse.success(res, { data: application });
 });
 
+const exportApplications = asyncHandler(async (req: Request<{ schemeId: string }>, res: Response) => {
+  const csvData = await schemeApplicationService.exportApplications(req.params.schemeId);
+  
+  res.header('Content-Type', 'text/csv');
+  res.attachment('scheme_applications.csv');
+  return res.send(csvData);
+});
+
 export default {
   apply,
   getById,
   listMyApplications,
   listSchemeApplications,
   updateStatus,
+  exportApplications,
 };

@@ -21,6 +21,8 @@ router.get('/my-applications', schemeApplicationController.listMyApplications);
 
 router.get('/scheme/:schemeId', authorize('mla', 'ward_councillor'), [param('schemeId').isMongoId()], validate, schemeApplicationController.listSchemeApplications);
 
+router.get('/scheme/:schemeId/export', authorize('mla', 'ward_councillor'), [param('schemeId').isMongoId()], validate, schemeApplicationController.exportApplications);
+
 router.get('/:id', [param('id').isMongoId()], validate, schemeApplicationController.getById);
 
 router.post(
