@@ -9,6 +9,7 @@ import officialsRepository from './officials.repository';
 interface ParsedOfficial {
   phone: string;
   role: string;
+  department?: string;
 }
 
 const parseCsvLine = (line: string): string[] => {
@@ -81,6 +82,7 @@ const parseCsv = (content: string) => {
 
     const rawPhone = columns[0] || '';
     const rawRole = columns[1] || '';
+    const rawDepartment = columns[2] || '';
 
     if (index === 0) {
       const headerCandidate = rawPhone.toLowerCase();
@@ -102,7 +104,12 @@ const parseCsv = (content: string) => {
       return;
     }
 
-    parsed.push({ phone, role });
+    const official: ParsedOfficial = { phone, role };
+    if (role === ROLES.SERVICE_OFFICER && rawDepartment) {
+      official.department = rawDepartment.trim();
+    }
+
+    parsed.push(official);
   });
 
   return { parsed, invalid };
@@ -134,12 +141,11 @@ const importOfficialsFromCsv = async (filePath: string, createdBy: string) => {
   }
 };
 
-const getRoleForPhone = async (phone: string) => {
-  const record = await officialsRepository.findByPhone(phone);
-  return record?.role;
+const getOfficialByPhone = async (phone: string) => {
+  return officialsRepository.findByPhone(phone);
 };
 
 export default {
   importOfficialsFromCsv,
-  getRoleForPhone,
+  getOfficialByPhone,
 };

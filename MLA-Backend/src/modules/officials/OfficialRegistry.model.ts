@@ -8,6 +8,7 @@ import { ROLES } from '../../shared/constants';
 export interface IOfficialRegistry extends Document {
   phone: string;
   role: string;
+  department?: string;
   createdBy: mongoose.Types.ObjectId;
   createdAt: Date;
   updatedAt: Date;
@@ -27,6 +28,10 @@ const officialRegistrySchema = new mongoose.Schema<IOfficialRegistry>(
       enum: [ROLES.SERVICE_OFFICER, ROLES.WARD_COUNCILLOR, ROLES.MLA],
       required: [true, 'Role is required'],
       index: true,
+    },
+    department: {
+      type: String,
+      trim: true,
     },
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,

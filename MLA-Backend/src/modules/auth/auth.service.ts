@@ -169,16 +169,17 @@ const completeRegistration = async ({ registrationToken, pin, ward }: ICompleteR
     throw new BadRequestError('User already registered');
   }
 
-  // Get pre-registered role from official registry (if any)
+  // Get pre-registered details from official registry (if any)
   // Otherwise, citizen is the default role
-  const preRegisteredRole = await officialsService.getRoleForPhone(phone);
-  const userRole = preRegisteredRole || ROLES.CITIZEN;
+  const preRegisteredOfficial = await officialsService.getOfficialByPhone(phone);
+  const userRole = preRegisteredOfficial?.role || ROLES.CITIZEN;
 
   const user = await userRepository.create({
     phone,
     pin,
     ward,
     role: userRole,
+    ...(preRegisteredOfficial?.department ? { department: preRegisteredOfficial.department } : {}),
     isVerified: true,
   });
 

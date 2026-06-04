@@ -2,6 +2,7 @@
  * BullMQ Distributed Workers Initialization
  */
 import logger from '../shared/logger';
+import config from '../config';
 import { cleanupQueue, analyticsQueue } from '../queues';
 import { JOB_NAMES } from '../shared/queues/queue.constants';
 import './otp.worker';
@@ -13,6 +14,11 @@ import './uploads.worker';
 import './cleanup.worker';
 
 export const startWorkers = async () => {
+  if (!config.redis.enabled) {
+    logger.warn('[Workers] Redis is disabled via configuration. Background workers will not be started.');
+    return;
+  }
+
   logger.info('[Workers] All BullMQ workers have been initialized and are ready to process distributed jobs.');
 
   // Setup repeatable jobs

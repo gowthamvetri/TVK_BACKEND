@@ -115,7 +115,7 @@ const refreshToken = asyncHandler(async (req: Request<unknown, unknown, IRefresh
  * POST /auth/logout
  */
 const logout = asyncHandler(async (req: Request, res: Response) => {
-  const result = await authService.logout(req.user!.id);
+  const result = await authService.logout((req as any).user!.id);
   return ApiResponse.success(res, { data: result });
 });
 

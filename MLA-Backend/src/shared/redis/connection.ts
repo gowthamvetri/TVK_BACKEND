@@ -4,8 +4,9 @@ import logger from '../logger';
 
 // Centralized Redis connection for all queues and workers
 export const redisConnection = new IORedis(config.redis.url || 'redis://localhost:6379', {
-  maxRetriesPerRequest: null,
+  maxRetriesPerRequest: config.redis.enabled ? null : 0,
   enableReadyCheck: false,
+  retryStrategy: config.redis.enabled ? undefined : () => null,
 });
 
 redisConnection.on('error', (err) => {

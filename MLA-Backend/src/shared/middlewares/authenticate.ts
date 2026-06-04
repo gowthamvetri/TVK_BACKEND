@@ -23,7 +23,7 @@ const authenticate = (req: Request, _res: Response, next: NextFunction) => {
       phone?: string;
       ward?: number;
     };
-    req.user = {
+    (req as any).user = {
       id: decoded.id,
       role: decoded.role,
       phone: decoded.phone,

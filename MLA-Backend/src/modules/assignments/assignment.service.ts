@@ -36,25 +36,25 @@ const resolveOfficerId = (officer: { _id?: mongoose.Types.ObjectId | string; id?
  */
 const autoAssign = async (complaintId: string, category: string, ward: number) => {
   try {
-    // Step 1: Find department for this category
+    // Step 1: Find explicit department mapping for this category, or default to the raw category string
     const department = await Department.findOne({
       categories: category,
       isActive: true,
     });
 
+    const targetDepartmentName = department ? department.name : category;
+
     let officers: IOfficer[] = [];
 
-    if (department) {
-      // Step 2: Find officers in this ward + department
-      const users = await userRepository.findOfficersByWardAndDepartment(ward, department.name);
-      officers = users
-        .map((user) => {
-          const officerId = resolveOfficerId(user);
-          if (!officerId) return null;
-          return { _id: officerId } as IOfficer;
-        })
-        .filter((officer): officer is IOfficer => officer !== null);
-    }
+    // Step 2: Find officers in this ward + department (matches explicit mapping or exact category match)
+    const usersByDept = await userRepository.findOfficersByWardAndDepartment(ward, targetDepartmentName);
+    officers = usersByDept
+      .map((user) => {
+        const officerId = resolveOfficerId(user);
+        if (!officerId) return null;
+        return { _id: officerId } as IOfficer;
+      })
+      .filter((officer): officer is IOfficer => officer !== null);
 
     // Fallback: Find any officer in the ward
     if (!officers || officers.length === 0) {
@@ -90,7 +90,7 @@ const autoAssign = async (complaintId: string, category: string, ward: number) =
     // Step 4: Assign complaint
     const updatedComplaint = await complaintRepository.update(complaintId, {
       assignedOfficer: selectedOfficer._id,
-      department: department?.name || 'General',
+      department: targetDepartmentName,
       status: COMPLAINT_STATUS.ASSIGNED,
     });
 
