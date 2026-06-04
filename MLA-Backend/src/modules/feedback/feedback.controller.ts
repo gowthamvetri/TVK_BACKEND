@@ -7,7 +7,15 @@ import ApiResponse from '../../shared/utils/ApiResponse';
 import asyncHandler from '../../shared/utils/asyncHandler';
 
 const create = asyncHandler(async (req: Request<unknown, unknown, IFeedbackCreateDTO>, res: Response) => {
-  const feedback = await feedbackService.create(req.user!.id, req.body);
+  const data = { ...req.body };
+  
+  if (req.user?.ward) {
+    data.ward = req.user.ward;
+  } else {
+    delete data.ward;
+  }
+
+  const feedback = await feedbackService.create(req.user!.id, data);
   return ApiResponse.created(res, { data: feedback, message: 'Feedback submitted successfully' });
 });
 
