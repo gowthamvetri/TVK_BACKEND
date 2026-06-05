@@ -7,9 +7,30 @@ import cors from 'cors';
 import rateLimit from 'express-rate-limit';
 import mongoSanitize from 'express-mongo-sanitize';
 import hpp from 'hpp';
+import { RedisStore } from 'rate-limit-redis';
 import config from '../../config';
+import { redisManager } from '../cache';
 
 const isTest = process.env.NODE_ENV === 'test';
+
+// Factory for rate limit store
+const getRateLimitStore = (prefix: string) => {
+  if (!config.redis.enabled) return undefined; // Fallback to memory store
+  
+  return new RedisStore({
+    sendCommand: async (...args: string[]) => {
+      const client = redisManager.getClient();
+      if (client) {
+        // @ts-ignore
+        return client.call(...args) as any;
+      }
+      // If Redis is temporarily down, rate-limit-redis expects an error to be thrown
+      // or we can mock a successful pass if we want graceful degradation
+      throw new Error('Redis client not available');
+    },
+    prefix: `rl:${prefix}:`,
+  });
+};
 
 /**
  * Helmet - sets various HTTP headers for security
@@ -34,6 +55,7 @@ export const corsMiddleware = cors({
 export const apiLimiter = rateLimit({
   windowMs: config.rateLimit.windowMs,
   max: config.rateLimit.maxRequests,
+  store: getRateLimitStore('api'),
   skip: () => isTest,
   message: {
     success: false,
@@ -50,7 +72,8 @@ export const apiLimiter = rateLimit({
  */
 export const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 20, // 20 requests per window
+  max: 100, // 100 requests per window
+  store: getRateLimitStore('auth'),
   skip: () => isTest,
   message: {
     success: false,
@@ -67,7 +90,8 @@ export const authLimiter = rateLimit({
  */
 export const otpLimiter = rateLimit({
   windowMs: 10 * 60 * 1000, // 10 minutes
-  max: 5, // 5 OTP requests per 10 minutes
+  max: 20, // 20 OTP requests per 10 minutes
+  store: getRateLimitStore('otp'),
   skip: () => isTest,
   message: {
     success: false,
