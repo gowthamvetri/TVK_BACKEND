@@ -35,6 +35,7 @@ export interface ICreateComplaintDTO {
   images?: { url?: string; publicId?: string }[];
   department?: string;
   [key: string]: unknown;
+
 }
 
 export interface IAuthUser {
@@ -322,6 +323,7 @@ export interface IComplaintQuery {
   search?: string;
   fromDate?: string;
   toDate?: string;
+  createdbyMe?: string;
 }
 
 export interface IAuthUser {
@@ -339,15 +341,14 @@ const listComplaints = async (query: IComplaintQuery, userContext: Partial<IAuth
   const filter: FilterQuery<IComplaint> = {};
 
   // SECURITY: Apply role-based filtering first and enforce restrictions (cannot be overridden by query params)
-  if (userContext.role === ROLES.CITIZEN) {
-    // Citizens can only see their own complaints
+  
+   if (query.createdbyMe === 'true') {
+    filter.citizen = userContext.id;
+  } else if (userContext.role === ROLES.CITIZEN) {
     filter.citizen = userContext.id;
   } else if (userContext.role === ROLES.SERVICE_OFFICER) {
-    // Officers can only see complaints assigned to them
     filter.assignedOfficer = userContext.id;
   } else if (userContext.role === ROLES.WARD_COUNCILLOR) {
-    // SECURITY: Ward councillors can only see complaints in their assigned ward
-    // This filter CANNOT be overridden by query parameters
     filter.ward = userContext.ward;
   }
   // MLA sees all — no restriction on base filter
