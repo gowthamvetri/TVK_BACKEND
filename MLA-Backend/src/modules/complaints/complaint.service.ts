@@ -244,6 +244,10 @@ const updateStatus = async (complaintId: string, newStatus: string, userId: stri
     updateData.verifiedBy = new mongoose.Types.ObjectId(userId);
   } else if (newStatus === COMPLAINT_STATUS.CLOSED) {
     updateData.closedAt = new Date();
+  } else if (newStatus === COMPLAINT_STATUS.REOPENED) {
+    // 🚀 NEW: Clear old photos and set the rework instructions
+    updateData.$unset = { resolutionProof: 1 }; 
+    updateData.resolutionNotes = notes; // Saves "Rework requested by MLA: reason"
   }
 
   const updated = await complaintRepository.update(complaintId, updateData);
