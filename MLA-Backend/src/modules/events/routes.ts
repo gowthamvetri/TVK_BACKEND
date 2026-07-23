@@ -8,10 +8,11 @@
 import { Router } from 'express';
 import eventController from './event.controller';
 import authenticate from '../../shared/middlewares/authenticate';
-import { authorize } from '../../shared/middlewares/authorize';
+import { authorize, authorizePermission } from '../../shared/middlewares/authorize';
 import validate from '../../shared/middlewares/validate';
 import { body, param } from 'express-validator';
 import upload from '../uploads/multer.config';
+import { DEPUTY_PERMISSIONS } from '../../shared/constants';
 
 const router = Router();
 
@@ -52,7 +53,7 @@ router.put(
 
 router.patch(
   '/:id/deactivate',
-  authorize('mla'),
+  authorizePermission(DEPUTY_PERMISSIONS.DELETE_EVENTS, 'mla'),
   [param('id').isMongoId()],
   validate,
   eventController.deactivate

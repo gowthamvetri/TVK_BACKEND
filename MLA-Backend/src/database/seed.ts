@@ -18,9 +18,9 @@ const seedData = async () => {
     await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/mla_grievance');
     console.log('Connected to MongoDB');
 
-    // Clear existing data
-    await User.deleteMany({});
-    await Department.deleteMany({});
+    // // Clear existing data
+    // await User.deleteMany({});
+    // await Department.deleteMany({});
 
     // ─── Create Departments ──────────────────────────────────
     const departments = await Department.insertMany([
@@ -71,7 +71,7 @@ const seedData = async () => {
     const mla = await User.create({
       name: 'MLA Admin',
       phone: '9000000001',
-      pin: '123456',
+      pin: '1234',
       role: 'mla',
       ward: 1,
       isVerified: true,
@@ -80,18 +80,29 @@ const seedData = async () => {
 
     // ─── Create Ward Councillors ────────────────────────────
     const councillors: IUser[] = [];
-    for (let ward = 1; ward <= 5; ward++) {
+    for (let ward = 1; ward <= 4; ward++) { // Ward 5 intentionally left vacant
       const councillor = await User.create({
         name: `Ward ${ward} Councillor`,
         phone: `90000001${String(ward).padStart(2, '0')}`,
-        pin: '123456',
+        pin: '1234',
         role: 'ward_councillor',
         ward,
         isVerified: true,
       });
       councillors.push(councillor);
     }
-    console.log(`✓ ${councillors.length} ward councillors created`);
+    console.log(`✓ ${councillors.length} ward councillors created (Ward 5 left vacant)`);
+
+    // ─── Create Deputy ──────────────────────────────────────
+    const deputy = await User.create({
+      name: 'Deputy Admin',
+      phone: '9000000002',
+      pin: '1234',
+      role: 'deputy',
+      permissions: ['edit:schemes', 'manage:councillors', 'view:vacant_wards', 'transfer:councillor'],
+      isVerified: true,
+    });
+    console.log(`✓ Deputy created: ${deputy.phone}`);
 
     // ─── Create Service Officers ────────────────────────────
     const officers: IUser[] = [];
@@ -100,7 +111,7 @@ const seedData = async () => {
         const officer = await User.create({
           name: `Officer W${ward}-${departments[dept].code}`,
           phone: `90000${String(ward).padStart(2, '0')}${String(dept + 1).padStart(3, '0')}`,
-          pin: '123456',
+          pin: '1234',
           role: 'service_officer',
           ward,
           department: departments[dept].name,
@@ -117,7 +128,7 @@ const seedData = async () => {
       const citizen = await User.create({
         name: `Test Citizen ${i}`,
         phone: `98765432${String(i).padStart(2, '0')}`,
-        pin: '123456',
+        pin: '1234',
         role: 'citizen',
         ward: (i % 5) + 1,
         isVerified: true,
@@ -134,8 +145,9 @@ const seedData = async () => {
     console.log('\n═══════════════════════════════════════');
     console.log('Database seeded successfully!');
     console.log('═══════════════════════════════════════');
-    console.log('\nDefault PIN for all users: 123456');
+    console.log('\nDefault PIN for all users: 1234');
     console.log(`MLA: ${mla.phone}`);
+    console.log(`Deputy: ${deputy.phone}`);
     console.log(`Councillors: ${councillors.map(c => c.phone).join(', ')}`);
     console.log(`Citizens: ${citizens.map(c => c.phone).join(', ')}`);
     console.log('═══════════════════════════════════════\n');

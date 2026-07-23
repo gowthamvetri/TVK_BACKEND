@@ -62,6 +62,37 @@ const getWardOfficers = asyncHandler(async (req: Request<{ ward: string }>, res:
   return ApiResponse.success(res, { data: officers });
 });
 
+const createDeputy = asyncHandler(async (req: Request, res: Response) => {
+  const deputy = await userService.createDeputy(req.body);
+  return ApiResponse.created(res, { data: deputy, message: 'Deputy created successfully' });
+});
+
+const createOfficial = asyncHandler(async (req: Request, res: Response) => {
+  const official = await userService.createOfficial(req.body);
+  return ApiResponse.created(res, { data: official, message: 'Official created successfully' });
+});
+
+const listDeputies = asyncHandler(async (_req: Request, res: Response) => {
+  const deputies = await userService.listDeputies();
+  return ApiResponse.success(res, { data: deputies });
+});
+
+const updateDeputyPermissions = asyncHandler(async (req: Request<{ id: string }>, res: Response) => {
+  const deputy = await userService.updateDeputyPermissions(req.params.id, req.body.permissions);
+  return ApiResponse.success(res, { data: deputy, message: 'Deputy permissions updated' });
+});
+
+const transferCouncillor = asyncHandler(async (req: Request<{ id: string }>, res: Response) => {
+  const { targetWard } = req.body;
+  const result = await userService.transferCouncillor(req.params.id, parseInt(targetWard, 10));
+  return ApiResponse.success(res, { data: result, message: 'Councillor transferred successfully' });
+});
+
+const getVacantWards = asyncHandler(async (_req: Request, res: Response) => {
+  const result = await userService.getVacantWards();
+  return ApiResponse.success(res, { data: result });
+});
+
 const userController = {
   getProfile,
   updateProfile,
@@ -70,6 +101,12 @@ const userController = {
   deactivateUser,
   activateUser,
   getWardOfficers,
+  createDeputy,
+  createOfficial,
+  listDeputies,
+  updateDeputyPermissions,
+  transferCouncillor,
+  getVacantWards,
 };
 
 export default userController;

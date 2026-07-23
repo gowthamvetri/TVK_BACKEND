@@ -8,10 +8,11 @@
 import { Router } from 'express';
 import schemeController from './scheme.controller';
 import authenticate from '../../shared/middlewares/authenticate';
-import { authorize } from '../../shared/middlewares/authorize';
+import { authorize, authorizePermission } from '../../shared/middlewares/authorize';
 import validate from '../../shared/middlewares/validate';
 import { body, param } from 'express-validator';
 import upload from '../uploads/multer.config';
+import { DEPUTY_PERMISSIONS } from '../../shared/constants';
 
 const router = Router();
 
@@ -22,7 +23,7 @@ router.get('/:id', [param('id').isMongoId()], validate, schemeController.getById
 
 router.post(
   '/',
-  authorize('mla', 'ward_councillor'),
+  authorizePermission(DEPUTY_PERMISSIONS.EDIT_SCHEMES, 'mla', 'ward_councillor'),
   upload.array('images', 5),
   [
     body('title').trim().isLength({ min: 5, max: 200 }),
@@ -47,7 +48,7 @@ router.post(
 
 router.put(
   '/:id',
-  authorize('mla', 'ward_councillor'),
+  authorizePermission(DEPUTY_PERMISSIONS.EDIT_SCHEMES, 'mla', 'ward_councillor'),
   upload.array('images', 5),
   [
     param('id').isMongoId(),
@@ -70,6 +71,6 @@ router.put(
   validate,
   schemeController.update
 );
-router.patch('/:id/deactivate', authorize('mla'), [param('id').isMongoId()], validate, schemeController.deactivate);
+router.patch('/:id/deactivate', authorizePermission(DEPUTY_PERMISSIONS.EDIT_SCHEMES, 'mla'), [param('id').isMongoId()], validate, schemeController.deactivate);
 
 export default router;

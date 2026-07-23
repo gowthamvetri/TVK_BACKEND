@@ -33,6 +33,25 @@ interface IUserContext {
   [key: string]: unknown;
 }
 
+import { ROLES, TOTAL_WARDS } from '../../shared/constants';
+import User from './User.model';
+
+export interface ICreateDeputyDTO {
+  phone: string;
+  pin: string;
+  ward?: number;
+  permissions: string[];
+}
+
+export interface ICreateOfficialDTO {
+  phone: string;
+  pin: string;
+  role: string;
+  ward?: number;
+  department?: string;
+  permissions?: string[];
+}
+
 const getProfile = async (userId: string) => {
   const user = await userRepository.findById(userId);
   if (!user) throw new NotFoundError('User not found');
@@ -95,6 +114,117 @@ const activateUser = async (userId: string) => {
   return user;
 };
 
+const createDeputy = async (data: ICreateDeputyDTO) => {
+  const existingUser = await userRepository.findByPhone(data.phone);
+  if (existingUser) {
+    throw new BadRequestError('User with this phone number already exists', 'PHONE_EXISTS');
+  }
+
+  const deputy = await userRepository.create({
+    phone: data.phone,
+    pin: data.pin,
+    role: ROLES.DEPUTY,
+    ward: data.ward,
+    permissions: data.permissions,
+    isVerified: true,
+    isActive: true,
+  });
+
+  return deputy;
+};
+
+const createOfficial = async (data: ICreateOfficialDTO) => {
+  const existingUser = await userRepository.findByPhone(data.phone);
+  if (existingUser) {
+    throw new BadRequestError('User with this phone number already exists', 'PHONE_EXISTS');
+  }
+
+  const official = await userRepository.create({
+    phone: data.phone,
+    pin: data.pin,
+    role: data.role,
+    ward: data.ward,
+    department: data.department,
+    permissions: data.role === ROLES.DEPUTY ? (data.permissions || []) : undefined,
+    isVerified: true,
+    isActive: true,
+  });
+
+  return official;
+};
+
+const listDeputies = async () => {
+  const deputies = await User.find({ role: ROLES.DEPUTY });
+  return deputies;
+};
+
+const updateDeputyPermissions = async (deputyId: string, permissions: string[]) => {
+  const deputy = await User.findOne({ _id: deputyId, role: ROLES.DEPUTY });
+  if (!deputy) {
+    throw new NotFoundError('Deputy not found');
+  }
+
+  deputy.permissions = permissions;
+  await deputy.save();
+  return deputy;
+};
+
+const transferCouncillor = async (councillorId: string, targetWard: number) => {
+  const councillor = await userRepository.findById(councillorId);
+  if (!councillor) {
+    throw new NotFoundError('Councillor not found');
+  }
+
+  if (councillor.role !== ROLES.WARD_COUNCILLOR) {
+    throw new BadRequestError('Target user is not a ward councillor', 'INVALID_ROLE');
+  }
+
+  // 1. Find existing active councillor for the target ward
+  const existingWardCouncillor = await userRepository.findWardCouncillor(targetWard);
+  if (existingWardCouncillor && existingWardCouncillor._id.toString() !== councillorId) {
+    // Demote/unassign the previous councillor
+    existingWardCouncillor.ward = undefined;
+    existingWardCouncillor.isFormerCouncillor = true;
+    await existingWardCouncillor.save();
+  }
+
+  // 2. Transfer requested councillor to target ward
+  councillor.ward = targetWard;
+  councillor.isFormerCouncillor = false;
+  councillor.isActive = true;
+  await councillor.save();
+
+  return {
+    transferredCouncillor: councillor,
+    previousCouncillor: existingWardCouncillor && existingWardCouncillor._id.toString() !== councillorId ? existingWardCouncillor : null,
+  };
+};
+
+const getVacantWards = async () => {
+  // Find all active ward councillors with assigned wards
+  const activeCouncillors = await User.find({
+    role: ROLES.WARD_COUNCILLOR,
+    isActive: true,
+    ward: { $exists: true, $ne: null },
+  }).select('ward');
+
+  const occupiedWards = new Set(activeCouncillors.map((c) => c.ward));
+  const vacantWards: number[] = [];
+
+  for (let ward = 1; ward <= TOTAL_WARDS; ward++) {
+    if (!occupiedWards.has(ward)) {
+      vacantWards.push(ward);
+    }
+  }
+
+  return {
+    totalWards: TOTAL_WARDS,
+    occupiedCount: occupiedWards.size,
+    vacantCount: vacantWards.length,
+    vacantWards,
+  };
+};
+
 const userService = {
   getProfile,
   updateProfile,
@@ -102,6 +232,12 @@ const userService = {
   getOfficersForWard,
   deactivateUser,
   activateUser,
+  createDeputy,
+  createOfficial,
+  listDeputies,
+  updateDeputyPermissions,
+  transferCouncillor,
+  getVacantWards,
 };
 
 export default userService;

@@ -28,6 +28,8 @@ export interface IUser extends Document {
     google?: { id?: string };
     microsoft?: { id?: string };
   };
+  permissions?: string[];
+  isFormerCouncillor?: boolean;
   createdAt: Date;
   updatedAt: Date;
   comparePin(candidatePin: string): Promise<boolean>;
@@ -86,6 +88,14 @@ const userSchema = new mongoose.Schema<IUser>(
     refreshToken: {
       type: String,
       select: false,
+    },
+    permissions: {
+      type: [String],
+      default: undefined,
+    },
+    isFormerCouncillor: {
+      type: Boolean,
+      default: false,
     },
     // Future OAuth placeholders
     oauthProviders: {

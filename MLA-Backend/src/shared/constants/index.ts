@@ -7,7 +7,23 @@ export const ROLES = {
   SERVICE_OFFICER: 'service_officer',
   WARD_COUNCILLOR: 'ward_councillor',
   MLA: 'mla',
+  DEPUTY: 'deputy',
 } as const;
+
+export const TOTAL_WARDS = 10;
+
+export const DEPUTY_PERMISSIONS = {
+  CREATE_DEPUTY: 'create:deputy',
+  CREATE_OFFICIALS: 'create:officials',
+  EDIT_SCHEMES: 'edit:schemes',
+  DELETE_EVENTS: 'delete:events',
+  MANAGE_COUNCILLORS: 'manage:councillors',
+  MANAGE_SUPERVISORS: 'manage:supervisors',
+  TRANSFER_COUNCILLOR: 'transfer:councillor',
+  VIEW_VACANT_WARDS: 'view:vacant_wards',
+  MANAGE_WARDS: 'manage:wards',
+} as const;
+
 
 export const COMPLAINT_STATUS = {
   CREATED: 'created',

@@ -22,12 +22,14 @@ const authenticate = (req: Request, _res: Response, next: NextFunction) => {
       role: string;
       phone?: string;
       ward?: number;
+      permissions?: string[];
     };
     (req as any).user = {
       id: decoded.id,
       role: decoded.role,
       phone: decoded.phone,
       ward: decoded.ward,
+      permissions: decoded.permissions,
     };
     next();
   } catch (error: unknown) {

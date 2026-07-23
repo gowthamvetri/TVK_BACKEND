@@ -29,6 +29,36 @@ export const authorize = (...allowedRoles: string[]) => {
 };
 
 /**
+ * Authorize permission or specific roles
+ * @param requiredPermission - Permission string required for deputy role
+ * @param allowedRoles - Other roles permitted to access the route
+ */
+export const authorizePermission = (requiredPermission: string, ...allowedRoles: string[]) => {
+  return (req: Request, _res: Response, next: NextFunction) => {
+    if (!req.user) {
+      throw new ForbiddenError('Authentication required');
+    }
+
+    // MLA super-admin has access to everything
+    if (req.user.role === 'mla') {
+      return next();
+    }
+
+    // Role check
+    if (allowedRoles.includes(req.user.role)) {
+      return next();
+    }
+
+    // Deputy permission check
+    if (req.user.role === 'deputy' && Array.isArray(req.user.permissions) && req.user.permissions.includes(requiredPermission)) {
+      return next();
+    }
+
+    throw new ForbiddenError(`You do not have the required permission '${requiredPermission}' or role to perform this action`);
+  };
+};
+
+/**
  * Authorize based on resource ownership or elevated role
  * Allows access if user owns the resource OR has an elevated role
  * @param getResourceOwnerId - Function that extracts owner ID from request

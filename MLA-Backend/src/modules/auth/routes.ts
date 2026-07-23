@@ -5,7 +5,7 @@
  * tags:
  *   name: Auth
  *   description: Authentication & OTP management
- */
+ */ 
 import { Router } from 'express';
 import authController from './auth.controller';
 import authValidators from './auth.validators';

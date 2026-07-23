@@ -23,6 +23,7 @@ interface IUserTokenPayload {
   role?: string;
   phone?: string;
   ward?: number;
+  permissions?: string[];
 }
 
 /**
@@ -30,7 +31,7 @@ interface IUserTokenPayload {
  */
 const generateAccessToken = (user: IUserTokenPayload): string => {
   return jwt.sign(
-    { id: user._id, role: user.role, phone: user.phone, ward: user.ward },
+    { id: user._id, role: user.role, phone: user.phone, ward: user.ward, permissions: user.permissions },
     config.jwt.accessSecret as string,
     { expiresIn: config.jwt.accessExpiry as jwt.SignOptions['expiresIn'] }
   );

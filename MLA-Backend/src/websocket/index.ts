@@ -26,6 +26,7 @@ interface SocketUser {
   id: string;
   role: string;
   ward?: number;
+  permissions?: string[];
 }
 
 type AuthSocket = Socket & { user: SocketUser };
@@ -64,11 +65,13 @@ const initializeWebSocket = (httpServer: HttpServerLike) => {
         id: string;
         role: string;
         ward?: number;
+        permissions?: string[];
       };
       (socket as AuthSocket).user = {
         id: decoded.id,
         role: decoded.role,
         ward: decoded.ward,
+        permissions: decoded.permissions,
       };
       next();
     } catch (_error) {

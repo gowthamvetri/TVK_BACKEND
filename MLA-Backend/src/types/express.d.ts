@@ -8,6 +8,7 @@ declare global {
         role: string;
         department?: string;
         ward?: number;
+        permissions?: string[];
       };
     }
   }

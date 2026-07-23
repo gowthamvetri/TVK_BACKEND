@@ -9,9 +9,16 @@
 import { Router } from 'express';
 import userController from './user.controller';
 import authenticate from '../../shared/middlewares/authenticate';
-import { authorize } from '../../shared/middlewares/authorize';
+import { authorize, authorizePermission } from '../../shared/middlewares/authorize';
 import validate from '../../shared/middlewares/validate';
-import { param, body } from 'express-validator';
+import { param } from 'express-validator';
+import { DEPUTY_PERMISSIONS } from '../../shared/constants';
+import {
+  createDeputyValidator,
+  createOfficialValidator,
+  updateDeputyPermissionsValidator,
+  transferCouncillorValidator,
+} from './deputy.validators';
 
 const router = Router();
 
@@ -19,88 +26,112 @@ const router = Router();
 router.use(authenticate);
 
 /**
- * @swagger
- * /users/profile:
- *   get:
- *     tags: [Users]
- *     summary: Get current user's profile
- *     security: [{ bearerAuth: [] }]
+ * Profile endpoints
  */
 router.get('/profile', userController.getProfile);
-
-/**
- * @swagger
- * /users/profile:
- *   put:
- *     tags: [Users]
- *     summary: Update current user's profile
- */
 router.put('/profile', userController.updateProfile);
 
 /**
- * @swagger
- * /users:
- *   get:
- *     tags: [Users]
- *     summary: List all users (admin only)
+ * Vacant Wards Overview
  */
-router.get('/', authorize('mla', 'ward_councillor'), userController.listUsers);
+router.get(
+  '/wards/vacant',
+  authorizePermission(DEPUTY_PERMISSIONS.VIEW_VACANT_WARDS, 'ward_councillor'),
+  userController.getVacantWards
+);
 
 /**
- * @swagger
- * /users/ward/{ward}/officers:
- *   get:
- *     tags: [Users]
- *     summary: Get officers for a specific ward
+ * Deputy Management Endpoints
+ */
+router.post(
+  '/deputies',
+  authorizePermission(DEPUTY_PERMISSIONS.CREATE_DEPUTY),
+  createDeputyValidator,
+  validate,
+  userController.createDeputy
+);
+
+router.get(
+  '/deputies',
+  authorizePermission(DEPUTY_PERMISSIONS.CREATE_DEPUTY),
+  userController.listDeputies
+);
+
+router.patch(
+  '/deputies/:id/permissions',
+  authorizePermission(DEPUTY_PERMISSIONS.CREATE_DEPUTY),
+  updateDeputyPermissionsValidator,
+  validate,
+  userController.updateDeputyPermissions
+);
+
+/**
+ * Official Creation Endpoint (Supervisors & Councillors)
+ */
+router.post(
+  '/officials',
+  authorizePermission(DEPUTY_PERMISSIONS.CREATE_OFFICIALS),
+  createOfficialValidator,
+  validate,
+  userController.createOfficial
+);
+
+/**
+ * Councillor Transfer Endpoint
+ */
+router.post(
+  '/councillors/:id/transfer',
+  authorizePermission(DEPUTY_PERMISSIONS.TRANSFER_COUNCILLOR),
+  transferCouncillorValidator,
+  validate,
+  userController.transferCouncillor
+);
+
+/**
+ * List Users
+ */
+router.get(
+  '/',
+  authorizePermission(DEPUTY_PERMISSIONS.MANAGE_COUNCILLORS, 'ward_councillor'),
+  userController.listUsers
+);
+
+/**
+ * Ward Officers
  */
 router.get(
   '/ward/:ward/officers',
-  authorize('mla', 'ward_councillor'),
+  authorizePermission(DEPUTY_PERMISSIONS.MANAGE_SUPERVISORS, 'ward_councillor'),
   [param('ward').isInt({ min: 1 })],
   validate,
   userController.getWardOfficers
 );
 
 /**
- * @swagger
- * /users/{id}:
- *   get:
- *     tags: [Users]
- *     summary: Get user by ID
+ * Get User by ID
  */
 router.get(
   '/:id',
-  authorize('mla', 'ward_councillor'),
+  authorizePermission(DEPUTY_PERMISSIONS.MANAGE_COUNCILLORS, 'ward_councillor'),
   [param('id').isMongoId()],
   validate,
   userController.getUserById
 );
 
 /**
- * @swagger
- * /users/{id}/deactivate:
- *   patch:
- *     tags: [Users]
- *     summary: Deactivate a user
+ * Deactivate / Activate User
  */
 router.patch(
   '/:id/deactivate',
-  authorize('mla'),
+  authorizePermission(DEPUTY_PERMISSIONS.MANAGE_COUNCILLORS),
   [param('id').isMongoId()],
   validate,
   userController.deactivateUser
 );
 
-/**
- * @swagger
- * /users/{id}/activate:
- *   patch:
- *     tags: [Users]
- *     summary: Activate a user
- */
 router.patch(
   '/:id/activate',
-  authorize('mla'),
+  authorizePermission(DEPUTY_PERMISSIONS.MANAGE_COUNCILLORS),
   [param('id').isMongoId()],
   validate,
   userController.activateUser
