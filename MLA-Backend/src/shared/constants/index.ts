@@ -13,17 +13,42 @@ export const ROLES = {
 export const TOTAL_WARDS = 10;
 
 export const DEPUTY_PERMISSIONS = {
-  CREATE_DEPUTY: 'create:deputy',
+  /**
+   * Official Management
+   * MLA may delegate this permission.
+   * Allows Deputy to create:
+   * - Service Officers
+   * - Ward Councillors
+   */
   CREATE_OFFICIALS: 'create:officials',
+
+  /**
+   * Scheme Management
+   */
   EDIT_SCHEMES: 'edit:schemes',
+  DELETE_SCHEMES: 'delete:schemes',
+
+  /**
+   * Event Management
+   */
+  EDIT_EVENTS: 'edit:events',
   DELETE_EVENTS: 'delete:events',
+
+  /**
+   * Announcement Management
+   */
+  EDIT_ANNOUNCEMENTS: 'edit:announcements',
+  DELETE_ANNOUNCEMENTS: 'delete:announcements',
+
+  /**
+   * Ward / Officials
+   */
   MANAGE_COUNCILLORS: 'manage:councillors',
   MANAGE_SUPERVISORS: 'manage:supervisors',
   TRANSFER_COUNCILLOR: 'transfer:councillor',
   VIEW_VACANT_WARDS: 'view:vacant_wards',
   MANAGE_WARDS: 'manage:wards',
 } as const;
-
 
 export const COMPLAINT_STATUS = {
   CREATED: 'created',

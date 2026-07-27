@@ -64,12 +64,19 @@ const getWardOfficers = asyncHandler(async (req: Request<{ ward: string }>, res:
 
 const createDeputy = asyncHandler(async (req: Request, res: Response) => {
   const deputy = await userService.createDeputy(req.body);
-  return ApiResponse.created(res, { data: deputy, message: 'Deputy created successfully' });
-});
 
+  return ApiResponse.created(res, {
+    message: 'Deputy created successfully',
+    data: deputy,
+  });
+});
 const createOfficial = asyncHandler(async (req: Request, res: Response) => {
   const official = await userService.createOfficial(req.body);
-  return ApiResponse.created(res, { data: official, message: 'Official created successfully' });
+
+  return ApiResponse.created(res, {
+    message: 'Official created successfully',
+    data: official,
+  });
 });
 
 const listDeputies = asyncHandler(async (_req: Request, res: Response) => {
@@ -83,8 +90,10 @@ const updateDeputyPermissions = asyncHandler(async (req: Request<{ id: string }>
 });
 
 const transferCouncillor = asyncHandler(async (req: Request<{ id: string }>, res: Response) => {
-  const { targetWard } = req.body;
-  const result = await userService.transferCouncillor(req.params.id, parseInt(targetWard, 10));
+const result = await userService.transferCouncillor(
+  req.params.id,
+  Number(req.body.targetWard)
+);
   return ApiResponse.success(res, { data: result, message: 'Councillor transferred successfully' });
 });
 

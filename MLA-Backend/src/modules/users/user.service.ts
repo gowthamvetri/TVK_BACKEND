@@ -33,7 +33,7 @@ interface IUserContext {
   [key: string]: unknown;
 }
 
-import { ROLES, TOTAL_WARDS } from '../../shared/constants';
+import { ROLES, TOTAL_WARDS,DEPUTY_PERMISSIONS } from '../../shared/constants';
 import User from './User.model';
 
 export interface ICreateDeputyDTO {
@@ -51,6 +51,18 @@ export interface ICreateOfficialDTO {
   department?: string;
   permissions?: string[];
 }
+
+/**
+ * Prevent privilege escalation.
+ * MLA can only assign valid deputy permissions.
+ */
+const sanitizePermissions = (permissions: string[] = []) => {
+  const allowedPermissions = Object.values(DEPUTY_PERMISSIONS);
+
+  return permissions.filter(permission =>
+    allowedPermissions.includes(permission as any)
+  );
+};
 
 const getProfile = async (userId: string) => {
   const user = await userRepository.findById(userId);
@@ -125,7 +137,7 @@ const createDeputy = async (data: ICreateDeputyDTO) => {
     pin: data.pin,
     role: ROLES.DEPUTY,
     ward: data.ward,
-    permissions: data.permissions,
+permissions: sanitizePermissions(data.permissions ?? []),
     isVerified: true,
     isActive: true,
   });
@@ -139,22 +151,24 @@ const createOfficial = async (data: ICreateOfficialDTO) => {
     throw new BadRequestError('User with this phone number already exists', 'PHONE_EXISTS');
   }
 
-  const official = await userRepository.create({
-    phone: data.phone,
-    pin: data.pin,
-    role: data.role,
-    ward: data.ward,
-    department: data.department,
-    permissions: data.role === ROLES.DEPUTY ? (data.permissions || []) : undefined,
-    isVerified: true,
-    isActive: true,
-  });
-
+const official = await userRepository.create({
+  phone: data.phone,
+  pin: data.pin,
+  role: data.role,
+  ward: data.ward,
+  department: data.department,
+  isVerified: true,
+  isActive: true,
+});
   return official;
 };
 
 const listDeputies = async () => {
-  const deputies = await User.find({ role: ROLES.DEPUTY });
+  const deputies = await User.find({
+  role: ROLES.DEPUTY,
+})
+.select('-pin -refreshToken')
+.sort({ createdAt: -1 });
   return deputies;
 };
 
@@ -163,13 +177,20 @@ const updateDeputyPermissions = async (deputyId: string, permissions: string[]) 
   if (!deputy) {
     throw new NotFoundError('Deputy not found');
   }
-
-  deputy.permissions = permissions;
+deputy.permissions = sanitizePermissions(permissions);
   await deputy.save();
   return deputy;
 };
 
+
+
 const transferCouncillor = async (councillorId: string, targetWard: number) => {
+  if (targetWard < 1 || targetWard > TOTAL_WARDS) {
+  throw new BadRequestError(
+    `Ward must be between 1 and ${TOTAL_WARDS}`,
+    'INVALID_WARD'
+  );
+}
   const councillor = await userRepository.findById(councillorId);
   if (!councillor) {
     throw new NotFoundError('Councillor not found');
@@ -179,12 +200,20 @@ const transferCouncillor = async (councillorId: string, targetWard: number) => {
     throw new BadRequestError('Target user is not a ward councillor', 'INVALID_ROLE');
   }
 
+  if (councillor.ward === targetWard) {
+  throw new BadRequestError(
+    'Councillor already belongs to this ward',
+    'SAME_WARD'
+  );
+}
+
   // 1. Find existing active councillor for the target ward
   const existingWardCouncillor = await userRepository.findWardCouncillor(targetWard);
   if (existingWardCouncillor && existingWardCouncillor._id.toString() !== councillorId) {
     // Demote/unassign the previous councillor
     existingWardCouncillor.ward = undefined;
     existingWardCouncillor.isFormerCouncillor = true;
+// existingWardCouncillor.isActive = true;
     await existingWardCouncillor.save();
   }
 
@@ -194,10 +223,15 @@ const transferCouncillor = async (councillorId: string, targetWard: number) => {
   councillor.isActive = true;
   await councillor.save();
 
-  return {
-    transferredCouncillor: councillor,
-    previousCouncillor: existingWardCouncillor && existingWardCouncillor._id.toString() !== councillorId ? existingWardCouncillor : null,
-  };
+return {
+  // success: true,
+  transferredCouncillor: councillor,
+  previousCouncillor:
+    existingWardCouncillor &&
+    existingWardCouncillor._id.toString() !== councillorId
+      ? existingWardCouncillor
+      : null,
+};
 };
 
 const getVacantWards = async () => {

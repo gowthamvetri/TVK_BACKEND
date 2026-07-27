@@ -43,9 +43,15 @@ router.get(
 /**
  * Deputy Management Endpoints
  */
+/**
+ * =====================================================
+ * Deputy Management (MLA ONLY)
+ * =====================================================
+ */
+
 router.post(
   '/deputies',
-  authorizePermission(DEPUTY_PERMISSIONS.CREATE_DEPUTY),
+  authorize('mla'),
   createDeputyValidator,
   validate,
   userController.createDeputy
@@ -53,18 +59,17 @@ router.post(
 
 router.get(
   '/deputies',
-  authorizePermission(DEPUTY_PERMISSIONS.CREATE_DEPUTY),
+  authorize('mla'),
   userController.listDeputies
 );
 
 router.patch(
   '/deputies/:id/permissions',
-  authorizePermission(DEPUTY_PERMISSIONS.CREATE_DEPUTY),
+  authorize('mla'),
   updateDeputyPermissionsValidator,
   validate,
   userController.updateDeputyPermissions
 );
-
 /**
  * Official Creation Endpoint (Supervisors & Councillors)
  */
@@ -121,9 +126,16 @@ router.get(
 /**
  * Deactivate / Activate User
  */
+/**
+ * =====================================================
+ * User Activation / Deactivation
+ * MLA ONLY
+ * =====================================================
+ */
+
 router.patch(
   '/:id/deactivate',
-  authorizePermission(DEPUTY_PERMISSIONS.MANAGE_COUNCILLORS),
+  authorize('mla'),
   [param('id').isMongoId()],
   validate,
   userController.deactivateUser
@@ -131,10 +143,9 @@ router.patch(
 
 router.patch(
   '/:id/activate',
-  authorizePermission(DEPUTY_PERMISSIONS.MANAGE_COUNCILLORS),
+  authorize('mla'),
   [param('id').isMongoId()],
   validate,
   userController.activateUser
 );
-
 export default router;
