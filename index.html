@@ -530,8 +530,8 @@ placeholder="Search endpoint, module or URL...">
 <h4>Success Response</h4>
 
 <pre>{
- "success":true,
- "message":"OTP sent successfully."
+  "success": true,
+  "message": "OTP sent successfully."
 }</pre>
 
 </div>
@@ -573,8 +573,8 @@ placeholder="Search endpoint, module or URL...">
 <h4>Request Body</h4>
 
 <pre>{
- "phone":"9876543210",
- "otp":"123456"
+  "phone":"9876543210",
+  "otp":"123456"
 }</pre>
 
 </div>
@@ -584,7 +584,10 @@ placeholder="Search endpoint, module or URL...">
 <h4>Response</h4>
 
 <pre>{
-"registrationToken":"JWT_TOKEN"
+  "success": true,
+  "data": {
+    "registrationToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+  }
 }</pre>
 
 </div>
@@ -621,13 +624,31 @@ placeholder="Search endpoint, module or URL...">
 
 <div class="section">
 
-<h4>Request</h4>
+<h4>Request Body</h4>
 
 <pre>{
-"registrationToken":"JWT_TOKEN",
-"pin":"1234",
-"ward":2,
-"role":"citizen"
+  "registrationToken": "JWT_TOKEN",
+  "pin": "1234",
+  "ward": 2,
+  "role": "citizen"
+}</pre>
+
+</div>
+
+<div class="section">
+
+<h4>Response</h4>
+
+<pre>{
+  "success": true,
+  "data": {
+    "_id": "507f1f77bcf86cd799439011",
+    "phone": "9876543210",
+    "name": "User",
+    "ward": 2,
+    "role": "citizen",
+    "status": "active"
+  }
 }</pre>
 
 </div>
@@ -664,23 +685,32 @@ placeholder="Search endpoint, module or URL...">
 
 <div class="section">
 
-<h4>Request</h4>
+<h4>Request Body</h4>
 
 <pre>{
-"phone":"9876543210",
-"pin":"1234"
+  "phone": "9876543210",
+  "pin": "1234"
 }</pre>
 
 </div>
 
 <div class="section">
 
-<h4>Returns</h4>
+<h4>Response</h4>
 
 <pre>{
-accessToken:"",
-refreshToken:"",
-user:{}
+  "success": true,
+  "data": {
+    "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+    "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+    "user": {
+      "_id": "507f1f77bcf86cd799439011",
+      "phone": "9876543210",
+      "name": "John Doe",
+      "role": "citizen",
+      "ward": 2
+    }
+  }
 }</pre>
 
 </div>
@@ -715,9 +745,26 @@ user:{}
 
 </div>
 
+<div class="section">
+
+<h4>Request Body</h4>
+
 <pre>{
-"phone":"9876543210"
+  "phone": "9876543210"
 }</pre>
+
+</div>
+
+<div class="section">
+
+<h4>Response</h4>
+
+<pre>{
+  "success": true,
+  "message": "OTP sent successfully."
+}</pre>
+
+</div>
 
 </div>
 
@@ -741,10 +788,29 @@ user:{}
 
 <div class="endpoint-body">
 
+<div class="section">
+
+<h4>Request Body</h4>
+
 <pre>{
-"phone":"9876543210",
-"otp":"123456"
+  "phone": "9876543210",
+  "otp": "123456"
 }</pre>
+
+</div>
+
+<div class="section">
+
+<h4>Response</h4>
+
+<pre>{
+  "success": true,
+  "data": {
+    "resetToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+  }
+}</pre>
+
+</div>
 
 </div>
 
@@ -768,18 +834,35 @@ user:{}
 
 <div class="endpoint-body">
 
+<div class="section">
+
+<h4>Request Body</h4>
+
 <pre>{
-"resetToken":"JWT_TOKEN",
-"newPin":"5678"
+  "resetToken": "JWT_TOKEN",
+  "newPin": "5678"
+}</pre>
+
+</div>
+
+<div class="section">
+
+<h4>Response</h4>
+
+<pre>{
+  "success": true,
+  "message": "PIN reset successfully."
 }</pre>
 
 </div>
 
 </div>
 
+</div>
 
 
-<!-- Refresh -->
+
+<!-- Refresh Token -->
 
 <div class="endpoint">
 
@@ -795,7 +878,36 @@ user:{}
 
 <div class="endpoint-body">
 
+<div class="section">
+
+<h4>Description</h4>
+
 <p>Generate new Access Token using Refresh Token.</p>
+
+</div>
+
+<div class="section">
+
+<h4>Request Body</h4>
+
+<pre>{
+  "refreshToken": "JWT_REFRESH_TOKEN"
+}</pre>
+
+</div>
+
+<div class="section">
+
+<h4>Response</h4>
+
+<pre>{
+  "success": true,
+  "data": {
+    "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+  }
+}</pre>
+
+</div>
 
 </div>
 
@@ -821,7 +933,24 @@ user:{}
 
 <span class="badge mla">JWT Required</span>
 
+<div class="section">
+
+<h4>Description</h4>
+
 <p>Logout current user and invalidate refresh token.</p>
+
+</div>
+
+<div class="section">
+
+<h4>Response</h4>
+
+<pre>{
+  "success": true,
+  "message": "Logged out successfully."
+}</pre>
+
+</div>
 
 </div>
 
@@ -836,6 +965,8 @@ user:{}
 <h2>👤 User APIs</h2>
 
 
+
+<!-- Get Profile -->
 
 <div class="endpoint">
 
@@ -882,6 +1013,8 @@ user:{}
 
 
 
+<!-- Update Profile -->
+
 <div class="endpoint">
 
 <div class="endpoint-header">
@@ -898,11 +1031,44 @@ user:{}
 
 <p>Update own profile information.</p>
 
+<div class="section">
+
+<h4>Request Body</h4>
+
+<pre>{
+  "name": "John Updated",
+  "email": "john.updated@example.com"
+}</pre>
+
+</div>
+
+<div class="section">
+
+<h4>Response</h4>
+
+<pre>{
+  "success": true,
+  "data": {
+    "_id": "507f1f77bcf86cd799439011",
+    "phone": "9876543210",
+    "name": "John Updated",
+    "email": "john.updated@example.com",
+    "ward": 2,
+    "role": "citizen",
+    "status": "active",
+    "updatedAt": "2024-01-15T11:30:00Z"
+  }
+}</pre>
+
 </div>
 
 </div>
 
+</div>
 
+
+
+<!-- List Users -->
 
 <div class="endpoint">
 
@@ -968,6 +1134,8 @@ user:{}
 
 
 
+<!-- Get User by ID -->
+
 <div class="endpoint">
 
 <div class="endpoint-header">
@@ -982,7 +1150,7 @@ user:{}
 
 <div class="endpoint-body">
 
-<p>Get user details.</p>
+<p>Get user details by ID.</p>
 
 <div class="section">
 
@@ -1011,6 +1179,8 @@ user:{}
 </div>
 
 
+
+<!-- Get Ward Officers -->
 
 <div class="endpoint">
 
@@ -1068,6 +1238,8 @@ user:{}
 
 
 
+<!-- Activate User -->
+
 <div class="endpoint">
 
 <div class="endpoint-header">
@@ -1086,11 +1258,28 @@ user:{}
 
 <p>Activate user account.</p>
 
+<div class="section">
+
+<h4>Response</h4>
+
+<pre>{
+  "success": true,
+  "data": {
+    "_id": "507f1f77bcf86cd799439011",
+    "status": "active",
+    "message": "User activated successfully."
+  }
+}</pre>
+
+</div>
+
 </div>
 
 </div>
 
 
+
+<!-- Deactivate User -->
 
 <div class="endpoint">
 
@@ -1110,11 +1299,50 @@ user:{}
 
 <p>Deactivate user account.</p>
 
+<div class="section">
+
+<h4>Response</h4>
+
+<pre>{
+  "success": true,
+  "data": {
+    "_id": "507f1f77bcf86cd799439011",
+    "status": "inactive",
+    "message": "User deactivated successfully."
+  }
+}</pre>
+
+</div>
+
 </div>
 
 </div>
 
 </section>
+
+<script>
+function copyEndpoint(endpoint) {
+  const baseUrl = "http://localhost:5000/api/v1";
+  const fullUrl = baseUrl + endpoint;
+  navigator.clipboard.writeText(fullUrl).then(() => {
+    alert("Copied: " + fullUrl);
+  });
+}
+
+document.getElementById('searchInput').addEventListener('keyup', function(e) {
+  const searchTerm = e.target.value.toLowerCase();
+  const endpoints = document.querySelectorAll('.endpoint');
+  
+  endpoints.forEach(endpoint => {
+    const text = endpoint.textContent.toLowerCase();
+    if(text.includes(searchTerm)) {
+      endpoint.style.display = 'block';
+    } else {
+      endpoint.style.display = 'none';
+    }
+  });
+});
+</script>
 
 </div>
 
